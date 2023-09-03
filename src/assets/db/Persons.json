@@ -1,0 +1,162 @@
+[
+    {
+      "id": 1,
+      "firstName": "Juan",
+      "lastName": "Perez",
+      "email": "juan@example.com",
+      "age": 30,
+      "sex": "masculino"
+    },
+    {
+      "id": 2,
+      "firstName": "María",
+      "lastName": "González",
+      "email": "maria@example.com",
+      "age": 25,
+      "sex": "femenino"
+    },
+    {
+      "id": 3,
+      "firstName": "Carlos",
+      "lastName": "Rodríguez",
+      "email": "carlos@example.com",
+      "age": 35,
+      "sex": "masculino"
+    },
+    {
+      "id": 4,
+      "firstName": "Ana",
+      "lastName": "López",
+      "email": "ana@example.com",
+      "age": 28,
+      "sex": "femenino"
+    },
+    {
+      "id": 5,
+      "firstName": "Pedro",
+      "lastName": "Martínez",
+      "email": "pedro@example.com",
+      "age": 32,
+      "sex": "masculino"
+    },
+    {
+      "id": 6,
+      "firstName": "Laura",
+      "lastName": "Díaz",
+      "email": "laura@example.com",
+      "age": 29,
+      "sex": "femenino"
+    },
+    {
+      "id": 7,
+      "firstName": "Miguel",
+      "lastName": "López",
+      "email": "miguel@example.com",
+      "age": 34,
+      "sex": "masculino"
+    },
+    {
+      "id": 8,
+      "firstName": "Sofía",
+      "lastName": "García",
+      "email": "sofia@example.com",
+      "age": 27,
+      "sex": "femenino"
+    },
+    {
+      "id": 9,
+      "firstName": "Javier",
+      "lastName": "Fernández",
+      "email": "javier@example.com",
+      "age": 31,
+      "sex": "masculino"
+    },
+    {
+      "id": 10,
+      "firstName": "Elena",
+      "lastName": "Ramírez",
+      "email": "elena@example.com",
+      "age": 26,
+      "sex": "femenino"
+    },
+    {
+      "id": 11,
+      "firstName": "Ricardo",
+      "lastName": "Gómez",
+      "email": "ricardo@example.com",
+      "age": 33,
+      "sex": "masculino"
+    },
+    {
+      "id": 12,
+      "firstName": "Isabel",
+      "lastName": "Vargas",
+      "email": "isabel@example.com",
+      "age": 24,
+      "sex": "femenino"
+    },
+    {
+      "id": 13,
+      "firstName": "Gabriel",
+      "lastName": "Ortega",
+      "email": "gabriel@example.com",
+      "age": 29,
+      "sex": "masculino"
+    },
+    {
+      "id": 14,
+      "firstName": "Lucía",
+      "lastName": "Hernández",
+      "email": "lucia@example.com",
+      "age": 30,
+      "sex": "femenino"
+    },
+    {
+      "id": 15,
+      "firstName": "Daniel",
+      "lastName": "Sánchez",
+      "email": "daniel@example.com",
+      "age": 27,
+      "sex": "masculino"
+    },
+    {
+      "id": 16,
+      "firstName": "Carmen",
+      "lastName": "Molina",
+      "email": "carmen@example.com",
+      "age": 28,
+      "sex": "femenino"
+    },
+    {
+      "id": 17,
+      "firstName": "José",
+      "lastName": "Pérez",
+      "email": "jose@example.com",
+      "age": 32,
+      "sex": "masculino"
+    },
+    {
+      "id": 18,
+      "firstName": "Paula",
+      "lastName": "Gómez",
+      "email": "paula@example.com",
+      "age": 29,
+      "sex": "femenino"
+    },
+    {
+      "id": 19,
+      "firstName": "Fernando",
+      "lastName": "Torres",
+      "email": "fernando@example.com",
+      "age": 31,
+      "sex": "masculino"
+    },
+    {
+      "id": 20,
+      "firstName": "Silvia",
+      "lastName": "Ruiz",
+      "email": "silvia@example.com",
+      "age": 26,
+      "sex": "femenino"
+    }
+  ]
