@@ -1,0 +1,27 @@
+<!-- tabla.component.html -->
+<div class="table-component">
+  <div class="table-component-table">
+    <mat-form-field>
+      <mat-label>Filtrar</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ingrese el texto de filtrado">
+    </mat-form-field>
+    <!-- tabla.component.html -->
+    <mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="nombre">
+        <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.nombre }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="edad">
+        <mat-header-cell *matHeaderCellDef> Edad </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.edad }} </mat-cell>
+      </ng-container>
+
+      <!-- Agrega más columnas según tus necesidades -->
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+  </div>
+  </div>
