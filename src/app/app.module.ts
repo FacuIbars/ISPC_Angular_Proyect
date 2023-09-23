@@ -8,12 +8,14 @@ import { MaterialModule } from './shared/material/material.module';
 import { TablePersonsComponent } from './components/table-persons/table-persons.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TableComponent } from './components/table/table.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeViewComponent,
-    TablePersonsComponent
+    TablePersonsComponent,
+    TableComponent
   ],
   imports: [
     BrowserModule,
