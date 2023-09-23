@@ -9,7 +9,7 @@ import { TablePersonsComponent } from './components/table-persons/table-persons.
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './views/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
