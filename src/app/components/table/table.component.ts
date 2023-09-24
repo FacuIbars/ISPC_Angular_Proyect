@@ -9,6 +9,7 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class TableComponent implements AfterViewInit, OnChanges {
   @Input() data: MatTableDataSource<any> = new MatTableDataSource<any>([]);
+  @Input() columnTitles: { [key: string]: string } = {};
   @Input() displayedColumns: string[] = [];
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;

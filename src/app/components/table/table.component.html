@@ -9,7 +9,7 @@
       <!-- tabla.component.html -->
       <mat-table [dataSource]="data" >
         <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
-          <mat-header-cell *matHeaderCellDef> {{ column }} </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef> {{ columnTitles[column] || column }} </mat-header-cell>
           <mat-cell *matCellDef="let element"> {{ element[column] }} </mat-cell>
         </ng-container>
 

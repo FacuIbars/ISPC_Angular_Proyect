@@ -12,9 +12,18 @@ import { PersonsService } from 'src/app/service/persons.service';
 })
 export class PersonViewComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  dataSource: MatTableDataSource<IPerson> = new MatTableDataSource<IPerson>([]); // Usar MatTableDataSource
-  ; // Agrega esta línea
-  displayedColumns: string[] = ['firstName', 'lastName', 'email', 'age', 'sex'];
+  dataSource: MatTableDataSource<IPerson> = new MatTableDataSource<IPerson>([]);
+  displayedColumns: string[] = ['firstName', 'lastName', 'email', 'age', 'sex']; 
+  customColumnTitles = {
+    firstName: 'Nombre',
+    lastName: 'Apellido',
+    email: 'Correo Electrónico',
+    age: 'Edad',
+    sex: 'Género'
+  };
+  
+  
+  
 
   constructor(private personsService: PersonsService) { }
 
