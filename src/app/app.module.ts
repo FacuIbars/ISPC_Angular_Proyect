@@ -9,13 +9,15 @@ import { TablePersonsComponent } from './components/table-persons/table-persons.
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TableComponent } from './components/table/table.component';
+import { PersonViewComponent } from './views/person-view/person-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeViewComponent,
     TablePersonsComponent,
-    TableComponent
+    TableComponent,
+    PersonViewComponent
   ],
   imports: [
     BrowserModule,

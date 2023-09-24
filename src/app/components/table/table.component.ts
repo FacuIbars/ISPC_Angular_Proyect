@@ -1,24 +1,37 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent {
-  @Input() data: any[]  = [];
+export class TableComponent implements AfterViewInit, OnChanges {
+  @Input() data: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   @Input() displayedColumns: string[] = [];
   
-  dataSource = new MatTableDataSource<any>([]);  
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  
+  ngAfterViewInit() {
+    this.assignPaginatorIfDataExists();
+  }
 
-  ngOnInit() {
-    this.dataSource.data = this.data;
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['data'] && !changes['data'].firstChange) {
+      this.assignPaginatorIfDataExists();
+    }
+  }
+
+  private assignPaginatorIfDataExists() {
+    if (this.data && this.data.data) {
+      this.data.paginator = this.paginator;
+    }
   }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.data.filter = filterValue.trim().toLowerCase();
   }
-
 }
+
