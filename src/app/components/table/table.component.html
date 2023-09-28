@@ -7,16 +7,39 @@
     </mat-form-field>
     <div class="mat-elevation-z8">
       <!-- tabla.component.html -->
-      <mat-table [dataSource]="data" >
-        <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
-          <mat-header-cell *matHeaderCellDef> {{ columnTitles[column] || column }} </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{ element[column] }} </mat-cell>
+      <mat-table [dataSource]="dataSource" >
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <mat-header-cell  *matHeaderCellDef class="mat-column-actions"></mat-header-cell>
+          <mat-cell *matCellDef="let row" fxLayout="row"  class="mat-column-actions" fxLayoutAlign="space-between center">
+            <button matTooltip="Ver" matTooltipPosition ="above"  (click)="verItem(row)" mat-mini-fab color="accent" aria-label="Example icon button with a menu icon">
+              <mat-icon >search</mat-icon>
+            </button>
+            <button matTooltip="Editar" matTooltipPosition ="above"  (click)="editarItem(row)" mat-mini-fab color="primary" aria-label="Example icon button with a menu icon">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button matTooltip="Eliminar" matTooltipPosition ="above"  (click)="borrarItem(row)" mat-mini-fab color="warn" aria-label="Example icon button with a menu icon">
+              <mat-icon>delete</mat-icon>
+            </button>       
+          </mat-cell>
         </ng-container>
 
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <ng-container *ngFor="let column of tableColumns" [matColumnDef]="column.def">
+          <mat-header-cell *matHeaderCellDef>{{ column.label }}</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{ row | columnValue : column }}</mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="tableDisplayColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: tableDisplayColumns"></mat-row>
       </mat-table>
-      <mat-paginator [pageSizeOptions]="[5, 10]" showFirstLastButtons  aria-label="Select page of periodic elements"> </mat-paginator>
+
+      <ng-container *ngIf="tableConfig?.isPaginable">
+        <mat-paginator
+          [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons
+          aria-label="Select page of periodic elements"
+        >
+        </mat-paginator>
+      </ng-container>
   </div>
   </div>
   </div>

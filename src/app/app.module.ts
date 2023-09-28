@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TableComponent } from './components/table/table.component';
 import { PersonViewComponent } from './views/person-view/person-view.component';
+import { ColumnValuePipe } from 'src/app/pipe/column-value.pipe';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { PersonViewComponent } from './views/person-view/person-view.component';
     HomeViewComponent,
     TablePersonsComponent,
     TableComponent,
-    PersonViewComponent
+    PersonViewComponent,
+    ColumnValuePipe
   ],
   imports: [
     BrowserModule,
