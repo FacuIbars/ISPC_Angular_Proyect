@@ -1,8 +1,10 @@
 export interface IPerson {
   id: number;
-  firstName: string;
-  lastName: string;
+  genero: string;
+  lugar: string;
+  nombre: string;
+  apellido: string;
   email: string;
-  age: number;
-  sex: string;
+  birthdate: string;
+  personal_id: string;
 }

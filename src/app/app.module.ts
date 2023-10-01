@@ -9,6 +9,8 @@ import { TablePersonsComponent } from './components/table-persons/table-persons.
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TableComponent } from './components/table/table.component';
+import { PersonViewComponent } from './views/person-view/person-view.component';
+import { ColumnValuePipe } from 'src/app/pipe/column-value.pipe';
 
 import { LoginComponent } from './views/login/login.component';
 import { FormsModule } from '@angular/forms';
@@ -23,8 +25,10 @@ library.add(fas); // Agrega los iconos sólidos a la biblioteca
     AppComponent,
     HomeViewComponent,
     TablePersonsComponent,
-    LoginComponent
-    TableComponent
+    LoginComponent,
+    TableComponent,
+    PersonViewComponent,
+    ColumnValuePipe
   ],
   imports: [
     BrowserModule,
