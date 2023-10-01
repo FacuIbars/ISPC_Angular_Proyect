@@ -8,9 +8,12 @@ import { HttpClient } from '@angular/common/http';
 })
 export class PersonsService {
   private jsonUrl = 'assets/db/Persons.json';
+  private backendUrl = 'http://127.0.0.1:8000/app/api/v1/'; 
   constructor(private http: HttpClient) { }
-  getPersons(): Observable<IPerson[]>{
 
-    return this.http.get<IPerson[]>(this.jsonUrl);
+
+  getPersons(): Observable<IPerson[]>{
+    const url = `${this.backendUrl}personas/`;
+    return this.http.get<IPerson[]>(url);
   }
 }

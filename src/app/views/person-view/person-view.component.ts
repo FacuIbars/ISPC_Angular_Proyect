@@ -40,11 +40,14 @@ export class PersonViewComponent implements  OnInit {
 
   setTableColumns() {
     this.tableColumns = [
-      { label: 'Nombre', def: 'firstName', dataKey: 'firstName' },
-      { label: 'Apellido', def: 'lastName', dataKey: 'lastName' },     
+      
+      { label: 'Nombre', def: 'nombre', dataKey: 'nombre' },
+      { label: 'Apellido', def: 'apellido', dataKey: 'apellido' },     
       { label: 'Correo', def: 'email', dataKey: 'email' },
-      { label: 'Edad', def: 'age', dataKey: 'age' },
-      { label: 'Género', def: 'sex', dataKey: 'sex' },
+      { label: 'Edad', def: 'birthdate', dataKey: 'birthdate' },
+      { label: 'Género', def: 'genero', dataKey: 'genero' },
+      { label: 'DNI', def: 'personal_id', dataKey: 'personal_id' },
+      
     ];
   }
 
