@@ -28,9 +28,9 @@ export class PersonsService {
     return this.http.get<IGenders>(url);
   }
   
-  updateGenders(id: number, updatedPerson: IGenders): Observable<IGenders> {
+  updateGenders(id: number, updatedGenders: IGenders): Observable<IGenders> {
     const url = `${this.backendUrl}generos/${id}/`;
-    return this.http.put<IGenders>(url, updatedPerson);
+    return this.http.put<IGenders>(url, updatedGenders);
   }
 
   deleteGenders(id: number): Observable<void> {
