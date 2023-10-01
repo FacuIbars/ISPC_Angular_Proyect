@@ -1,0 +1,51 @@
+.fs-header {
+  display: none;
+  font-family: var(--fontName);
+  padding-bottom: 0.15rem;
+  @media (width > 768px) {
+    display: block;
+  }
+  &__toolbar {
+    //background: transparent;
+    height: 4.5rem;
+    &-img {
+      margin-left: 1.5rem;
+      height: 2.5625rem;
+    }
+    &-routes {
+      display: flex;
+      padding-left: 5rem;
+      &-button {
+        height: 2.8125rem;
+        color: #646464;
+        font-size: 1rem;
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+        padding-right: 2rem;
+        cursor: pointer;
+        
+      }
+      &-button:hover{
+        color: black;
+        font-size: 1.05rem;
+      }
+    }
+    &-spacer {
+      flex: 1 1 auto;
+    }
+    &-logout {
+      margin-right: 2rem;
+      cursor: pointer;
+    }
+  }
+
+  .mat-toolbar-row,
+  .mat-toolbar-single-row {
+    padding: 0;
+    background: #ffffff;
+    border-radius: 0px 0px 0px 50px;
+    box-shadow: 0px 4px 4px 0px #0000000a;
+  }
+}
+

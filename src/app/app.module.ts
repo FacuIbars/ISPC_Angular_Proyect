@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TableComponent } from './components/table/table.component';
 import { PersonViewComponent } from './views/person-view/person-view.component';
 import { ColumnValuePipe } from 'src/app/pipe/column-value.pipe';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ColumnValuePipe } from 'src/app/pipe/column-value.pipe';
     TablePersonsComponent,
     TableComponent,
     PersonViewComponent,
-    ColumnValuePipe
+    ColumnValuePipe,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

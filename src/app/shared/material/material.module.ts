@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button'; 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatTooltipModule} from '@angular/material/tooltip';
-
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 const components = [
   MatTableModule,
@@ -21,7 +21,8 @@ const components = [
   MatIconModule,
   MatButtonModule,
   FlexLayoutModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatToolbarModule
 ];
 @NgModule({
   declarations: [],
