@@ -8,6 +8,7 @@ import { MaterialModule } from './shared/material/material.module';
 import { TablePersonsComponent } from './components/table-persons/table-persons.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TableComponent } from './components/table/table.component';
 
 import { LoginComponent } from './views/login/login.component';
 import { FormsModule } from '@angular/forms';
@@ -23,6 +24,7 @@ library.add(fas); // Agrega los iconos sólidos a la biblioteca
     HomeViewComponent,
     TablePersonsComponent,
     LoginComponent
+    TableComponent
   ],
   imports: [
     BrowserModule,
