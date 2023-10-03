@@ -10,6 +10,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const components = [
   MatTableModule,
@@ -22,7 +23,8 @@ const components = [
   MatButtonModule,
   FlexLayoutModule,
   MatTooltipModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatDialogModule
 ];
 @NgModule({
   declarations: [],

@@ -12,6 +12,7 @@ import { TableComponent } from './components/table/table.component';
 import { PersonViewComponent } from './views/person-view/person-view.component';
 import { ColumnValuePipe } from 'src/app/pipe/column-value.pipe';
 import { HeaderComponent } from './components/header/header.component';
+import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { HeaderComponent } from './components/header/header.component';
     TableComponent,
     PersonViewComponent,
     ColumnValuePipe,
-    HeaderComponent
+    HeaderComponent,    
+    ModalComponent
   ],
   imports: [
     BrowserModule,
