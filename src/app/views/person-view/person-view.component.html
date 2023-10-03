@@ -6,13 +6,25 @@
       [columns]="tableColumns"
       [config]="tableConfig"    
       (action)="onTableAction($event)"
-    ></app-table>  
-  </mat-tab>
-  
+      > </app-table>  
+    </mat-tab>  
     <mat-tab label="Alumnos"> <app-table-persons></app-table-persons></mat-tab>
     <mat-tab label="Profesores"> Content 3 </mat-tab>
   </mat-tab-group>
 </div>
 
+<!-- Modal para Vista Informacion Persona -->
 
+<ng-template #vistaInfo>
+  <h1 mat-dialog-title>Dialog With Template</h1>
+  <div mat-dialog-content>
+    <h1>{{person.nombre}}</h1>
+    <h1>{{person.apellido}}</h1>
+    <h1>{{person.genero}}</h1>
+    <h1>{{person.lugar}}</h1>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Close</button>
+  </div>
+</ng-template>
   
