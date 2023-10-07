@@ -1,5 +1,8 @@
+import { IPerson } from "./IPerson";
+
 export interface IPersonTitulaciones {
+  id:number;
   persona: number;
-  titulacion: string;
-  tipo: string;
+  titulacion: number;
+  tipo: number;
 }
