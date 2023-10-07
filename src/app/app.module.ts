@@ -13,6 +13,11 @@ import { PersonViewComponent } from './views/person-view/person-view.component';
 import { ColumnValuePipe } from 'src/app/pipe/column-value.pipe';
 import { HeaderComponent } from './components/header/header.component';
 import { ModalComponent } from './components/modal/modal.component';
+import { UniversitiesViewComponent } from './views/universities-view/universities-view.component';
+import { FacultyViewComponent } from './views/faculty-view/faculty-view.component';
+import { CampusViewComponent } from './views/campus-view/campus-view.component';
+import { ProgramViewComponent } from './views/program-view/program-view.component';
+import { CareersViewComponent } from './views/careers-view/careers-view.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +28,7 @@ import { ModalComponent } from './components/modal/modal.component';
     PersonViewComponent,
     ColumnValuePipe,
     HeaderComponent,    
-    ModalComponent
+    ModalComponent, UniversitiesViewComponent, FacultyViewComponent, CampusViewComponent, ProgramViewComponent, CareersViewComponent
   ],
   imports: [
     BrowserModule,

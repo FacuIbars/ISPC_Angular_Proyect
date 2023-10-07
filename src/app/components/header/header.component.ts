@@ -13,8 +13,25 @@ export class HeaderComponent {
       link: 'home',
     },
     {
-      name: 'La nada misma',
-      link: '',
+      name: 'Carreras',
+      link: 'careers',
+    },
+    {
+      name: 'Universidades',
+      link: 'universities',
+    },
+    {
+      name: 'Facultad',
+      link: 'faculty',
+    },
+    {
+      name: 'Campus',
+      link: 'campus',
+    },
+    {
+      name: 'Programas',
+      link: 'program',
     }
   ];
+
 }
