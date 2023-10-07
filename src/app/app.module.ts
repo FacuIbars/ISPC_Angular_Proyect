@@ -28,7 +28,12 @@ import { CareersViewComponent } from './views/careers-view/careers-view.componen
     PersonViewComponent,
     ColumnValuePipe,
     HeaderComponent,    
-    ModalComponent, UniversitiesViewComponent, FacultyViewComponent, CampusViewComponent, ProgramViewComponent, CareersViewComponent
+    ModalComponent, 
+    UniversitiesViewComponent, 
+    FacultyViewComponent, 
+    CampusViewComponent, 
+    ProgramViewComponent, 
+    CareersViewComponent
   ],
   imports: [
     BrowserModule,
