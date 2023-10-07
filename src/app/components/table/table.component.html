@@ -1,7 +1,7 @@
 <!-- tabla.component.html -->
 <div class="table-component">
   <div class="table-component-table">
-    <mat-form-field>
+    <mat-form-field *ngIf="tableConfig?.showFilter">
       <mat-label>Filtrar</mat-label>
       <input matInput (keyup)="applyFilter($event)" placeholder="Ingrese el texto de filtrado">
     </mat-form-field>
@@ -11,14 +11,14 @@
         <!-- Actions Column -->
         <ng-container matColumnDef="actions">
           <mat-header-cell  *matHeaderCellDef class="mat-column-actions"></mat-header-cell>
-          <mat-cell *matCellDef="let row" fxLayout="row"  class="mat-column-actions" fxLayoutAlign="space-between center">
-            <button matTooltip="Ver" matTooltipPosition ="above"  (click)="verItem(row)" mat-mini-fab color="accent" aria-label="Example icon button with a menu icon">
+          <mat-cell *matCellDef="let row" fxLayout="row"  class="mat-column-actions" fxLayoutAlign="flex-end center">
+            <button style="margin-right: 12px;" *ngIf="tableConfig?.showSeeButton" matTooltip="Ver" matTooltipPosition ="above"  (click)="verItem(row)" mat-mini-fab color="accent" >
               <mat-icon >search</mat-icon>
             </button>
-            <button matTooltip="Editar" matTooltipPosition ="above"  (click)="editarItem(row)" mat-mini-fab color="primary" aria-label="Example icon button with a menu icon">
+            <button style="margin-right: 12px;" *ngIf="tableConfig?.showEditButton" matTooltip="Editar" matTooltipPosition ="above"  (click)="editarItem(row)" mat-mini-fab color="primary" >
               <mat-icon>edit</mat-icon>
             </button>
-            <button matTooltip="Eliminar" matTooltipPosition ="above"  (click)="borrarItem(row)" mat-mini-fab color="warn" aria-label="Example icon button with a menu icon">
+            <button *ngIf="tableConfig?.showDeleteButton" matTooltip="Eliminar" matTooltipPosition ="above"  (click)="borrarItem(row)" mat-mini-fab color="warn" >
               <mat-icon>delete</mat-icon>
             </button>       
           </mat-cell>
@@ -26,7 +26,7 @@
 
         <ng-container *ngFor="let column of tableColumns" [matColumnDef]="column.def">
           <mat-header-cell *matHeaderCellDef>{{ column.label }}</mat-header-cell>
-          <mat-cell *matCellDef="let row">{{ row | columnValue : column }}</mat-cell>
+          <mat-cell *matCellDef="let row" [ngClass]="'mat-column-' + column.def">{{ row | columnValue : column }}</mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="tableDisplayColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: tableDisplayColumns"></mat-row>
@@ -34,7 +34,7 @@
 
       <ng-container *ngIf="tableConfig?.isPaginable">
         <mat-paginator
-          [pageSizeOptions]="[5, 10, 20]"
+          [pageSizeOptions]="[8, 15, 20]"
           showFirstLastButtons
           aria-label="Select page of periodic elements"
         >
