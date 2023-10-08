@@ -1,1 +1,13 @@
-<p>universities-view works!</p>
+<div class="contenedor-tabla">
+	<div class="university-view ">
+  
+	<app-table
+	[data]="dataSource"
+	[columns]="tableColumns"
+	[config]="tableConfig"    
+	(action)="onTableAction($event)"
+	> </app-table> 
+
+	</div>
+</div>
+ 

@@ -24,7 +24,11 @@ export class PersonViewComponent implements  OnInit {
   tableColumns: TableColumn[] = [];  
   tableConfig: TableConfig = {
     isPaginable: true,
+    showFilter: true,
     showActions: true,
+    showSeeButton: true,
+    showEditButton: true,
+    showDeleteButton: true,
   };
   private matDialogRef!: MatDialogRef<ModalComponent>;
   person!: IPerson 
@@ -43,7 +47,6 @@ export class PersonViewComponent implements  OnInit {
        
     });
 
-    
   }
 
   setTableColumns() {
