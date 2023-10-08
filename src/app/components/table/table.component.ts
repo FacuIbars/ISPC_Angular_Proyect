@@ -19,6 +19,7 @@ export class TableComponent implements AfterViewInit, OnChanges {
   tableDisplayColumns: string[] = [];
   tableColumns: any[] = [];
   personsService: any;
+  loading: boolean = true
   @Input() set data(data: Array<any>) {
     this.dataSource = new MatTableDataSource(data);
     this.dataSource.paginator = this.paginator;
@@ -40,6 +41,9 @@ export class TableComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if(this.data !== undefined){
+      this.loading = false
+    }
     
   }
 

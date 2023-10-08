@@ -1,6 +1,8 @@
 <!-- tabla.component.html -->
-<div class="table-component">
-  <div class="table-component-table"> 
+
+<div class="table-component"  >
+  <mat-progress-bar class="progresBar" *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+  <div class="table-component-table"*ngIf="!loading"> 
     <div fxLayout="row" fxLayoutAlign="space-between center">
       <mat-form-field *ngIf="tableConfig?.showFilter">
         <mat-label>Filtrar</mat-label>

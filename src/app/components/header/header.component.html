@@ -1,8 +1,18 @@
 <div class="fs-header">
   <mat-toolbar class="fs-header__toolbar">
     <img src="assets\img\logo.png" class="fs-header__toolbar-img" />
-    <div class="fs-header__toolbar-routes"> <div class="fs-header__toolbar-routes-button" [routerLink]="route.link" *ngFor="let route of routes"> {{route.name}}  </div> </div>
-<div class="fs-header__toolbar-spacer"></div>
-    <img class="fs-header__toolbar-logout" src="assets\img\logout.svg" alt="">
+    <div class="fs-header__toolbar-routes">
+      <div
+        class="fs-header__toolbar-routes-button"
+        (click)="select(route.name)"
+        [routerLink]="route.link"
+      [ngClass]="{'fs-header__toolbar-routes-selected': route.name == selected} "
+        *ngFor="let route of routes"
+      >
+        {{ route.name }}
+      </div>
+    </div>
+    <div class="fs-header__toolbar-spacer"></div>
+    <img class="fs-header__toolbar-logout" src="assets\img\logout.svg" alt="" />
   </mat-toolbar>
 </div>

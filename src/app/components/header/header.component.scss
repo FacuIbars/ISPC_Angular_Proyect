@@ -22,13 +22,18 @@
         font-weight: 400;
         display: flex;
         align-items: center;
-        padding-right: 2rem;
+        padding-inline: 2rem;
+        border-radius: 0.7rem;
         cursor: pointer;
         
       }
       &-button:hover{
         color: black;
         font-size: 1.05rem;
+      }
+      &-selected{
+        color: #3f51b5;
+        background-color: rgba(63,81,181,.15);;
       }
     }
     &-spacer {

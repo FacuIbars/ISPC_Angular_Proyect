@@ -9,7 +9,7 @@ import { CampusViewComponent } from './views/campus-view/campus-view.component';
 import { ProgramViewComponent } from './views/program-view/program-view.component';
 
 const routes: Routes = [
-  { path: 'home', component: PersonViewComponent,  },
+  { path: '', component: PersonViewComponent,  },
   { path: 'careers', component: CareersViewComponent,  },
   { path: 'faculty', component: FacultyViewComponent,  },
   { path: 'universities', component: UniversitiesViewComponent,  },
