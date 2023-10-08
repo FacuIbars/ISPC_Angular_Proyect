@@ -11,6 +11,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar'; 
 
 const components = [
   MatTableModule,
@@ -24,7 +25,8 @@ const components = [
   FlexLayoutModule,
   MatTooltipModule,
   MatToolbarModule,
-  MatDialogModule
+  MatDialogModule,
+  MatSnackBarModule
 ];
 @NgModule({
   declarations: [],

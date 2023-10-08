@@ -9,6 +9,8 @@ import { TableConfig } from 'src/app/interface/ITable-config';
 import { IUniversity } from 'src/app/interface/IUniversity';
 import { ModalService } from 'src/app/service/modal.service';
 import { StudiesService } from 'src/app/service/studies.service';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-universities-view',
@@ -39,14 +41,18 @@ export class UniversitiesViewComponent {
   
   ngOnInit(): void {
     this.setTableColumns();
+    this.getUniversity();
+    
+
+  }
+
+  getUniversity(){
     this.studiesService.getUniversity().subscribe((university) => {
       console.log('esto es el mock: ', university);
       // Configura los datos en la fuente de datos MatTableDataSource
       this.dataSource = university;
       
-       
     });
-
   }
 
   setTableColumns() {
@@ -87,6 +93,20 @@ export class UniversitiesViewComponent {
   }
   onDelete(university: IUniversity) {
     console.log('Delete', university);
+    this.studiesService.deleteUniversity(university.id)
+    .pipe(
+      catchError((error) => {
+        // Manejar el error aquí
+        console.error('Error al eliminar la universidad:', error);
+        this.modalService.mensaje('No se puede eliminar la universidad debido a restricciones de clave foránea.', 3);
+        // Retorna un observable vacío para que la suscripción no falle
+        return of();
+      })
+    )   
+    .subscribe(()=> {
+      this.getUniversity();
+      this.modalService.mensaje('Universidad eliminada con Exito!', 2);
+    });
   }
 
   openModalTemplate(template: TemplateRef<any>) {
