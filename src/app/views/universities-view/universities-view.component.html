@@ -4,10 +4,39 @@
 	<app-table
 	[data]="dataSource"
 	[columns]="tableColumns"
-	[config]="tableConfig"    
+	[config]="tableConfig" 
+  [item]="'Universidad'"   
 	(action)="onTableAction($event)"
 	> </app-table> 
 
 	</div>
 </div>
- 
+
+<!-- Modal para Agregar/Editar Informacion Universidad -->
+
+<ng-template #AddEditUniversidad>
+  <div class="cabeceraform">
+    <h2 mat-dialog-title>{{operation + 'Universidad'}} </h2>
+    <mat-spinner class="m-2" *ngIf="loading"  color="accent" diameter="30"></mat-spinner>
+  </div>
+  <form [formGroup]="form" (ngSubmit)="addEditUniversity()">
+      <mat-dialog-content >    
+          
+          <mat-form-field  appearance="outline" color="primary" class="full-width">
+              <mat-label>Universidad</mat-label>
+              <input formControlName="universidad" matInput placeholder="Ingrese el nombre de la Universidad">
+              <mat-icon matSuffix>domain</mat-icon>
+              <mat-error *ngIf="form.get('universidad')?.touched && form.get('universidad')?.errors?.['required']">El campo Institución es requerido</mat-error>
+              <mat-error *ngIf="form.get('universidad')?.touched && form.get('universidad')?.errors?.['minlength']">El campo Institución debe tener  3 caracteres o mas </mat-error>
+              <mat-error *ngIf="form.get('universidad')?.touched && form.get('universidad')?.errors?.['maxlength']">El campo Institución debe tener  75 caracteres o menos </mat-error>
+              
+          </mat-form-field>               
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+          <button mat-dialog-close  mat-stroked-button color="warn" >Cancelar</button>
+          <button [disabled]="form.invalid" type="submit" mat-stroked-button color="primary"  >Aceptar</button>
+      </mat-dialog-actions>
+  </form>
+	
+  </ng-template>
+

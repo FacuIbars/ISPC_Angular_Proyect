@@ -11,6 +11,8 @@ import { ModalService } from 'src/app/service/modal.service';
 import { StudiesService } from 'src/app/service/studies.service';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-universities-view',
@@ -19,12 +21,13 @@ import { of } from 'rxjs';
 })
 export class UniversitiesViewComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild('vistaInfo', {static: true}) vistaInfo!: TemplateRef<any>  
+  @ViewChild('AddEditUniversidad', {static: true}) AddEditUniversidad!: TemplateRef<any>  
   dataSource: Array<IUniversity> = [];;
   tableColumns: TableColumn[] = [];  
   tableConfig: TableConfig = {
     isPaginable: true,
     showFilter: true,
+    showAddButton: true,
     showActions: true,
     showSeeButton: false,
     showEditButton: true,
@@ -32,11 +35,24 @@ export class UniversitiesViewComponent {
   };
   private matDialogRef!: MatDialogRef<ModalComponent>;
   university!: IUniversity;
+  form: FormGroup;
+  loading:boolean = false;
+  operation:string = '';
+  idUniversidad?:number ;
+  
+  
 
 
   constructor(
     private studiesService: StudiesService,
-    private modalService: ModalService) { }
+    private modalService: ModalService,
+    private router: Router,
+    private fb : FormBuilder,) {
+      this.form= this.fb.group({        
+        universidad:['',[Validators.required,Validators.minLength(3),Validators.maxLength(100)]],
+      })      
+      
+     }
 
   
   ngOnInit(): void {
@@ -65,12 +81,12 @@ export class UniversitiesViewComponent {
   onTableAction(tableAction: TableAction) {
     switch (tableAction.action) {
 
-      case TABLE_ACTION.SEE:
-        this.onSee(tableAction.row, this.vistaInfo);
-        break;
+      case TABLE_ACTION.ADD:
+        this.onAdd(this.AddEditUniversidad);
+        break;     
 
       case TABLE_ACTION.EDIT:
-        this.onEdit(tableAction.row);
+        this.onEdit(tableAction.row, this.AddEditUniversidad);
         break;
 
       case TABLE_ACTION.DELETE:
@@ -82,31 +98,63 @@ export class UniversitiesViewComponent {
     }
   }
 
-  onSee(university: IUniversity, template: TemplateRef<any>) {
-    this.university = university ;
+  onAdd(template: TemplateRef<any>){
+    this.operation = 'Agregar nueva '
+    this.openModalTemplate(template);       
+    this.idUniversidad = undefined;
+      
+  } 
+
+  onEdit(university: IUniversity, template: TemplateRef<any>) {  
+    this.idUniversidad = university.id;  
+    this.operation = 'Editar ' 
     this.openModalTemplate(template);
-    console.log('Ver ', university);
+    this.form.patchValue({
+      id:university.id,
+      universidad:university.nombre,      
+    });     
   }
 
-  onEdit(university: IUniversity) {
-    console.log('Edit', university);
-  }
   onDelete(university: IUniversity) {
-    console.log('Delete', university);
     this.studiesService.deleteUniversity(university.id)
     .pipe(
-      catchError((error) => {
-        // Manejar el error aquí
+      catchError((error) => {        
         console.error('Error al eliminar la universidad:', error);
         this.modalService.mensaje('No se puede eliminar la universidad debido a restricciones de clave foránea.', 3);
         // Retorna un observable vacío para que la suscripción no falle
         return of();
       })
     )   
-    .subscribe(()=> {
-      this.getUniversity();
+    .subscribe(()=> {      
       this.modalService.mensaje('Universidad eliminada con Exito!', 2);
+      setTimeout(() => {window.location.reload();}, 4000)
     });
+  }
+  addEditUniversity() { 
+    console.log('id unversidad',this.idUniversidad)
+    const universidad:IUniversity  = {
+      id:this.idUniversidad,
+      nombre: this.form.get('universidad')?.value,      
+    };
+    console.log('id unversidad',universidad)
+    
+    this.loading = true;
+
+    if(universidad.id == undefined){      
+      //Es agregar
+      this.studiesService.postUniversity(universidad).subscribe(()=>{  
+        this.modalService.mensaje('Nueva Universidad agregada con Exito !', 2);       
+      })
+    }else {
+      // es Editar
+      this.studiesService.updateUniversity(this.idUniversidad, universidad).subscribe(data => {        
+        this.modalService.mensaje('Universidad editada con Exito !', 2);
+      })
+    }
+    this.loading = false;
+    this.matDialogRef.close(true);
+    this.getUniversity();
+
   }
 
   openModalTemplate(template: TemplateRef<any>) {
@@ -115,8 +163,8 @@ export class UniversitiesViewComponent {
     });
 
     this.matDialogRef.afterClosed().subscribe((res) => {
-      console.log('Dialog With Template Close', res);
-      //this.formGroup.reset();
+      setTimeout(() => {window.location.reload();}, 4000)
+      this.form.reset();
     });
   }
 

@@ -17,7 +17,10 @@ export class ModalService {
     private _snackBar: MatSnackBar) { }  
 
   openModal(data: IModalTemplateData) {
-    return this.modal.open(ModalComponent,{ data });    
+    return this.modal.open(ModalComponent,{ 
+      width:"650px",
+      disableClose: true,
+      data });    
   }
 
   mensaje(mensaje: string, segundos: number): void {
