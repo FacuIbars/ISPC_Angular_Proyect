@@ -1,4 +1,4 @@
 export interface IUniversity {
-    id: number;    
+    id?: number ;    
     nombre: string;    
 }

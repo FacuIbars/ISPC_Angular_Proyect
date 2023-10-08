@@ -26,17 +26,17 @@ export class StudiesService {
     return this.http.post<IUniversity[]>(url, newUniversity);
   }
 
-  getUniversityId(id: number): Observable<IUniversity> {
+  getUniversityId(id: number | undefined): Observable<IUniversity> {
     const url = `${this.backendUrl}universidades/${id}/`;
     return this.http.get<IUniversity>(url);
   }
   
-  updateUniversity(id: number, updatedUniversity: IUniversity): Observable<IUniversity> {
+  updateUniversity(id: number | undefined, updatedUniversity: IUniversity): Observable<IUniversity> {
     const url = `${this.backendUrl}universidades/${id}/`;
     return this.http.put<IUniversity>(url, updatedUniversity);
   }
 
-  deleteUniversity(id: number): Observable<void> {
+  deleteUniversity(id: number | undefined): Observable<void> {
     const url = `${this.backendUrl}universidades/${id}/`;
     return this.http.delete<void>(url);
   } 

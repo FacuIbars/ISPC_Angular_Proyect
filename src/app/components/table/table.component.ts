@@ -29,6 +29,7 @@ export class TableComponent implements AfterViewInit, OnChanges {
   @Input() set config(config: TableConfig) {
     this.setConfig(config);
   }
+  @Input() item: string = "";
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -54,6 +55,9 @@ export class TableComponent implements AfterViewInit, OnChanges {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+  addItem() {   
+    this.action.emit({ action: TABLE_ACTION.ADD, row: null });
   }
 
   // Funciones para los botones de acción

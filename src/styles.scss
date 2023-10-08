@@ -11,3 +11,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
       align-items: center;
       height: 100vh;
 }
+
+.full-width {
+  width: 100%;
+}
+
+.cabeceraform{
+  display: flex;
+  justify-content: space-between;
+  
+}
