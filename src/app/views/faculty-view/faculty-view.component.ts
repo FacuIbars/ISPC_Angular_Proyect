@@ -72,12 +72,6 @@ export class FacultyViewComponent  {
     }
   }
 
-  onSee(faculty: IFaculty, template: TemplateRef<any>) {
-    this.faculty = faculty;
-    this.openModalTemplate(template);
-    console.log('Ver ', faculty);
-  }
-
   onEdit(faculty: IFaculty) { 
     console.log('Edit', faculty);
   }

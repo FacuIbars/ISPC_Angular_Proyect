@@ -72,12 +72,6 @@ export class CampusViewComponent  {
     }
   }
 
-  /*onSee(campus: ICampus, template: TemplateRef<any>) {
-    this.campus = campus;
-    this.openModalTemplate(template);
-    console.log('Ver ', campus);
-  }*/
-
   onEdit(campus: ICampus) { 
     console.log('Edit', campus);
   }
