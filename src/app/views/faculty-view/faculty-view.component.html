@@ -1,1 +1,13 @@
-<p>faculty-view works!</p>
+<div class="contenedor-tabla">
+	<div class="faculty-view ">
+		
+	<app-table
+	[data]="dataSource"
+	[columns]="tableColumns"
+	[config]="tableConfig"    
+	(action)="onTableAction($event)"
+	> </app-table> 
+
+	</div>
+</div>
+ 
