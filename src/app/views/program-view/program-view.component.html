@@ -1,1 +1,13 @@
-<p>program-view works!</p>
+<div class="contenedor-tabla">
+	<div class="program-view ">
+		
+	<app-table
+	[data]="dataSource"
+	[columns]="tableColumns"
+	[config]="tableConfig"    
+	(action)="onTableAction($event)"
+	> </app-table> 
+
+	</div>
+</div>
+ 
