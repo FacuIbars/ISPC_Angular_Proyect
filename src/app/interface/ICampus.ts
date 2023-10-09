@@ -1,4 +1,4 @@
 export interface ICampus {
-    id: number;    
+    id?: number;    
     nombre: string;    
 }

@@ -53,17 +53,17 @@ postFaculty(newFaculty: IFaculty): Observable<IFaculty[]> {
   return this.http.post<IFaculty[]>(url, newFaculty);
 }
 
-getFacultyById(id: number): Observable<IFaculty> {
+getFacultyById(id: number | undefined): Observable<IFaculty> {
   const url = `${this.backendUrl}facultades/${id}/`;
   return this.http.get<IFaculty>(url);
 }
 
-updateFaculty(id: number, updatedFaculty: IFaculty): Observable<IFaculty> {
+updateFaculty(id: number | undefined, updatedFaculty: IFaculty): Observable<IFaculty> {
   const url = `${this.backendUrl}facultades/${id}/`;
   return this.http.put<IFaculty>(url, updatedFaculty);
 }
 
-deleteFaculty(id: number): Observable<void> {
+deleteFaculty(id: number | undefined): Observable<void> {
   const url = `${this.backendUrl}facultades/${id}/`;
   return this.http.delete<void>(url);
 } 
@@ -80,17 +80,17 @@ postProgram(newProgram: IProgram): Observable<IProgram[]> {
   return this.http.post<IProgram[]>(url, newProgram);
 }
 
-getProgramById(id: number): Observable<IProgram> {
+getProgramById(id: number | undefined): Observable<IProgram> {
   const url = `${this.backendUrl}carreras/${id}/`;
   return this.http.get<IProgram>(url);
 }
 
-updateProgram(id: number, updatedProgram: IProgram): Observable<IProgram> {
+updateProgram(id: number | undefined, updatedProgram: IProgram): Observable<IProgram> {
   const url = `${this.backendUrl}carreras/${id}/`;
   return this.http.put<IProgram>(url, updatedProgram);
 }
 
-deleteProgram(id: number): Observable<void> {
+deleteProgram(id: number | undefined): Observable<void> {
   const url = `${this.backendUrl}carreras/${id}/`;
   return this.http.delete<void>(url);
 } 
@@ -107,17 +107,17 @@ const url = `${this.backendUrl}campus/`;
 return this.http.post<ICampus[]>(url, newCampus);
 }
 
-getCampusById(id: number): Observable<ICampus> {
+getCampusById(id: number | undefined): Observable<ICampus> {
 const url = `${this.backendUrl}campus/${id}/`;
 return this.http.get<ICampus>(url);
 }
 
-updateCampus(id: number, updatedCampus: ICampus): Observable<ICampus> {
+updateCampus(id: number | undefined, updatedCampus: ICampus): Observable<ICampus> {
 const url = `${this.backendUrl}campus/${id}/`;
 return this.http.put<ICampus>(url, updatedCampus);
 }
 
-deleteCampus(id: number): Observable<void> {
+deleteCampus(id: number | undefined): Observable<void> {
 const url = `${this.backendUrl}campus/${id}/`;
 return this.http.delete<void>(url);
 }
