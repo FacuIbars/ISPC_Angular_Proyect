@@ -105,7 +105,7 @@ export class FacultyViewComponent  {
     this.openModalTemplate(template);
     this.form.patchValue({
       id:faculty.id,
-      universidad:faculty.nombre,      
+      facultad:faculty.nombre,      
     });     
   }
 
