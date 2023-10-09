@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit{
       link: 'universities',
     },
     {
-      name: 'Facultad',
+      name: 'Facultades',
       link: 'faculty',
     },
     {
