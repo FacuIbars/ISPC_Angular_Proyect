@@ -93,7 +93,7 @@ export class ProgramViewComponent  {
   }
 
   onAdd(template: TemplateRef<any>){
-    this.operation = 'Agregar nueva '
+    this.operation = 'Agregar nuevo '
     this.openModalTemplate(template);       
     this.idPrograma = undefined;
       
@@ -147,18 +147,15 @@ export class ProgramViewComponent  {
     }
     this.loading = false;
     this.matDialogRef.close(true);
-    this.getProgram();
-
+    
   }
 
   openModalTemplate(template: TemplateRef<any>) {
-    this.matDialogRef = this.modalService.openModal({
-      template,
-    });
+    this.matDialogRef = this.modalService.openModal({template, width:'600px'} );
 
     this.matDialogRef.afterClosed().subscribe((res) => {
-      console.log('Dialog With Template Close', res);
-      //this.formGroup.reset();
+      setTimeout(() => {window.location.reload();}, 4000)
+      this.form.reset();
     });
   }
 

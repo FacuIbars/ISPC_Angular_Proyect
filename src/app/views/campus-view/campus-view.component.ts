@@ -36,7 +36,7 @@ export class CampusViewComponent {
   campus!: ICampus;
   form: FormGroup;
   loading: boolean = false;
-  loadingProgressBar:boolean = true;
+  loadingProgressBar: boolean = true;
   operation: string = '';
   idCampus?: number;
 
@@ -91,73 +91,71 @@ export class CampusViewComponent {
     }
   }
 
-  onAdd(template: TemplateRef<any>){
-    this.operation = 'Agregar nueva '
-    this.openModalTemplate(template);       
+  onAdd(template: TemplateRef<any>) {
+    this.operation = 'Agregar nuevo '
+    this.openModalTemplate(template);
     this.idCampus = undefined;
-      
-  } 
 
-  onEdit(campus: ICampus, template: TemplateRef<any>) {  
-    this.idCampus = campus.id;  
-    this.operation = 'Editar ' 
+  }
+
+  onEdit(campus: ICampus, template: TemplateRef<any>) {
+    this.idCampus = campus.id;
+    this.operation = 'Editar '
     this.openModalTemplate(template);
     this.form.patchValue({
-      id:campus.id,
-      campus:campus.nombre,      
-    });     
+      id: campus.id,
+      campus: campus.nombre,
+    });
   }
   onDelete(campus: ICampus) {
     this.studiesService.deleteCampus(campus.id)
-    .pipe(
-      catchError((error) => {        
-        console.error('Error al eliminar el campus:', error);
-        this.modalService.mensaje('No se puede eliminar el campus debido a restricciones de clave foránea.', 3);
-        // Retorna un observable vacío para que la suscripción no falle
-        return of();
-      })
-    )   
-    .subscribe(()=> {      
-      this.modalService.mensaje('Campus eliminado con Exito!', 2);
-      setTimeout(() => {window.location.reload();}, 4000)
-    });
+      .pipe(
+        catchError((error) => {
+          console.error('Error al eliminar el campus:', error);
+          this.modalService.mensaje('No se puede eliminar el campus debido a restricciones de clave foránea.', 3);
+          // Retorna un observable vacío para que la suscripción no falle
+          return of();
+        })
+      )
+      .subscribe(() => {
+        this.modalService.mensaje('Campus eliminado con Exito!', 2);
+        setTimeout(() => { window.location.reload(); }, 4000)
+      });
   }
 
-  addEditCampus() { 
-    console.log('id campus',this.idCampus)
-    const campus:ICampus  = {
-      id:this.idCampus,
-      nombre: this.form.get('campus')?.value,      
+  addEditCampus() {
+    console.log('id campus', this.idCampus)
+    const campus: ICampus = {
+      id: this.idCampus,
+      nombre: this.form.get('campus')?.value,
     };
-    console.log('id campus',campus)
-    
+    console.log('id campus', campus)
+
     this.loading = true;
 
-    if(campus.id == undefined){      
+    if (campus.id == undefined) {
       //Es agregar
-      this.studiesService.postCampus(campus).subscribe(()=>{  
-        this.modalService.mensaje('Nuevo Campus agregado con Exito !', 2);       
+      this.studiesService.postCampus(campus).subscribe(() => {
+        this.modalService.mensaje('Nuevo Campus agregado con Exito !', 2);
       })
-    }else {
+    } else {
       // es Editar
-      this.studiesService.updateCampus(this.idCampus, campus).subscribe(data => {        
+      this.studiesService.updateCampus(this.idCampus, campus).subscribe(data => {
         this.modalService.mensaje('Campus editado con Exito !', 2);
       })
     }
     this.loading = false;
     this.matDialogRef.close(true);
-    this.getCampus();
-
+    
   }
 
   openModalTemplate(template: TemplateRef<any>) {
-    this.matDialogRef = this.modalService.openModal({
-      template,
-    });
+    this.matDialogRef = this.modalService.openModal({ template, width: '600px' });
+
 
     this.matDialogRef.afterClosed().subscribe((res) => {
-      console.log('Dialog With Template Close', res);
-      //this.formGroup.reset();
+      setTimeout(() => { window.location.reload(); }, 4000)
+      this.form.reset();
     });
   }
 
