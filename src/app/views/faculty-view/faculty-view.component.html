@@ -1,0 +1,41 @@
+<div class="contenedor-tabla">
+	<div class="faculty-view ">
+		
+	<app-table
+	[data]="dataSource"
+	[columns]="tableColumns"
+	[config]="tableConfig"    
+	[item]="'Facultad'" 
+    [loading]="loadingProgressBar"
+	(action)="onTableAction($event)"
+	></app-table> 
+
+	</div>
+</div>
+ 
+<ng-template #AddEditFacultad>
+  <div class="cabeceraform">
+    <h2 mat-dialog-title>{{operation + 'Facultad'}} </h2>
+    <mat-spinner class="m-2" *ngIf="loading"  color="accent" diameter="30"></mat-spinner>
+  </div>
+  <form [formGroup]="form" (ngSubmit)="addEditFaculty()">
+      <mat-dialog-content >    
+          
+          <mat-form-field  appearance="outline" color="primary" class="full-width">
+              <mat-label>Facultad</mat-label>
+              <input formControlName="facultad" matInput placeholder="Ingrese el nombre de la Facultad">
+              <mat-icon matSuffix>domain</mat-icon>
+              <mat-error *ngIf="form.get('facultad')?.touched && form.get('facultad')?.errors?.['required']">El campo facultad es requerido</mat-error>
+              <mat-error *ngIf="form.get('facultad')?.touched && form.get('facultad')?.errors?.['minlength']">El campo facultad debe tener  3 caracteres o mas </mat-error>
+              <mat-error *ngIf="form.get('facultad')?.touched && form.get('facultad')?.errors?.['maxlength']">El campo facultad debe tener  75 caracteres o menos </mat-error>
+              
+          </mat-form-field>               
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+          <button mat-dialog-close  mat-stroked-button color="warn" >Cancelar</button>
+          <button [disabled]="form.invalid" type="submit" mat-stroked-button color="primary"  >Aceptar</button>
+      </mat-dialog-actions>
+  </form>
+	
+  </ng-template>
+

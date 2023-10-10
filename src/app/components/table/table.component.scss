@@ -1,12 +1,15 @@
 .table-component{
     width: 95%;
-    height: 100%;
     padding: 2rem;
     &-table{
     
     }
 }
-
-.mat-column-actions {
-    flex: 0.75; /* Ajusta el ancho de la columna de acciones según sea necesario */
-  }
+.progresBar{
+    padding-top: 25rem;
+   
+    
+}
+// .mat-column-actions {
+//     flex: 0.25; /* Ajusta el ancho de la columna de acciones según sea necesario */
+//   }
