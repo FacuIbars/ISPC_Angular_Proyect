@@ -32,6 +32,7 @@ export class PersonViewComponent implements  OnInit {
   };
   private matDialogRef!: MatDialogRef<ModalComponent>;
   person!: IPerson 
+  loadingProgressBar:boolean = true;
 
     constructor(
       private personsService: PersonsService,
@@ -41,7 +42,7 @@ export class PersonViewComponent implements  OnInit {
     this.setTableColumns();
     this.personsService.getPersons().subscribe((persons) => {
       console.log('esto es el mock: ', persons);
-      // Configura los datos en la fuente de datos MatTableDataSource
+      this.loadingProgressBar = false;
       this.dataSource = persons;
       
        

@@ -1,4 +1,6 @@
+
+
 export interface IProgram {
     id?: number;    
-    nombre: string;    
+    nombre: string;  
 }

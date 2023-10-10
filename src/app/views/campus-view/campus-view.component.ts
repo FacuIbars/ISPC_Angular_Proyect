@@ -36,6 +36,7 @@ export class CampusViewComponent {
   campus!: ICampus;
   form: FormGroup;
   loading: boolean = false;
+  loadingProgressBar:boolean = true;
   operation: string = '';
   idCampus?: number;
 
@@ -57,8 +58,7 @@ export class CampusViewComponent {
 
   getCampus() {
     this.studiesService.getCampus().subscribe((campus) => {
-      console.log('esto es el mock: ',campus);
-      // Configura los datos en la fuente de datos MatTableDataSource
+      this.loadingProgressBar = false;
       this.dataSource = campus;
 
     });

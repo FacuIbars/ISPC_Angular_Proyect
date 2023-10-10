@@ -139,12 +139,12 @@ getCareerById(id: number): Observable<ICareers> {
   return this.http.get<ICareers>(url);
 }
 
-updateCareer(id: number, updatedCareer: ICareers): Observable<ICareers> {
+updateCareer(id: number | undefined, updatedCareer: ICareers): Observable<ICareers> {
   const url = `${this.backendUrl}titulaciones/${id}/`;
   return this.http.put<ICareers>(url, updatedCareer);
 }
 
-deleteCareer(id: number): Observable<void> {
+deleteCareer(id: number | undefined): Observable<void> {
   const url = `${this.backendUrl}titulaciones/${id}/`;
   return this.http.delete<void>(url);
 }

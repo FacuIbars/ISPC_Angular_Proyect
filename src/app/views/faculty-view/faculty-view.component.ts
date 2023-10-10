@@ -39,6 +39,7 @@ export class FacultyViewComponent  {
   loading:boolean = false;
   operation:string = '';
   idFacultad?:number ;
+  loadingProgressBar:boolean = true;
 
   constructor(
     private studiesService: StudiesService,
@@ -58,8 +59,7 @@ export class FacultyViewComponent  {
 
   getFaculty(){
     this.studiesService.getFaculty().subscribe((faculty) => {
-      console.log('esto es el mock: ', faculty);
-      // Configura los datos en la fuente de datos MatTableDataSource
+      this.loadingProgressBar = false;
       this.dataSource = faculty;
       
     });
