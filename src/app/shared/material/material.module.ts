@@ -15,6 +15,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 const components = [
   MatTableModule,
   MatFormFieldModule, 
@@ -30,7 +31,8 @@ const components = [
   MatDialogModule,
   MatSnackBarModule,
   MatProgressSpinnerModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatProgressBarModule
 ];
 @NgModule({
   declarations: [],
