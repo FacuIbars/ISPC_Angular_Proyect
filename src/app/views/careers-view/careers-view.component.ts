@@ -110,9 +110,9 @@ export class CareersViewComponent {
   }
 
   getCareers(){
-    this.studiesService.getCareers().subscribe((carereras) => {
-      this.loadingProgressBar = false;
+    this.studiesService.getCareers().subscribe((carereras) => {      
       this.dataSource = carereras;
+      this.loadingProgressBar = false;
       
     });
   }

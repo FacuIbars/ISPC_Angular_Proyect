@@ -36,7 +36,7 @@ export class CampusViewComponent {
   campus!: ICampus;
   form: FormGroup;
   loading: boolean = false;
-  loadingProgressBar:boolean = true;
+  loadingProgressBar:boolean = false;
   operation: string = '';
   idCampus?: number;
 
@@ -57,10 +57,9 @@ export class CampusViewComponent {
   }
 
   getCampus() {
-    this.studiesService.getCampus().subscribe((campus) => {
-      this.loadingProgressBar = false;
+    this.studiesService.getCampus().subscribe((campus) => {      
       this.dataSource = campus;
-
+      this.loadingProgressBar = false;
     });
   }
 

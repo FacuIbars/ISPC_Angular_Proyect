@@ -58,10 +58,9 @@ export class FacultyViewComponent  {
   }
 
   getFaculty(){
-    this.studiesService.getFaculty().subscribe((faculty) => {
-      this.loadingProgressBar = false;
+    this.studiesService.getFaculty().subscribe((faculty) => {      
       this.dataSource = faculty;
-      
+      this.loadingProgressBar = false;      
     });
   }
 

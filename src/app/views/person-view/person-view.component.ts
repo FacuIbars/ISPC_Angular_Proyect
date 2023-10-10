@@ -6,6 +6,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { TABLE_ACTION } from 'src/app/enums/table-action-enum';
 import { IPerson } from 'src/app/interface/IPerson';
+import { IPersonTitulaciones } from 'src/app/interface/IPersonTitulaciones';
 import { TableAction } from 'src/app/interface/ITable-action';
 import { TableColumn } from 'src/app/interface/ITable-colum';
 import { TableConfig } from 'src/app/interface/ITable-config';
@@ -33,6 +34,8 @@ export class PersonViewComponent implements  OnInit {
   private matDialogRef!: MatDialogRef<ModalComponent>;
   person!: IPerson 
   loadingProgressBar:boolean = true;
+  alumnos! : IPersonTitulaciones[];
+  profesores! : IPersonTitulaciones[];
 
     constructor(
       private personsService: PersonsService,
@@ -40,14 +43,28 @@ export class PersonViewComponent implements  OnInit {
 
   ngOnInit(): void {
     this.setTableColumns();
-    this.personsService.getPersons().subscribe((persons) => {
-      console.log('esto es el mock: ', persons);
-      this.loadingProgressBar = false;
-      this.dataSource = persons;
+    this.getPersons();
+    
+      
       
        
+    
+  }
+  getPersons(){
+    this.personsService.getPersons().subscribe((persons) => {
+      console.log('esto es el mock: ', persons);
+      this.loadingProgressBar = false;      
+      this.dataSource = persons;
     });
+  }
 
+  getPersonsTitulaciones(){
+    this.personsService.getPersonTitulaciones().subscribe((persons) => {
+      console.log('esto es el mock: ', persons);
+      this.loadingProgressBar = false;
+      //this.dataSource = persons;
+      
+    });
   }
 
   setTableColumns() {
