@@ -26,7 +26,7 @@ import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons'; 
-
+import { MatCardModule } from '@angular/material/card';
 
 library.add(fas); // Agrega los iconos sólidos a la biblioteca
 @NgModule({
@@ -52,11 +52,11 @@ library.add(fas); // Agrega los iconos sólidos a la biblioteca
     MaterialModule,
     HttpClientModule,
     BrowserAnimationsModule,
-
+   
     FormsModule,
     FontAwesomeModule, 
-    ReactiveFormsModule
-    
+    ReactiveFormsModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
