@@ -163,7 +163,7 @@ export class UniversitiesViewComponent {
 
     this.matDialogRef.afterClosed().subscribe((res) => {
       setTimeout(() => {window.location.reload();}, 4000)
-      this.form.reset();
+      this.form.reset(); 
     });
   }
 

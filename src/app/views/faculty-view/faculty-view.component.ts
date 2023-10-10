@@ -147,18 +147,15 @@ export class FacultyViewComponent  {
     }
     this.loading = false;
     this.matDialogRef.close(true);
-    this.getFaculty();
-
+  
   }
 
   openModalTemplate(template: TemplateRef<any>) {
-    this.matDialogRef = this.modalService.openModal({
-      template,
-    });
+    this.matDialogRef = this.modalService.openModal({template, width:'600px'} );
 
     this.matDialogRef.afterClosed().subscribe((res) => {
       console.log('Dialog With Template Close', res);
-      //this.formGroup.reset();
+      this.form.reset();
     });
   }
 
