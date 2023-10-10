@@ -1,1 +1,82 @@
-<p>careers-view works!</p>
+<div >
+	<app-table
+	[data]="dataSource"
+	[columns]="tableColumns"
+	[config]="tableConfig" 
+  [item]="'Carrera'"   
+	(action)="onTableAction($event)"
+	></app-table> 
+
+	
+</div>
+
+<!-- Modal para Agregar/Editar Informacion Universidad -->
+
+<ng-template #AddEditCarrera>
+  <div class="cabeceraform">
+    <h2 mat-dialog-title>{{operation + 'Carrera'}} </h2>
+    <mat-spinner class="m-2" *ngIf="loading"  color="accent" diameter="30"></mat-spinner>
+  </div>
+  <ng-container >
+    <form [formGroup]="form" (ngSubmit)="addEditCarreras()">
+      <mat-dialog-content >
+        <!-- Select Universidad-->   
+        <mat-form-field class="example-full-width">
+          <mat-label>Universidad</mat-label>
+          <input type="text" matInput [formControl]="myControlUniversity" [matAutocomplete]="autoUniversity" >
+          <mat-icon matSuffix>domain</mat-icon>
+          <mat-error *ngIf="myControlUniversity.touched && myControlUniversity.hasError('required')">El campo Universidad es requerido</mat-error>
+          <mat-autocomplete   #autoUniversity="matAutocomplete" >
+            <mat-option *ngFor="let option of filteredUniversity | async" [value]="option.nombre">
+              {{option.nombre}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <!-- Select Facultad-->   
+        <mat-form-field class="example-full-width">
+          <mat-label>Facultad</mat-label>
+          <input type="text" matInput [formControl]="myControlFaculty"  formControlName="facultad" [matAutocomplete]="autoFaculty">
+          <mat-icon matSuffix>domain</mat-icon>
+          <mat-error *ngIf="form.get('facultad')?.touched && form.get('facultad')?.errors?.['required']">El campo Facultad es requerido</mat-error>
+          <mat-autocomplete #autoFaculty="matAutocomplete" >
+            <mat-option *ngFor="let option of filteredFaculty | async" [value]="option.nombre">
+              {{option.nombre}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <!-- Select Campus-->   
+        <mat-form-field class="example-full-width">
+          <mat-label>Campus</mat-label>
+          <input type="text" matInput [formControl]="myControlCampus"  formControlName="campus" [matAutocomplete]="autoCampus">
+          <mat-icon matSuffix>domain</mat-icon>
+          <mat-error *ngIf="form.get('campus')?.touched && form.get('campus')?.errors?.['required']">El campo Campus es requerido</mat-error>
+          <mat-autocomplete #autoCampus="matAutocomplete" >
+            <mat-option *ngFor="let option of filteredCampus | async" [value]="option.nombre">
+              {{option.nombre}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <!-- Select Programa-->   
+        <mat-form-field class="example-full-width">
+          <mat-label>Programa</mat-label>
+          <input type="text" matInput [formControl]="myControlProgram"  formControlName="program" [matAutocomplete]="autoProgram">
+          <mat-icon matSuffix>domain</mat-icon>
+          <mat-error *ngIf="form.get('program')?.touched && form.get('program')?.errors?.['program']">El campo Programa es requerido</mat-error>
+          <mat-autocomplete #autoProgram="matAutocomplete" >
+            <mat-option *ngFor="let option of filteredProgram | async" [value]="option.nombre">
+              {{option.nombre}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+          
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+          <button mat-dialog-close  mat-stroked-button color="warn" >Cancelar</button>
+          <button [disabled]="form.invalid" type="submit" mat-stroked-button color="primary"  >Aceptar</button>
+      </mat-dialog-actions>
+  </form>
+	
+
+  </ng-container>
+  
+  </ng-template>

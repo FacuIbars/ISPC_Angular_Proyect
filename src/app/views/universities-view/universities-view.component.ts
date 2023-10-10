@@ -45,8 +45,7 @@ export class UniversitiesViewComponent {
 
   constructor(
     private studiesService: StudiesService,
-    private modalService: ModalService,
-    private router: Router,
+    private modalService: ModalService,    
     private fb : FormBuilder,) {
       this.form= this.fb.group({        
         universidad:['',[Validators.required,Validators.minLength(3),Validators.maxLength(100)]],
@@ -130,6 +129,7 @@ export class UniversitiesViewComponent {
       setTimeout(() => {window.location.reload();}, 4000)
     });
   }
+  
   addEditUniversity() { 
     console.log('id unversidad',this.idUniversidad)
     const universidad:IUniversity  = {
@@ -152,15 +152,12 @@ export class UniversitiesViewComponent {
       })
     }
     this.loading = false;
-    this.matDialogRef.close(true);
-    this.getUniversity();
+    this.matDialogRef.close(true);    
 
   }
 
   openModalTemplate(template: TemplateRef<any>) {
-    this.matDialogRef = this.modalService.openModal({
-      template,
-    });
+    this.matDialogRef = this.modalService.openModal({template, width:'600px'} );
 
     this.matDialogRef.afterClosed().subscribe((res) => {
       setTimeout(() => {window.location.reload();}, 4000)
