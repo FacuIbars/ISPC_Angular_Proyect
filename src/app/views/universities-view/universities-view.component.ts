@@ -37,6 +37,7 @@ export class UniversitiesViewComponent {
   university!: IUniversity;
   form: FormGroup;
   loading:boolean = false;
+  loadingProgressBar:boolean = true;
   operation:string = '';
   idUniversidad?:number ;
   
@@ -64,6 +65,7 @@ export class UniversitiesViewComponent {
   getUniversity(){
     this.studiesService.getUniversity().subscribe((university) => {
       console.log('esto es el mock: ', university);
+      this.loadingProgressBar = false;
       // Configura los datos en la fuente de datos MatTableDataSource
       this.dataSource = university;
       

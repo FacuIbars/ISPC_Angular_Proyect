@@ -18,8 +18,7 @@ export class TableComponent implements AfterViewInit, OnChanges {
   tableConfig: TableConfig | undefined;
   tableDisplayColumns: string[] = [];
   tableColumns: any[] = [];
-  personsService: any;
-  loading: boolean = true
+  personsService: any;  
   @Input() set data(data: Array<any>) {
     this.dataSource = new MatTableDataSource(data);
     this.dataSource.paginator = this.paginator;
@@ -31,6 +30,7 @@ export class TableComponent implements AfterViewInit, OnChanges {
     this.setConfig(config);
   }
   @Input() item: string = "";
+  @Input() loading: boolean = false;
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 

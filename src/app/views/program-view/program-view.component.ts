@@ -38,6 +38,7 @@ export class ProgramViewComponent  {
   loading:boolean = false;
   operation:string = '';
   idPrograma?:number ;
+  loadingProgressBar:boolean = true;
 
   constructor(
     private studiesService: StudiesService,
@@ -59,8 +60,7 @@ export class ProgramViewComponent  {
 
     getProgram(){
       this.studiesService.getProgram().subscribe((program) => {
-        console.log('esto es el mock: ', program);
-        // Configura los datos en la fuente de datos MatTableDataSource
+        this.loadingProgressBar = false;
         this.dataSource = program;
         
       });

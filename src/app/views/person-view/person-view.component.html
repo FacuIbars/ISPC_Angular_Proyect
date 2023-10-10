@@ -4,7 +4,8 @@
       <app-table
       [data]="dataSource"
       [columns]="tableColumns"
-      [config]="tableConfig"    
+      [config]="tableConfig" 
+      [loading]="loadingProgressBar"   
       (action)="onTableAction($event)"
       > </app-table>  
     </mat-tab>  

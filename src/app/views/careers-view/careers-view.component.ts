@@ -40,6 +40,7 @@ export class CareersViewComponent {
   university!: ICareers;
   form: FormGroup;
   loading:boolean = false;
+  loadingProgressBar:boolean = true;
   operation:string = '';
   idCareers?:number ;
   
@@ -110,8 +111,7 @@ export class CareersViewComponent {
 
   getCareers(){
     this.studiesService.getCareers().subscribe((carereras) => {
-      console.log('esto es el mock: ', carereras);
-      // Configura los datos en la fuente de datos MatTableDataSource
+      this.loadingProgressBar = false;
       this.dataSource = carereras;
       
     });
