@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import {MatTabsModule} from '@angular/material/tabs';
-import { catchError, of } from 'rxjs';
+import { Observable, catchError, map, of, startWith } from 'rxjs';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { TABLE_ACTION } from 'src/app/enums/table-action-enum';
 import { IPerson } from 'src/app/interface/IPerson';
@@ -16,6 +16,7 @@ import { ModalService } from 'src/app/service/modal.service';
 import { PersonsService } from 'src/app/service/persons.service';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
+import { IGenders } from 'src/app/interface/IGenders';
 @Component({
   selector: 'app-person-view',
   templateUrl: './person-view.component.html',
@@ -46,6 +47,10 @@ export class PersonViewComponent implements  OnInit {
   profesores! : IPersonTitulaciones[];
   operation:string = '';
   idPersona?:number ;
+  // ------- Select--------------------------
+  listGenders: IGenders[] = [];
+  myControlGenders = new FormControl;
+  filteredGenders!: Observable<IGenders[]>;
 
     constructor(
       private personsService: PersonsService,
@@ -60,6 +65,11 @@ export class PersonViewComponent implements  OnInit {
           linkedin:['',[Validators.required,Validators.minLength(5),]],
           github:['',[Validators.required,Validators.minLength(5),Validators.maxLength(200)]]
         }) 
+
+        this.filteredGenders = this.myControlGenders.valueChanges.pipe(
+          startWith(''),
+          map((value) => this._filter(value, this.listGenders))
+        );
       }     
 
   ngOnInit(): void {

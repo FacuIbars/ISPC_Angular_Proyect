@@ -2,17 +2,23 @@
   <mat-toolbar class="title-bar" color="primary">
     <h2 class="title">Iniciar sesión</h2>
   </mat-toolbar>
-  <form (ngSubmit)="onSubmit()" class="form-container">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-container">
     <mat-form-field class="form-group">
       <mat-label>Nombre de usuario:</mat-label>
       <fa-icon class="icon-left" [icon]="faUser"></fa-icon> <!-- Ícono de usuario -->
-      <input matInput type="text" id="username" [(ngModel)]="username" name="username" required>
+      <input matInput type="text" id="username" formControlName="username" name="username" required>
+      <div *ngIf="loginForm?.get('username')?.hasError('required') && loginForm?.get('username')?.touched" class="text-danger">
+        El usuario es requerido.
+      </div>
     </mat-form-field>
 
     <mat-form-field class="form-group">
       <mat-label>Contraseña:</mat-label>
       <fa-icon class="icon-left" [icon]="faLock"></fa-icon> <!-- Ícono de candado -->
-      <input matInput type="password" id="password" [(ngModel)]="password" name="password" required>
+      <input matInput type="password" id="password" formControlName="password" name="password" required>
+      <div *ngIf="loginForm?.get('password')?.hasError('required') && loginForm?.get('password')?.touched" class="text-danger">
+        La contraseña es requerida.
+      </div>
     </mat-form-field>
 
     <button mat-raised-button color="primary" type="submit">Iniciar sesión</button>

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faUser, faLock,} from '@fortawesome/free-solid-svg-icons';
-
 
 @Component({
   selector: 'app-login',
@@ -9,23 +9,28 @@ import { faUser, faLock,} from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['../login/login.component.scss']
 })
 export class LoginComponent {
+  loginForm: FormGroup;
   username: string = '';
   password: string = '';
   faUser = faUser; 
   faLock = faLock;
 
  
-  constructor(private router: Router) {}
-
+  constructor(private router: Router, private fb:FormBuilder) {
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+  }
+ 
   onSubmit() {
-    // Aquí puedes agregar la lógica de autenticación.
-    // Por ejemplo, puedes llamar a un servicio para verificar las credenciales.
-    if (this.username === 'usuario' && this.password === 'contraseña') {
-      // Si las credenciales son válidas, navega a la página de inicio.
-      this.router.navigate(['/inicio']);
-    } else {
-      // Si las credenciales son incorrectas, muestra un mensaje de error.
-      alert('Credenciales incorrectas');
+    if (this.loginForm && this.loginForm.valid) {
+      const username = this.loginForm.get('username')?.value;
+      const password = this.loginForm.get('password')?.value;
+  
+      if (username && password) {
+        
+      }
     }
   }
 }
