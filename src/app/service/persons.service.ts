@@ -24,17 +24,17 @@ export class PersonsService {
     return this.http.post<IPerson[]>(url, newPerson);
   }
 
-  getPersonById(id: number): Observable<IPerson> {
+  getPersonById(id: number | undefined): Observable<IPerson> {
     const url = `${this.backendUrl}personas/${id}/`;
     return this.http.get<IPerson>(url);
   }
   
-  updatePerson(id: number, updatedPerson: IPerson): Observable<IPerson> {
+  updatePerson(id: number | undefined, updatedPerson: IPerson): Observable<IPerson> {
     const url = `${this.backendUrl}personas/${id}/`;
     return this.http.put<IPerson>(url, updatedPerson);
   }
 
-  deletePerson(id: number): Observable<void> {
+  deletePerson(id: number | undefined): Observable<void> {
     const url = `${this.backendUrl}personas/${id}/`;
     return this.http.delete<void>(url);
   } 
@@ -51,17 +51,17 @@ postPersonTitulaciones(newPerson: IPersonTitulaciones): Observable<IPersonTitula
   return this.http.post<IPersonTitulaciones[]>(url, newPerson);
 }
 
-getPersonTitulacionesById(id: number): Observable<IPersonTitulaciones> {
+getPersonTitulacionesById(id: number | undefined): Observable<IPersonTitulaciones> {
   const url = `${this.backendUrl}personasTitulaciones/${id}/`;
   return this.http.get<IPersonTitulaciones>(url);
 }
 
-updatePersonTitulaciones(id: number, updatedPersonTitulaciones: IPersonTitulaciones): Observable<IPersonTitulaciones> {
+updatePersonTitulaciones(id: number | undefined, updatedPersonTitulaciones: IPersonTitulaciones): Observable<IPersonTitulaciones> {
   const url = `${this.backendUrl}personasTitulaciones/${id}/`;
   return this.http.put<IPersonTitulaciones>(url, updatedPersonTitulaciones);
 }
 
-deletePersonTitulaciones(id: number): Observable<void> {
+deletePersonTitulaciones(id:  number | undefined): Observable<void> {
   const url = `${this.backendUrl}personasTitulaciones/${id}/`;
   return this.http.delete<void>(url);
 } 
