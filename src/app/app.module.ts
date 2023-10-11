@@ -28,6 +28,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons'; 
 import { MatCardModule } from '@angular/material/card';
 
+
 library.add(fas); // Agrega los iconos sólidos a la biblioteca
 @NgModule({
   declarations: [
