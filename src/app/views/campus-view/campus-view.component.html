@@ -23,7 +23,7 @@
           
           <mat-form-field  appearance="outline" color="primary" class="full-width">
               <mat-label>Campus</mat-label>
-              <input formControlName="facultad" matInput placeholder="Ingrese el nombre del Campus">
+              <input formControlName="campus" matInput placeholder="Ingrese el nombre del Campus">
               <mat-icon matSuffix>domain</mat-icon>
               <mat-error *ngIf="form.get('campus')?.touched && form.get('campus')?.errors?.['required']">El campo campus es requerido</mat-error>
               <mat-error *ngIf="form.get('campus')?.touched && form.get('campus')?.errors?.['minlength']">El campo campus debe tener  3 caracteres o mas </mat-error>

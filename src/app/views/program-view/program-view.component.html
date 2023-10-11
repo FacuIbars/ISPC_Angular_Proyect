@@ -23,7 +23,7 @@
           
           <mat-form-field  appearance="outline" color="primary" class="full-width">
               <mat-label>Programas</mat-label>
-              <input formControlName="programas" matInput placeholder="Ingrese el nombre del Programa">
+              <input formControlName="programa" matInput placeholder="Ingrese el nombre del Programa">
               <mat-icon matSuffix>domain</mat-icon>
               <mat-error *ngIf="form.get('programa')?.touched && form.get('programa')?.errors?.['required']">El campo programa es requerido</mat-error>
               <mat-error *ngIf="form.get('programa')?.touched && form.get('programa')?.errors?.['minlength']">El campo programa debe tener  3 caracteres o mas </mat-error>

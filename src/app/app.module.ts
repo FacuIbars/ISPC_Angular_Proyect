@@ -21,11 +21,21 @@ import { CampusViewComponent } from './views/campus-view/campus-view.component';
 import { ProgramViewComponent } from './views/program-view/program-view.component';
 import { CareersViewComponent } from './views/careers-view/careers-view.component';
 
+import { LoginComponent } from './views/login/login.component';
+import { FormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons'; 
+import { MatCardModule } from '@angular/material/card';
+
+
+library.add(fas); // Agrega los iconos sólidos a la biblioteca
 @NgModule({
   declarations: [
     AppComponent,
     HomeViewComponent,
     TablePersonsComponent,
+    LoginComponent,
     TableComponent,
     PersonViewComponent,
     ColumnValuePipe,
@@ -43,8 +53,11 @@ import { CareersViewComponent } from './views/careers-view/careers-view.componen
     MaterialModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule
-    
+   
+    FormsModule,
+    FontAwesomeModule, 
+    ReactiveFormsModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

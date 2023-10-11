@@ -1,0 +1,20 @@
+<mat-card class="login-container">
+  <mat-toolbar class="title-bar" color="primary">
+    <h2 class="title">Iniciar sesión</h2>
+  </mat-toolbar>
+  <form (ngSubmit)="onSubmit()" class="form-container">
+    <mat-form-field class="form-group">
+      <mat-label>Nombre de usuario:</mat-label>
+      <fa-icon class="icon-left" [icon]="faUser"></fa-icon> <!-- Ícono de usuario -->
+      <input matInput type="text" id="username" [(ngModel)]="username" name="username" required>
+    </mat-form-field>
+
+    <mat-form-field class="form-group">
+      <mat-label>Contraseña:</mat-label>
+      <fa-icon class="icon-left" [icon]="faLock"></fa-icon> <!-- Ícono de candado -->
+      <input matInput type="password" id="password" [(ngModel)]="password" name="password" required>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Iniciar sesión</button>
+  </form>
+</mat-card>
