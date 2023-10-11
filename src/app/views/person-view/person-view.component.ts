@@ -11,11 +11,13 @@ import { TableColumn } from 'src/app/interface/ITable-colum';
 import { TableConfig } from 'src/app/interface/ITable-config';
 import { ModalService } from 'src/app/service/modal.service';
 import { PersonsService } from 'src/app/service/persons.service';
-
+import {MatDividerModule} from '@angular/material/divider';
+import {MatListModule} from '@angular/material/list';
 @Component({
   selector: 'app-person-view',
   templateUrl: './person-view.component.html',
-  styleUrls: ['./person-view.component.scss']
+  styleUrls: ['./person-view.component.scss'],
+ 
 })
 export class PersonViewComponent implements  OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -56,7 +58,7 @@ export class PersonViewComponent implements  OnInit {
       { label: 'Nombre', def: 'nombre', dataKey: 'nombre' },
       { label: 'Apellido', def: 'apellido', dataKey: 'apellido' },     
       { label: 'Correo', def: 'email', dataKey: 'email' },
-      { label: 'Edad', def: 'birthdate', dataKey: 'birthdate' },
+      //{ label: 'Edad', def: 'birthdate', dataKey: 'birthdate' },
       { label: 'Género', def: 'genero', dataKey: 'genero' },
       { label: 'DNI', def: 'personal_id', dataKey: 'personal_id' },
       

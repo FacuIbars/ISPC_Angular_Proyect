@@ -1,14 +1,9 @@
 <div class="person-view">
   <mat-tab-group>
-    <mat-tab label="Todos"> 
-      <app-table
-      [data]="dataSource"
-      [columns]="tableColumns"
-      [config]="tableConfig" 
-      [loading]="loadingProgressBar"   
-      (action)="onTableAction($event)"
-      > </app-table>  
-    </mat-tab>  
+    <mat-tab label="Todos">
+      <app-table [data]="dataSource" [columns]="tableColumns" [config]="tableConfig" [loading]="loadingProgressBar"
+        (action)="onTableAction($event)"> </app-table>
+    </mat-tab>
     <mat-tab label="Alumnos"> <app-table-persons></app-table-persons></mat-tab>
     <mat-tab label="Profesores"> Content 3 </mat-tab>
   </mat-tab-group>
@@ -17,15 +12,23 @@
 <!-- Modal para Vista Informacion Persona -->
 
 <ng-template #vistaInfo>
-  <h1 mat-dialog-title>Dialog With Template</h1>
-  <div mat-dialog-content>
-    <h1>{{person.nombre}}</h1>
-    <h1>{{person.apellido}}</h1>
-    <h1>{{person.genero}}</h1>
-    <h1>{{person.lugar}}</h1>
-  </div>
-  <div mat-dialog-actions>
-    <button mat-button mat-dialog-close>Close</button>
-  </div>
+  <mat-list>
+    <mat-list-item>Nombre: {{person.nombre}}</mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>Apellido: {{person.apellido}}</mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>DNI: {{person.personal_id}}</mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>Fecha de nacimiento: {{person.birthdate}}</mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>Genero: {{person.genero}}</mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>Correo electronico: {{person.email}}</mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>Lugar: {{person.lugar}}</mat-list-item>
+    <mat-divider></mat-divider>
+  </mat-list>
+
+  <button mat-button mat-dialog-close  type="submit" mat-stroked-button color="primary">Salir</button>
+ 
 </ng-template>
-  
