@@ -12,6 +12,8 @@ import { ModalService } from 'src/app/service/modal.service';
   styleUrls: ['../login/login.component.scss']
 })
 export class LoginComponent {
+  hide = true;   
+  loading:boolean = false; 
   loginForm: FormGroup;
   username: string = '';
   password: string = '';
