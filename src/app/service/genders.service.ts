@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class PersonsService {
+export class GendersService {
   private jsonUrl = 'assets/db/Persons.json';
   private backendUrl = 'http://127.0.0.1:8000/app/api/v1/'; 
   constructor(private http: HttpClient) { }
@@ -28,12 +28,12 @@ export class PersonsService {
     return this.http.get<IGenders>(url);
   }
   
-  updateGenders(id: number, updatedGenders: IGenders): Observable<IGenders> {
+  updateGendersId(id: number, updatedGendersId: IGenders): Observable<IGenders> {
     const url = `${this.backendUrl}generos/${id}/`;
-    return this.http.put<IGenders>(url, updatedGenders);
+    return this.http.put<IGenders>(url, updatedGendersId);
   }
 
-  deleteGenders(id: number): Observable<void> {
+  deleteGendersId(id: number): Observable<void> {
     const url = `${this.backendUrl}generos/${id}/`;
     return this.http.delete<void>(url);
   } 
