@@ -76,6 +76,7 @@ export class PersonViewComponent implements OnInit {
       { label: 'Apellido', def: 'apellido', dataKey: 'apellido' },
       { label: 'Correo electronico', def: 'email', dataKey: 'email' },
       { label: 'DNI', def: 'personal_id', dataKey: 'personal_id' },
+      
     ];
   }
 
