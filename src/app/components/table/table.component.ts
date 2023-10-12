@@ -30,7 +30,7 @@ export class TableComponent implements AfterViewInit, OnChanges {
     this.setConfig(config);
   }
   @Input() item: string = "";
-  @Input() loading: boolean = false;
+  @Input() loading: boolean = true;
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -42,7 +42,7 @@ export class TableComponent implements AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if(this.data !== undefined){
-      this.loading = false
+      //this.loading = false
     }
     
   }

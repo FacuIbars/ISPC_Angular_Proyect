@@ -110,9 +110,9 @@ export class CareersViewComponent {
   }
 
   getCareers(){
-    this.studiesService.getCareers().subscribe((carereras) => {
-      this.loadingProgressBar = false;
+    this.studiesService.getCareers().subscribe((carereras) => {      
       this.dataSource = carereras;
+      this.loadingProgressBar = false;
       
     });
   }
@@ -264,9 +264,7 @@ export class CareersViewComponent {
 
    // Función para filtrar la lista de elementos basándose en la entrada del usuario
    private _filter(value: string, items: any[]): any[] {
-    const filterValue = value.toLowerCase();
-     
-    
+    const filterValue = value.toLowerCase();       
   
     return  items.filter((item) => item.nombre && item.nombre.toLowerCase().includes(filterValue));;
   }

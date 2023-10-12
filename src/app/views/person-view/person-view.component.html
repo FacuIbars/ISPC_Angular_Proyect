@@ -1,9 +1,15 @@
 <div class="person-view">
   <mat-tab-group>
-    <mat-tab label="Todos">
-      <app-table [data]="dataSource" [columns]="tableColumns" [config]="tableConfig" [loading]="loadingProgressBar"
-        (action)="onTableAction($event)"> </app-table>
-    </mat-tab>
+    <mat-tab label="Todos"> 
+      <app-table
+      [data]="dataSource"
+      [columns]="tableColumns"
+      [config]="tableConfig" 
+      [item]="'Persona'"
+      [loading]="loadingProgressBar"   
+      (action)="onTableAction($event)"
+      > </app-table>  
+    </mat-tab>  
     <mat-tab label="Alumnos"> <app-table-persons></app-table-persons></mat-tab>
     <mat-tab label="Profesores"> Content 3 </mat-tab>
   </mat-tab-group>
@@ -75,4 +81,122 @@
   <button mat-button mat-dialog-close type="submit" mat-stroked-button color="primary">Salir</button>
 </ng-template>
 
+<!-- Modal para Agregar/Editar Informacion Persona -->
 
+<ng-template #AddEditPersona>
+  <div class="cabeceraform">
+    <h2 mat-dialog-title>{{operation + 'Persona'}} </h2>
+    <mat-spinner class="m-2" *ngIf="loading"  color="primary" diameter="30"></mat-spinner>
+  </div>
+  
+  <form [formGroup]="form" (ngSubmit)="addEditPerson()" enctype="multipart/form-data">
+    <mat-dialog-content >  
+        <!-- -------------Nombre-------------------------------- -->      
+        
+        <mat-form-field  appearance="outline" color="primary" class="mid-width">
+            <mat-label>Nombre </mat-label>
+            <input formControlName="nombre" matInput placeholder="Ingrese Nombre ">
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            <mat-error *ngIf="form.get('nombre')?.touched && form.get('nombre')?.errors?.['required']">El campo Nombre es requerido</mat-error>
+            <mat-error *ngIf="form.get('nombre')?.touched && form.get('nombre')?.errors?.['minlength']">El campo Nombre debe tener  3 caracteres o mas </mat-error>
+            <mat-error *ngIf="form.get('nombre')?.touched && form.get('nombre')?.errors?.['maxlength']">El campo Nombre debe tener  75 caracteres o menos </mat-error>
+            
+        </mat-form-field>
+        <!-- -------------Apellido-------------------------------- -->
+
+        <mat-form-field  appearance="outline" color="primary" class="mid-width ms-1">
+            <mat-label>Apellido</mat-label>
+            <input formControlName="apellido" matInput placeholder="Ingrese Apellido">
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            <mat-error *ngIf="form.get('apellido')?.touched && form.get('apellido')?.errors?.['required']">El campo Apellido es requerido</mat-error>
+            <mat-error *ngIf="form.get('apellido')?.touched && form.get('apellido')?.errors?.['minlength']">El campo Apellido debe tener  3 caracteres o mas </mat-error>
+            <mat-error *ngIf="form.get('apellido')?.touched && form.get('apellido')?.errors?.['maxlength']">El campo Apellido debe tener  75 caracteres o menos </mat-error>
+            
+        </mat-form-field>
+
+         <!-- -------------DNI-------------------------------- -->
+
+         <mat-form-field appearance="outline" color="primary" class="mid-width">
+          <mat-label>Numero de Documento</mat-label>
+          <input formControlName="Documento de Identidad" matInput placeholder="Ingresa tu DNI" (input)="validateInput($event)">
+          <mat-icon matSuffix>person_outline</mat-icon>
+          <mat-error *ngIf="form.get('documento')?.touched && form.get('documento')?.errors?.['required']">El campo DNI es requerido</mat-error>
+          <mat-error *ngIf="form.get('documento')?.touched && form.get('documento')?.errors?.['pattern']">Ingrese solo números ej: 35685127 </mat-error>
+          <mat-error *ngIf="form.get('documento')?.touched && form.get('documento')?.errors?.['maxlength']">El DNI de no debe tener más de 11 digitos </mat-error>
+          <mat-error *ngIf="form.get('documento')?.touched && form.get('documento')?.errors?.['minlength']">El DNI de no debe tener menos de 11 digitos </mat-error>
+        </mat-form-field>
+
+         <!-- -------------Genero-------------------------------- -->   
+        <mat-form-field appearance="outline" color="primary" class="mid-width">
+          <mat-label>Genero</mat-label>
+          <input type="text" matInput [formControl]="myControlGenders" [matAutocomplete]="autoGenero" >
+          <mat-icon matSuffix>person_outline</mat-icon>
+           <mat-error *ngIf="myControlGenders.touched && myControlGenders.hasError('required')">El campo Gennero es requerido</mat-error>
+          <mat-autocomplete   #autoGenero="matAutocomplete" >
+            <mat-option *ngFor="let option of filteredGenders | async" [value]="option.nombre">
+              {{option.nombre}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <!-- -------------Correo-------------------------------- -->
+
+        <mat-form-field appearance="outline" color="primary" class="mid-width">
+            <mat-label>Enter your email</mat-label>
+            <input formControlName="correo" matInput placeholder="nombre@example.com">
+            <mat-icon  matSuffix> mail_outline</mat-icon>
+            <mat-error *ngIf="form.get('correo')?.touched && form.get('correo')?.errors?.['required']">El campo Correo es requerido</mat-error>
+            <mat-error *ngIf="form.get('correo')?.touched && form.get('correo')?.errors?.['email']">Correo invalido</mat-error>
+            <mat-error *ngIf="form.get('correo')?.touched && form.get('correo')?.errors?.['minlength']">El campo Nombre de la correo debe tener  3 caracteres o mas </mat-error>
+            <mat-error *ngIf="form.get('correo')?.touched && form.get('correo')?.errors?.['maxlength']">El campo Nombre de la correo debe tener  75 caracteres o menos </mat-error>
+        </mat-form-field>
+
+         <!-- -------------Fecha de Nacimiento-------------------------------- -->
+
+         <mat-form-field appearance="outline" color="primary" class="mid-width">
+          <mat-label>Angular forms (w/ deserialization)</mat-label>
+          <input matInput [matDatepicker]="picker2"
+                 [formControl]="serializedDate">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+
+       
+        <!-- -------------Linkedin-------------------------------- -->
+        <mat-form-field  appearance="outline" color="primary" class="mid-width">
+            <mat-label>Url del Perfil de Linkedin</mat-label>
+            <input formControlName="linkedin" matInput placeholder="Ingrese Título, Carrera o Curso">
+            <mat-icon matSuffix>launch</mat-icon>
+            <mat-error *ngIf="form.get('linkedin')?.touched && form.get('linkedin')?.errors?.['required']">El campo Nombre es requerido</mat-error>
+            <mat-error *ngIf="form.get('linkedin')?.touched && form.get('linkedin')?.errors?.['minlength']">El campo Nombre debe tener  5 caracteres o mas </mat-error>
+            <mat-error *ngIf="form.get('linkedin')?.touched && form.get('linkedin')?.errors?.['maxlength']">El campo Nombre debe tener  200 caracteres o menos </mat-error>
+            
+            
+        </mat-form-field>
+       
+        
+        
+        <!-- -------------Sobre Mi-------------------------------- -->
+
+        <mat-form-field  appearance="outline" color="primary" class="mid-width">
+          <mat-label>Universidad</mat-label>
+          <input formControlName="universidad" matInput placeholder="Ingrese el nombre de la Universidad">
+          <mat-icon matSuffix>domain</mat-icon>
+          <mat-error *ngIf="form.get('universidad')?.touched && form.get('universidad')?.errors?.['required']">El campo Institución es requerido</mat-error>
+          <mat-error *ngIf="form.get('universidad')?.touched && form.get('universidad')?.errors?.['minlength']">El campo Institución debe tener  3 caracteres o mas </mat-error>
+          <mat-error *ngIf="form.get('universidad')?.touched && form.get('universidad')?.errors?.['maxlength']">El campo Institución debe tener  75 caracteres o menos </mat-error>
+          
+      </mat-form-field>
+       
+             
+       
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-dialog-close  mat-stroked-button color="warn" >Cancelar</button>
+      <button [disabled]="form.invalid" type="submit" mat-stroked-button color="primary"  >Aceptar</button>
+  </mat-dialog-actions>
+  </form>
+	
+  </ng-template>
+  

@@ -9,15 +9,16 @@ import { FacultyViewComponent } from './views/faculty-view/faculty-view.componen
 import { UniversitiesViewComponent } from './views/universities-view/universities-view.component';
 import { CampusViewComponent } from './views/campus-view/campus-view.component';
 import { ProgramViewComponent } from './views/program-view/program-view.component';
+import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: '', component: PersonViewComponent,  },
-  { path: 'careers', component: CareersViewComponent,  },
-  { path: 'faculty', component: FacultyViewComponent,  },
-  { path: 'universities', component: UniversitiesViewComponent,  },
-  { path: 'campus', component: CampusViewComponent,  },
-  { path: 'program', component: ProgramViewComponent,  }
+  { path: '', component: PersonViewComponent, canActivate: [AuthGuard]  },
+  { path: 'careers', component: CareersViewComponent, canActivate: [AuthGuard]  },
+  { path: 'faculty', component: FacultyViewComponent, canActivate: [AuthGuard] },
+  { path: 'universities', component: UniversitiesViewComponent, canActivate: [AuthGuard]  },
+  { path: 'campus', component: CampusViewComponent, canActivate: [AuthGuard]  },
+  { path: 'program', component: ProgramViewComponent, canActivate: [AuthGuard]  }
 ];
 
 @NgModule({
