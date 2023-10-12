@@ -52,6 +52,9 @@ export class PersonViewComponent implements  OnInit {
   myControlGenders = new FormControl;
   filteredGenders!: Observable<IGenders[]>;
 
+  date = new FormControl(new Date());
+  serializedDate = new FormControl(new Date().toISOString());
+
     constructor(
       private personsService: PersonsService,
       private modalService: ModalService,
@@ -223,6 +226,13 @@ export class PersonViewComponent implements  OnInit {
   validateInput(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     inputElement.value = inputElement.value.replace(/[^0-9]/g, ''); // Elimina caracteres no numéricos
+  }
+
+   // Función para filtrar la lista de elementos basándose en la entrada del usuario
+   private _filter(value: string, items: any[]): any[] {
+    const filterValue = value.toLowerCase();       
+  
+    return  items.filter((item) => item.nombre && item.nombre.toLowerCase().includes(filterValue));;
   }
 
 }

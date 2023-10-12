@@ -95,7 +95,7 @@
           <mat-label>Universidad</mat-label>
           <input type="text" matInput [formControl]="myControlGenders" [matAutocomplete]="autoGenero" >
           <mat-icon matSuffix>domain</mat-icon>
-           <mat-error *ngIf="myControlGenders.touched && myControlGenders.hasError('required')">El campo Universidad es requerido</mat-error>
+           <mat-error *ngIf="myControlGenders.touched && myControlGenders.hasError('required')">El campo Gennero es requerido</mat-error>
           <mat-autocomplete   #autoGenero="matAutocomplete" >
             <mat-option *ngFor="let option of filteredGenders | async" [value]="option.nombre">
               {{option.nombre}}
@@ -126,17 +126,18 @@
             
             
         </mat-form-field>
-        <!-- -------------Github-------------------------------- -->
+        <!-- -------------Fecha de Nacimiento-------------------------------- -->
 
-        <mat-form-field  appearance="outline" color="primary" class="mid-width">
-            <mat-label>Url del Perfil de Github</mat-label>
-            <input formControlName="github" matInput placeholder="Ingrese Título, Carrera o Curso">
-            <i matSuffix class="bi bi-github iconos-input"></i>
-            <mat-error *ngIf="form.get('github')?.touched && form.get('github')?.errors?.['required']">El campo Link del githubsitorio es requerido</mat-error>
-            <mat-error *ngIf="form.get('github')?.touched && form.get('github')?.errors?.['minlength']">El campo Link del githubsitorio debe tener  5 caracteres o mas </mat-error>
-            <mat-error *ngIf="form.get('github')?.touched && form.get('github')?.errors?.['maxlength']">El campo Link del githubsitorio debe tener  200 caracteres o menos </mat-error>
-            
+        <mat-form-field appearance="outline" color="primary" class="mid-width">
+          <mat-label>Angular forms (w/ deserialization)</mat-label>
+          <input matInput [matDatepicker]="picker2"
+                 [formControl]="serializedDate">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>
+
+        
         
         <!-- -------------Sobre Mi-------------------------------- -->
 
