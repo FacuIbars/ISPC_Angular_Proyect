@@ -21,14 +21,31 @@ import { IGenders } from 'src/app/interface/IGenders';
   selector: 'app-person-view',
   templateUrl: './person-view.component.html',
   styleUrls: ['./person-view.component.scss'],
- 
+
 })
-export class PersonViewComponent implements  OnInit {
+export class PersonViewComponent implements OnInit {
+  generoTraducciones: { [key: string]: string } = {
+    Agender: 'Agénero',
+    Bigender: 'Bigénero',
+    Female: 'Femenino',
+    Genderfluid: 'Género fluido',
+    Genderqueer: 'Género no binario',
+    Male: 'Masculino',
+    'Non-binary': 'No binario',
+    Polygender: 'Poligénero',
+  };
+  
+  traducirGenero(generoOriginal: string): string {
+    const generoTraducido = this.generoTraducciones[generoOriginal];
+    return generoTraducido || generoOriginal;
+  }
+   
+    
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('vistaInfo', {static: true}) vistaInfo!: TemplateRef<any>
   @ViewChild('AddEditPersona', {static: true}) AddEditPersona!: TemplateRef<any>  
   dataSource: Array<IPerson> = [];;
-  tableColumns: TableColumn[] = [];  
+  tableColumns: TableColumn[] = [];
   tableConfig: TableConfig = {
     isPaginable: true,
     showFilter: true,
@@ -102,14 +119,12 @@ export class PersonViewComponent implements  OnInit {
     });
   }
 
-  setTableColumns() {
+  setTableColumns() { ///tabla de alumno o profesores
     this.tableColumns = [
-      
+
       { label: 'Nombre', def: 'nombre', dataKey: 'nombre' },
-      { label: 'Apellido', def: 'apellido', dataKey: 'apellido' },     
-      { label: 'Correo', def: 'email', dataKey: 'email' },
-      //{ label: 'Edad', def: 'birthdate', dataKey: 'birthdate' },
-      //{ label: 'Género', def: 'genero', dataKey: 'genero' },
+      { label: 'Apellido', def: 'apellido', dataKey: 'apellido' },
+      { label: 'Correo electronico', def: 'email', dataKey: 'email' },
       { label: 'DNI', def: 'personal_id', dataKey: 'personal_id' },
       
     ];
@@ -140,7 +155,7 @@ export class PersonViewComponent implements  OnInit {
   }
 
   onSee(person: IPerson, template: TemplateRef<any>) {
-    this.person = person ;
+    this.person = person;
     this.openModalTemplate(template);
     console.log('Ver ', person);
   }

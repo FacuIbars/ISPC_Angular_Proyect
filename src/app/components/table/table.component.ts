@@ -46,7 +46,7 @@ export class TableComponent implements AfterViewInit, OnChanges {
     }
     
   }
-
+  
   setConfig(config: TableConfig) {
     this.tableConfig = config;  
 

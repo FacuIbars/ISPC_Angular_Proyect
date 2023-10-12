@@ -1,0 +1,9 @@
+.modal-content {
+  display: flex;
+  justify-content: space-between;  // Separa el contenido en dos filas
+  width: 100%;
+}
+
+.row {
+  flex-basis: 100%;  // Ajusta el ancho de cada fila según tu diseño
+}
