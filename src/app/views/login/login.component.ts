@@ -34,23 +34,27 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm && this.loginForm.valid) {
       const username = this.loginForm.get('username')?.value;
-      const password = this.loginForm.get('password')?.value;  
+      const password = this.loginForm.get('password')?.value;
+
       if (username && password) {
         this.auth.login(username, password).subscribe({
-          next: (response) => { 
-            const token = response && response.authToken;
+          next: (response) => {
+            const token = response && response.token;
             if (token) {
-              this.router.navigate(['']);
-              localStorage.setItem('token', token);        
+              localStorage.setItem('token', token);
+              this.router.navigate(['']); // Redirige a la página principal o a la página deseada
             } else {
-              // Manejar el caso en el que el token no está presente en la respuesta
+              // Maneja el caso en el que el token no está presente en la respuesta
             }
           },
-          error: (e: HttpErrorResponse) => {        
-            if (e.status == 401) {
-              this.modalService.mensaje("Usuario y/o contraseña incorrectos!! Inténtalo Nuevamente o Regresa haciendo click en Cancelar.", 4)
+          error: (e: HttpErrorResponse) => {
+            if (e.status === 401) {
+              // Maneja el caso de credenciales incorrectas
+              console.error('Credenciales incorrectas');
+            } else {
+              // Maneja otros errores si es necesario
+              console.error('Error en la solicitud:', e);
             }
-            // Manejar otros errores si es necesario
           }
         });
       }

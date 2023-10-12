@@ -15,12 +15,13 @@ export class InterceptorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.authService.getToken();
-    console.log('token',token)
+
     if (token) {
+      // Agregar el token a la cabecera de autorización
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `token ${token}`
+        }
       });
     }
 

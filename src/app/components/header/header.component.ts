@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { IRoutes } from 'src/app/interface/IRoutes';
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +10,9 @@ import { IRoutes } from 'src/app/interface/IRoutes';
 })
 export class HeaderComponent implements OnInit{
   selected!: string|null
-  constructor(){}
+  constructor(
+    private authService: AuthService,
+    private router: Router,){}
   ngOnInit(): void {
     this.selected = localStorage.getItem('route')
   }
@@ -43,4 +47,9 @@ export class HeaderComponent implements OnInit{
   this.selected = localStorage.getItem('route')
   
  }
+
+ logout(): void {
+  this.authService.logout();
+  this.router.navigate(['/login']);
+}
 }

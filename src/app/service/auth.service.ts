@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { Observable, catchError, map } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { ILogin } from '../interface/ILogin';
 import { ISignUp } from '../interface/ISignUp';
 import { ITest_token } from '../interface/ITest_token';
@@ -10,26 +10,39 @@ import { ITest_token } from '../interface/ITest_token';
   providedIn: 'root'
 })
 export class AuthService {
-  //private jsonUrl = 'assets/db/Persons.json';
+  
+  redirectUrl: string | null = null;
   private backendUrl = 'http://127.0.0.1:8000/app/'; 
   constructor(private http: HttpClient) { }
 
   /*------------------------------Login------------------------------------*/
 
   login(username: string, password: string): Observable<any> {
-    return this.http.post<ILogin>(`${this.backendUrl}/login`, { username, password })
-      .pipe(
-        map(response => {
-          if (response && response.token) {
-            localStorage.setItem('token', response.token);
-          }
-          return response;
-        })
-      );
+    const url = `${this.backendUrl}login`;
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    });
+
+    const body = {
+      username: username,
+      password: password,
+    };
+
+    return this.http.post(url, body, { headers: headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    console.error('Error en la solicitud:', error);
+    throw error;
   }
 
   logout(): void {
     localStorage.removeItem('token');
+    
   }
 
   getToken(): string | null {

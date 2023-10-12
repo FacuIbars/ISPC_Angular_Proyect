@@ -127,10 +127,10 @@
         </mat-form-field>
 
          <!-- -------------Genero-------------------------------- -->   
-        <mat-form-field class="example-full-width">
-          <mat-label>Universidad</mat-label>
+        <mat-form-field appearance="outline" color="primary" class="mid-width">
+          <mat-label>Genero</mat-label>
           <input type="text" matInput [formControl]="myControlGenders" [matAutocomplete]="autoGenero" >
-          <mat-icon matSuffix>domain</mat-icon>
+          <mat-icon matSuffix>person_outline</mat-icon>
            <mat-error *ngIf="myControlGenders.touched && myControlGenders.hasError('required')">El campo Gennero es requerido</mat-error>
           <mat-autocomplete   #autoGenero="matAutocomplete" >
             <mat-option *ngFor="let option of filteredGenders | async" [value]="option.nombre">
@@ -150,6 +150,18 @@
             <mat-error *ngIf="form.get('correo')?.touched && form.get('correo')?.errors?.['minlength']">El campo Nombre de la correo debe tener  3 caracteres o mas </mat-error>
             <mat-error *ngIf="form.get('correo')?.touched && form.get('correo')?.errors?.['maxlength']">El campo Nombre de la correo debe tener  75 caracteres o menos </mat-error>
         </mat-form-field>
+
+         <!-- -------------Fecha de Nacimiento-------------------------------- -->
+
+         <mat-form-field appearance="outline" color="primary" class="mid-width">
+          <mat-label>Angular forms (w/ deserialization)</mat-label>
+          <input matInput [matDatepicker]="picker2"
+                 [formControl]="serializedDate">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+
        
         <!-- -------------Linkedin-------------------------------- -->
         <mat-form-field  appearance="outline" color="primary" class="mid-width">
@@ -162,17 +174,7 @@
             
             
         </mat-form-field>
-        <!-- -------------Fecha de Nacimiento-------------------------------- -->
-
-        <mat-form-field appearance="outline" color="primary" class="mid-width">
-          <mat-label>Angular forms (w/ deserialization)</mat-label>
-          <input matInput [matDatepicker]="picker2"
-                 [formControl]="serializedDate">
-          <mat-hint>MM/DD/YYYY</mat-hint>
-          <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
-          <mat-datepicker #picker2></mat-datepicker>
-        </mat-form-field>
-
+       
         
         
         <!-- -------------Sobre Mi-------------------------------- -->
