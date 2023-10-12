@@ -5,3 +5,4 @@ export interface TableColumn {
   formatt?: string;
   dataType?: 'date' | 'object';
 }
+
