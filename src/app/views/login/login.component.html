@@ -8,26 +8,24 @@
         <mat-form-field appearance="outline" color="primary" class="full-width">
           <mat-label>Nombre de usuario:</mat-label>          
           <input matInput type="text" id="username" formControlName="username" name="username" required>
-          <mat-icon matSuffix>domain</mat-icon>
-          <mat-error *ngIf="loginForm?.get('username')?.touched && loginForm.get('username')?.errors?.['required']">El campo Institución es requerido</mat-error>
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-error *ngIf="loginForm?.get('username')?.touched && loginForm.get('username')?.errors?.['required']">El campo Usuario es requerido</mat-error>
           
-        </mat-form-field>
-    
-        <mat-form-field appearance="outline" color="primary" class="full-width">
-          <mat-label>Contraseña:</mat-label>          
-          <input matInput type="password" id="password" formControlName="password" name="password" required>
-          <mat-icon matSuffix>domain</mat-icon>
-          <div *ngIf="loginForm?.get('password')?.hasError('required') && loginForm?.get('password')?.touched" class="text-danger">
-            La contraseña es requerida.
-          </div>
-        </mat-form-field>
-    
-        
+        </mat-form-field>        
+          <mat-form-field  appearance="outline" color="primary" class="full-width">
+              <mat-label>Ingresa tu Contraseña</mat-label>
+              <input formControlName="password" matInput [type]="hide ? 'password' : 'text'">
+              <button class="iconoOjo" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+               <mat-error *ngIf="loginForm?.get('password')?.touched && loginForm.get('password')?.errors?.['required']">La contraseña es requerida</mat-error>
+                      
+          </mat-form-field>
+      
+          <button mat-raised-button color="primary" type="submit">Iniciar sesión</button>
       </form>
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button color="primary" type="submit">Iniciar sesión</button>
-    </mat-card-actions>
+    
   </mat-card>
   
 </div>
