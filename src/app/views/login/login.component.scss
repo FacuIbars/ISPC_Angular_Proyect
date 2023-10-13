@@ -25,12 +25,12 @@
   width: 100%;
 }
 
-// .fondo-imagen {
-//   background-image: url('ruta/de/tu/imagen.jpg');  /* Reemplaza con la ruta de tu imagen */
-//   background-size: cover;  /* Ajusta el tamaño para cubrir completamente el contenedor */
-//   background-position: center;  /* Centra la imagen */
-//   background-repeat: no-repeat;  /* Evita que se repita la imagen */
-// }
+.fondo-imagen {
+  background-image: url('/assets/img/fondo_app.jpg');  /* Reemplaza con la ruta de tu imagen */
+  background-size: cover;  
+  background-position: center;  
+  background-repeat: no-repeat;  
+}
 
 .mat-card-actions {
   display: flex;

@@ -1,7 +1,7 @@
 <div class="fs-header">
   <mat-toolbar class="fs-header__toolbar">
     <img src="assets\img\logo.png" class="fs-header__toolbar-img" />
-    <div class="fs-header__toolbar-routes">
+    <div *ngIf="isLoggedIn()" class="fs-header__toolbar-routes">
       <div
         class="fs-header__toolbar-routes-button"
         (click)="select(route.name)"

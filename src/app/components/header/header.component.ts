@@ -52,4 +52,9 @@ export class HeaderComponent implements OnInit{
   this.authService.logout();
   this.router.navigate(['/login']);
 }
+
+// Agregar un método para verificar si el usuario está logueado
+isLoggedIn(): boolean {
+  return this.authService.isLoggedIn();
+}
 }
