@@ -44,9 +44,32 @@ export class PersonViewComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('vistaInfo', {static: true}) vistaInfo!: TemplateRef<any>
   @ViewChild('AddEditPersona', {static: true}) AddEditPersona!: TemplateRef<any>  
-  dataSource: Array<IPerson> = [];;
+  dataSource: Array<IPerson> = [];
+  dataSourceAlumnos: IPersonTitulaciones[] = [];
+  dataSourceProfesores: IPersonTitulaciones[] = [];
+  
   tableColumns: TableColumn[] = [];
+  tableColumnsAlumnos: TableColumn[] = [];
+  tableColumnsProfesores: TableColumn[] = [];
   tableConfig: TableConfig = {
+    isPaginable: true,
+    showFilter: true,
+    showAddButton: true,
+    showActions: true,
+    showSeeButton: true,
+    showEditButton: true,
+    showDeleteButton: true,
+  };
+  tableConfigAlumnos: TableConfig = {
+    isPaginable: true,
+    showFilter: true,
+    showAddButton: true,
+    showActions: true,
+    showSeeButton: true,
+    showEditButton: true,
+    showDeleteButton: true,
+  };
+  tableConfigProfesores: TableConfig = {
     isPaginable: true,
     showFilter: true,
     showAddButton: true,
@@ -96,10 +119,8 @@ export class PersonViewComponent implements OnInit {
     this.setTableColumns();
     this.getPersons();
     this.getPersonsTitulaciones();
-    
-      
-      
-       
+         
+           
     
   }
   getPersons(){
@@ -110,16 +131,19 @@ export class PersonViewComponent implements OnInit {
     });
   }
 
-  getPersonsTitulaciones(){
-    this.personsService.getPersonTitulaciones().subscribe((persons) => {
+  getPersonsTitulaciones() {
+    this.personsService.getPersonTitulaciones().subscribe((persons: IPersonTitulaciones[]) => {
       console.log('personas titulaciones: ', persons);
       this.loadingProgressBar = false;
-      //this.dataSource = persons;
-      
+  
+      this.dataSourceAlumnos = persons.filter(person => person.tipo === 'alumno');
+      this.dataSourceProfesores = persons.filter(person => person.tipo === 'profesor');
     });
   }
+  
+  
 
-  setTableColumns() { ///tabla de alumno o profesores
+  setTableColumns() { 
     this.tableColumns = [
 
       { label: 'Nombre', def: 'nombre', dataKey: 'nombre' },
@@ -128,8 +152,29 @@ export class PersonViewComponent implements OnInit {
       { label: 'DNI', def: 'personal_id', dataKey: 'personal_id' },
       
     ];
-  }
 
+    this.tableColumnsAlumnos = [
+
+      { label: 'Nombre', def: 'nombre', dataKey: 'nombre' },
+      { label: 'Apellido', def: 'apellido', dataKey: 'apellido' },
+      { label: 'Correo electronico', def: 'email', dataKey: 'email' },
+      { label: 'DNI', def: 'personal_id', dataKey: 'personal_id' },
+      
+    ];
+
+    this.tableColumnsProfesores = [
+
+      { label: 'Nombre', def: 'nombre', dataKey: 'nombre' },
+      { label: 'Apellido', def: 'apellido', dataKey: 'apellido' },
+      { label: 'Correo electronico', def: 'email', dataKey: 'email' },
+      { label: 'DNI', def: 'personal_id', dataKey: 'personal_id' },
+      
+    ];
+  }
+ 
+  
+ 
+ 
   onTableAction(tableAction: TableAction) {
     switch (tableAction.action) {
 
