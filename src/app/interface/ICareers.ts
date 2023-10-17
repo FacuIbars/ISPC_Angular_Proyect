@@ -6,8 +6,8 @@ import { IUniversity } from "./IUniversity";
 export interface ICareers {
      
     id?: number;    
-    universidad: IUniversity;
-    facultad: IFaculty;
-    campus: ICampus;
-    carrera: IProgram;    
+    universidad: string;
+    facultad: string;
+    campus: string;
+    carrera: string;
 }

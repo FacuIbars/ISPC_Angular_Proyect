@@ -29,6 +29,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { MatCardModule } from '@angular/material/card';
 import { InterceptorInterceptor } from './service/interceptor.interceptor';
 import { AuthService } from './service/auth.service';
+import { TranslatePipe } from './pipe/translate.pipe';
 
 
 library.add(fas); // Agrega los iconos sólidos a la biblioteca
@@ -47,7 +48,7 @@ library.add(fas); // Agrega los iconos sólidos a la biblioteca
     FacultyViewComponent, 
     CampusViewComponent, 
     ProgramViewComponent, 
-    CareersViewComponent
+    CareersViewComponent, TranslatePipe
   ],
   imports: [
     BrowserModule,
