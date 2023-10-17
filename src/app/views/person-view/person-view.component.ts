@@ -4,10 +4,10 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import {MatTabsModule} from '@angular/material/tabs';
-import { Observable, catchError, map, of, startWith } from 'rxjs';
+import { Observable, catchError, map, of, startWith, switchMap } from 'rxjs';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { TABLE_ACTION } from 'src/app/enums/table-action-enum';
-import { IPerson } from 'src/app/interface/IPerson';
+import { IPerson, IPersonAddEdit } from 'src/app/interface/IPerson';
 import { IPersonTitulaciones } from 'src/app/interface/IPersonTitulaciones';
 import { TableAction } from 'src/app/interface/ITable-action';
 import { TableColumn } from 'src/app/interface/ITable-colum';
@@ -17,6 +17,14 @@ import { PersonsService } from 'src/app/service/persons.service';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import { IGenders } from 'src/app/interface/IGenders';
+import { GendersService } from 'src/app/service/genders.service';
+import { ICountry } from 'src/app/interface/ICountry';
+import { IProvince } from 'src/app/interface/IProvince';
+import { ICity } from 'src/app/interface/ICity';
+import { INeighborhood } from 'src/app/interface/INeighborhood';
+import { LugarService } from 'src/app/service/lugar.service';
+import { IPlace } from 'src/app/interface/IPlace';
+import { formatDate } from '@angular/common';
 @Component({
   selector: 'app-person-view',
   templateUrl: './person-view.component.html',
@@ -24,23 +32,7 @@ import { IGenders } from 'src/app/interface/IGenders';
 
 })
 export class PersonViewComponent implements OnInit {
-  generoTraducciones: { [key: string]: string } = {
-    Agender: 'Agénero',
-    Bigender: 'Bigénero',
-    Female: 'Femenino',
-    Genderfluid: 'Género fluido',
-    Genderqueer: 'Género no binario',
-    Male: 'Masculino',
-    'Non-binary': 'No binario',
-    Polygender: 'Poligénero',
-  };
-  
-  traducirGenero(generoOriginal: string): string {
-    const generoTraducido = this.generoTraducciones[generoOriginal];
-    return generoTraducido || generoOriginal;
-  }
-   
-    
+ 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('vistaInfo', {static: true}) vistaInfo!: TemplateRef<any>
   @ViewChild('AddEditPersona', {static: true}) AddEditPersona!: TemplateRef<any>  
@@ -87,10 +79,23 @@ export class PersonViewComponent implements OnInit {
   profesores! : IPersonTitulaciones[];
   operation:string = '';
   idPersona?:number ;
+  idLugar?:number ;
   // ------- Select--------------------------
   listGenders: IGenders[] = [];
   myControlGenders = new FormControl;
   filteredGenders!: Observable<IGenders[]>;
+  listCountry: ICountry[] = [];
+  myControlCountry = new FormControl;
+  filteredCountry!: Observable<ICountry[]>
+  listProvince: IProvince[] = [];
+  myControlProvince = new FormControl;
+  filteredProvince!: Observable<IProvince[]>;
+  listCity: ICity[] = [];
+  myControlCity = new FormControl;
+  filteredCity!: Observable<ICity[]>;
+  listNeighborhood: INeighborhood[] = [];  
+  myControlNeighborhood = new FormControl;
+  filteredNeighborhood!: Observable<INeighborhood[]>; 
 
   date = new FormControl(new Date());
   serializedDate = new FormControl(new Date().toISOString());
@@ -98,31 +103,35 @@ export class PersonViewComponent implements OnInit {
     constructor(
       private personsService: PersonsService,
       private modalService: ModalService,
+      private genderService: GendersService,
+      private lugarService: LugarService,
       private fb : FormBuilder,) {
         this.form= this.fb.group({        
-          nombre:['',[Validators.required,Validators.minLength(5),Validators.maxLength(100)]],
-          apellido:['',[Validators.required,Validators.minLength(5),Validators.maxLength(100)]],
-          sobre_mi:['',[Validators.required,Validators.minLength(10),Validators.maxLength(2500)]],
-          correo:['',[Validators.required,Validators.email ,Validators.minLength(4),Validators.maxLength(100)]],
-          documento:['',[Validators.required,Validators.pattern("^[0-9]*$"),Validators.minLength(11),Validators.maxLength(11)]],
-          linkedin:['',[Validators.required,Validators.minLength(5),]],
-          github:['',[Validators.required,Validators.minLength(5),Validators.maxLength(200)]]
-        }) 
+          nombre:['',[Validators.required,]],
+          apellido:['',[Validators.required,]],
+          correo:['',[Validators.required,Validators.email]],
+          documento:['',[Validators.required]],
+          birthdate:['', [Validators.required]]
+        })
+        
+        this.getGender();
+        this.getCountry();
+        this.getProvince();
+        this.getCity();
+        this.getNeighborhood();
 
-        this.filteredGenders = this.myControlGenders.valueChanges.pipe(
-          startWith(''),
-          map((value) => this._filter(value, this.listGenders))
-        );
+       
       }     
 
   ngOnInit(): void {
     this.setTableColumns();
     this.getPersons();
     this.getPersonsTitulaciones();
-         
-           
+    
+   
     
   }
+  
   getPersons(){
     this.personsService.getPersons().subscribe((persons) => {
       console.log('esto es el mock: ', persons);
@@ -131,13 +140,69 @@ export class PersonViewComponent implements OnInit {
     });
   }
 
+  getCountry(){
+    this.lugarService.getCountry().subscribe((country) => {      
+      this.listCountry = country;   
+      this.filteredCountry =  this.setupControlChanges(this.myControlCountry, this.listCountry); 
+    },
+    (error) => {
+      console.error('Error al obtener Pais:', error);              
+    });
+  }
+
+  getProvince(){
+    this.lugarService.getProvince().subscribe((province) => {      
+      this.listProvince = province;
+      this.filteredProvince = this.setupControlChanges(this.myControlProvince, this.listProvince);
+    },
+    (error) => {
+      console.error('Error al obtener provincias:', error);              
+    });          
+    
+  }
+
+  getCity(){
+    this.lugarService.getCity().subscribe((city) => {      
+      this.listCity = city; 
+      this.filteredCity = this.setupControlChanges(this.myControlCity, this.listCity);
+    },
+    (error) => {
+      console.error('Error al obtener ciudades:', error);              
+    }); 
+  }
+
+  getNeighborhood(){
+    this.lugarService.getNeighborhoody().subscribe((neighborhood) => {      
+      this.listNeighborhood = neighborhood; 
+      this.filteredNeighborhood = this.setupControlChanges(this.myControlNeighborhood, this.listNeighborhood);
+    },
+    (error) => {
+      console.error('Error al obtener barrios:', error);              
+    });          
+    
+  }
+
+  getGender(){
+    this.genderService.getGenders().subscribe((gender) => {  
+      console.log(gender)    
+      this.listGenders = gender;
+      this.filteredGenders = this.setupControlChanges(this.myControlGenders, this.listGenders);
+    },
+    (error) => {
+      console.error('Error al obtener Generos:', error);              
+    });           
+    
+  }
+
   getPersonsTitulaciones() {
     this.personsService.getPersonTitulaciones().subscribe((persons: IPersonTitulaciones[]) => {
       console.log('personas titulaciones: ', persons);
-      this.loadingProgressBar = false;
-  
+      this.loadingProgressBar = false;  
       this.dataSourceAlumnos = persons.filter(person => person.tipo === 'alumno');
       this.dataSourceProfesores = persons.filter(person => person.tipo === 'profesor');
+      console.log('Alumnos ', this.dataSourceAlumnos);
+      console.log('Profesores ', this.dataSourceProfesores);
+
     });
   }
   
@@ -155,19 +220,19 @@ export class PersonViewComponent implements OnInit {
 
     this.tableColumnsAlumnos = [
 
-      { label: 'Nombre', def: 'nombre', dataKey: 'nombre' },
-      { label: 'Apellido', def: 'apellido', dataKey: 'apellido' },
-      { label: 'Correo electronico', def: 'email', dataKey: 'email' },
-      { label: 'DNI', def: 'personal_id', dataKey: 'personal_id' },
+      { label: 'Nombre', def: 'persona.nombre', dataKey: 'persona.nombre', dataType:'object' },
+      { label: 'Apellido', def: 'apellido', dataKey: 'persona.apellido', dataType:'object' },
+      { label: 'Correo electronico', def: 'email', dataKey: 'persona.email', dataType:'object' },
+      { label: 'DNI', def: 'personal_id', dataKey: 'persona.personal_id', dataType:'object' },
       
     ];
 
     this.tableColumnsProfesores = [
 
-      { label: 'Nombre', def: 'nombre', dataKey: 'nombre' },
-      { label: 'Apellido', def: 'apellido', dataKey: 'apellido' },
-      { label: 'Correo electronico', def: 'email', dataKey: 'email' },
-      { label: 'DNI', def: 'personal_id', dataKey: 'personal_id' },
+      { label: 'Nombre', def: 'persona.nombre', dataKey: 'persona.nombre', dataType:'object' },
+      { label: 'Apellido', def: 'apellido', dataKey: 'persona.apellido', dataType:'object' },
+      { label: 'Correo electronico', def: 'email', dataKey: 'persona.email', dataType:'object' },
+      { label: 'DNI', def: 'personal_id', dataKey: 'persona.personal_id', dataType:'object' },
       
     ];
   }
@@ -207,25 +272,36 @@ export class PersonViewComponent implements OnInit {
 
   onAdd(template: TemplateRef<any>){
     this.operation = 'Agregar nueva '
+    this.myControlCity.reset();
+    this.myControlCountry.reset();
+    this.myControlProvince.reset();
+    this.myControlNeighborhood.reset();
+    this.myControlGenders.reset();
     this.openModalTemplate(template);       
     this.idPersona = undefined;
+    this.idLugar = undefined;
       
   } 
 
   onEdit(person: IPerson, template: TemplateRef<any>) {
-    this.idPersona = person.id;  
-    this.operation = 'Editar '; 
-    this.openModalTemplate(template);
+    console.log(person)
+    this.idPersona = person.id;
+    this.idLugar = person.lugar.id;  
+    this.operation = 'Editar ';     
+    this.myControlCity.setValue(this.listCity.find(item => item.nombre === person.lugar.ciudad));
+    this.myControlCountry.setValue(this.listCountry.find(item => item.nombre === person.lugar.pais));
+    this.myControlProvince.setValue(this.listProvince.find(item => item.nombre === person.lugar.provincia));
+    this.myControlNeighborhood.setValue(this.listNeighborhood.find(item => item.nombre === person.lugar.barrio));
+    this.myControlGenders.setValue(this.listGenders.find(item => item.nombre === person.genero)); 
     this.form.patchValue({
-      id:person.id,      
-      genero: person.genero,
-      lugar: person.lugar,
-      nombre: person.id,
+      id:person.id,        
+      nombre: person.nombre,
       apellido: person.apellido,
-      email: person.email,
+      correo: person.email,
       birthdate: person.birthdate,
-      personal_id: person.personal_id
+      documento: person.personal_id
     });
+    this.openModalTemplate(template);
   }
 
   onDelete(person: IPerson) {
@@ -243,42 +319,78 @@ export class PersonViewComponent implements OnInit {
     });
   }
 
-  addEditPerson() {     
-    const person:IPerson  = {
-      id:this.idPersona,      
-      genero: this.form.get('nombre')?.value,
-      lugar: this.form.get('nombre')?.value,
+  addEditPerson() {  
+    const lugar: IPlace = {  
+      id: this.idLugar,    
+      pais: this.myControlCountry.value.id,
+      ciudad: this.myControlCity.value.id,
+      barrio: this.myControlNeighborhood.value.id,
+      provincia: this.myControlProvince.value.id
+    };   
+  
+    const person: IPersonAddEdit  = {
+      id: this.idPersona,      
+      genero: this.myControlGenders.value.id,
+      lugar: this.idLugar,
       nombre: this.form.get('nombre')?.value,
       apellido: this.form.get('apellido')?.value,
       email: this.form.get('correo')?.value,
-      birthdate: this.form.get('nombre')?.value,
-      personal_id: this.form.get('nombre')?.value,      
-    };
-    
-    
+      birthdate: formatDate(this.form.get('birthdate')?.value, 'yyyy-MM-dd', 'en-US'),
+      personal_id: this.form.get('documento')?.value,      
+    };    
+      
     this.loading = true;
-
-    if(person.id == undefined){      
-      //Es agregar
-      this.personsService.postPersons(person).subscribe(()=>{  
-        this.modalService.mensaje('Nueva Persona agregada con Exito !', 2);       
-      })
-    }else {
-      // es Editar
-      this.personsService.updatePerson(this.idPersona, person).subscribe(data => {        
-        this.modalService.mensaje('Universidad editada con Exito !', 2);
-      })
+  
+    if (person.id == undefined && lugar.id == undefined) {
+      // Agregar lugar
+      this.lugarService.postPlace(lugar).pipe(
+        switchMap((lugarnuevo) => {
+          person.lugar = lugarnuevo.id;
+          console.log('dsp de crear lugar',person)
+          // Agregar Persona después de que el lugar se haya creado
+          return this.personsService.postPersons(person);
+          
+        })
+      ).subscribe(() => {        
+        this.modalService.mensaje('Nueva Persona agregada con Exito !', 2);
+        this.loading = false;
+        this.matDialogRef.close(true); 
+      }, error => {
+        // Manejar errores aquí
+        console.error(error);
+        this.loading = false;
+      });
+    } else {
+      // editar lugar
+      console.log(' lugar id',this.idLugar)
+      console.log(' lugar',lugar)
+      this.lugarService.updatePlaceId(this.idLugar,lugar).pipe(
+        switchMap((lugareditado) => {
+          person.lugar = lugareditado.id;
+          
+           console.log('dsp de editar lugar',lugar)
+          // Agregar Persona después de que el lugar se haya creado
+          return this.personsService.updatePerson(this.idPersona, person);
+          
+        })
+      ).subscribe(() => {        
+        this.modalService.mensaje('Persona editada con éxito !', 2);
+        this.loading = false;
+        this.matDialogRef.close(true); 
+      }, error => {
+        // Manejar errores aquí
+        console.error(error);
+        this.loading = false;
+      }); 
     }
-    this.loading = false;
-    this.matDialogRef.close(true);    
-
+    setTimeout(() => {window.location.reload();}, 4000)
   }
 
   openModalTemplate(template: TemplateRef<any>) {
     this.matDialogRef = this.modalService.openModal({template, width:'900px'} );
 
     this.matDialogRef.afterClosed().subscribe((res) => {
-      setTimeout(() => {window.location.reload();}, 4000)
+     
       this.form.reset();
     });
   }
@@ -288,12 +400,51 @@ export class PersonViewComponent implements OnInit {
     inputElement.value = inputElement.value.replace(/[^0-9]/g, ''); // Elimina caracteres no numéricos
   }
 
-   // Función para filtrar la lista de elementos basándose en la entrada del usuario
-   private _filter(value: string, items: any[]): any[] {
-    const filterValue = value.toLowerCase();       
+   
+  displayFn(option: any): string {
+    return option && option.nombre ? option.nombre : '';
+  }  
   
-    return  items.filter((item) => item.nombre && item.nombre.toLowerCase().includes(filterValue));;
+  
+
+  private setupControlChanges(control: FormControl, options: any[]): Observable<any> {
+    return control.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value, options))
+    );
   }
+
+  private _filter(value: string | { id: number; nombre: string } | null, options: any[]): any[] { 
+    console.log('value :', value)   
+    const filterValue = typeof value === 'string' ? value.toLowerCase() : '';
+
+    return options.filter(option => {
+      const optionName = option.nombre;
+      return optionName && typeof optionName === 'string' && optionName.toLowerCase().includes(filterValue);
+    });
+  }
+
+  isSelectionValid(): boolean {
+    const cityValue = this.myControlCity.value;
+    const countryValue = this.myControlCountry.value;
+    const gendersValue = this.myControlGenders.value;
+    const neighborhoodValue = this.myControlNeighborhood.value;
+    const provinceValue = this.myControlProvince.value;
+  
+    // Verifica que todos los valores sean diferentes de null y no sean strings
+    return this.isValidValue(cityValue) &&
+           this.isValidValue(countryValue) &&
+           this.isValidValue(gendersValue) &&
+           this.isValidValue(neighborhoodValue) &&
+           this.isValidValue(provinceValue);
+  }
+  
+  private isValidValue(value: any): boolean {
+    // Verifica que el valor no sea null ni string
+    return value !== null && typeof value !== 'string';
+  }
+
+  
 
 }
 

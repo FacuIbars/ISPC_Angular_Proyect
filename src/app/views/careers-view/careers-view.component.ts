@@ -67,43 +67,26 @@ export class CareersViewComponent {
     private modalService: ModalService, 
     private ngZone: NgZone,   
     private fb : FormBuilder,) {      
-      this.form= this.fb.group({        
-        myControlUniversity:[Validators.required],
-        facultad:[Validators.required],
-        program:[Validators.required],
-        campus:[Validators.required]
+      this.form= this.fb.group({    
+        myControlUniversity:['',Validators.required],
+        myControlFaculty: ['', Validators.required],
+        myControlProgram: ['',Validators.required],
+        myControlCampus: ['',Validators.required],
+        
       }) 
-      this.filteredUniversity = this.myControlUniversity.valueChanges.pipe(
-        startWith(''),
-        map((value) => this._filter(value, this.listUniversity))
-      );
-  
-      this.filteredFaculty = this.myControlFaculty.valueChanges.pipe(
-        startWith(''),
-        map((value) => this._filter(value, this.listFaculty))
-      );
-  
-      this.filteredProgram = this.myControlProgram.valueChanges.pipe(
-        startWith(''),
-        map((value) => this._filter(value, this.listProgram))
-      );
-  
-      this.filteredCampus = this.myControlCampus.valueChanges.pipe(
-        startWith(''),
-        map((value) => this._filter(value, this.listCampus))
-      );    
-      
-     }
+        this.getUniversity();
+        this.getFaculty();
+        this.getProgram();
+        this.getCampus();
+        
+       
+    }
 
   
   ngOnInit(): void {
     this.setTableColumns();
     this.getCareers();
-    this.getUniversity()
-    this.getCampus();
-    this.getProgram();
-    this.getFaculty();
-    console.log('Formulario:', this.form.value);
+    
     
     
 
@@ -118,25 +101,41 @@ export class CareersViewComponent {
   }
   getUniversity(){
     this.studiesService.getUniversity().subscribe((university) => {      
-      this.listUniversity = university;          
+      this.listUniversity = university;
+      this.filteredUniversity = this.setupControlChanges(this.myControlUniversity, this.listUniversity);
+    },
+    (error) => {
+      console.error('Error al obtener universidades:', error);              
     });
   }
 
   getFaculty(){
     this.studiesService.getFaculty().subscribe((faculty) => {      
-      this.listFaculty = faculty;        
+      this.listFaculty = faculty;
+      this.filteredFaculty = this.setupControlChanges(this.myControlFaculty, this.listFaculty);
+    },
+    (error) => {
+      console.error('Error al obtener facultades:', error);        
     });
   }
 
   getProgram(){
     this.studiesService.getProgram().subscribe((program) => {      
-      this.listProgram = program;          
+      this.listProgram = program;
+      this.filteredProgram = this.setupControlChanges(this.myControlProgram, this.listProgram);
+    },
+    (error) => {
+      console.error('Error al obtener programas:', error);          
     });
   }
 
   getCampus(){
     this.studiesService.getCampus().subscribe((campus) => {      
-      this.listCampus = campus;         
+      this.listCampus = campus;
+      this.filteredCampus = this.setupControlChanges(this.myControlCampus, this.listCampus);
+    },
+    (error) => {
+      console.error('Error al obtener campus:', error);         
     });
   }
 
@@ -172,6 +171,10 @@ export class CareersViewComponent {
 
   onAdd(template: TemplateRef<any>){
     this.operation = 'Agregar nueva '
+    this.myControlUniversity.reset();
+    this.myControlCampus.reset();
+    this.myControlFaculty.reset();
+    this.myControlProgram.reset();
     this.openModalTemplate(template);       
     this.idCareers = undefined;
       
@@ -179,24 +182,13 @@ export class CareersViewComponent {
 
   onEdit(carrera: ICareers, template: TemplateRef<any>) {  
     this.idCareers = carrera.id;  
-    this.operation = 'Editar ' 
-    this.openModalTemplate(template);
-    this.form.patchValue({
-      id: carrera.id, 
-      myControlUniversity: carrera.universidad,        
-      myControlProgram: carrera.carrera ,
-      myControlFaculty: carrera.facultad,
-      myControlCampus: carrera.campus,
-    });
-  
-    // Además, necesitas asegurarte de que los observables de filtro se activen con los valores preseleccionados
-    this.myControlUniversity.setValue(carrera.universidad);
-    this.myControlFaculty.setValue(carrera.facultad);
-    this.myControlProgram.setValue(carrera.carrera);
-    this.myControlCampus.setValue(carrera.campus);
-  
-    console.log('carrera', carrera)  
-        
+    this.operation = 'Editar '; 
+    this.myControlUniversity.setValue(this.listUniversity.find(item => item.nombre === carrera.universidad));
+    this.myControlCampus.setValue(this.listCampus.find(item => item.nombre === carrera.campus));
+    this.myControlFaculty.setValue(this.listFaculty.find(item => item.nombre === carrera.facultad));
+    this.myControlProgram.setValue(this.listProgram.find(item => item.nombre === carrera.carrera)); 
+    this.openModalTemplate(template); 
+
   }
 
   onDelete(carrera: ICareers) {
@@ -217,24 +209,17 @@ export class CareersViewComponent {
   addEditCarreras() { 
     console.log('id carrera',this.idCareers)
 
-    // Buscar la item por el nombre en la lista
-    const university = this.listUniversity.find(item => item.nombre === this.myControlUniversity.value);
-    const faculty = this.listFaculty.find(item => item.nombre === this.myControlFaculty.value);
-    const program = this.listProgram.find(item => item.nombre === this.myControlProgram.value);
-    const campus = this.listCampus.find(item => item.nombre === this.myControlCampus.value);
-
     const carrera: any  = {
       id: this.idCareers,
-      carrera: program?.id, 
-      facultad: faculty?.id,
-      universidad: university?.id,
-      campus: campus?.id       
+      carrera: this.myControlProgram.value.id, 
+      facultad: this.myControlFaculty.value.id,
+      universidad: this.myControlUniversity.value.id,
+      campus: this.myControlCampus.value.id       
     };    
     
     this.loading = true;
 
-    if(carrera.id == undefined){   
-      console.log('mostrar carrera',carrera)
+    if(carrera.id == undefined){         
       //Es agregar
       this.studiesService.postCareers(carrera).subscribe(()=>{  
         this.modalService.mensaje('Nueva Carrera agregada con Exito !', 2);       
@@ -247,27 +232,59 @@ export class CareersViewComponent {
     }
     this.loading = false;
     this.matDialogRef.close(true);
-    
+    setTimeout(() => {window.location.reload();}, 4000)
 
   }
 
   openModalTemplate(template: TemplateRef<any>) {
-    this.matDialogRef = this.modalService.openModal({template, width:'800px'});
+    this.matDialogRef = this.modalService.openModal({template, width:'600px'});
     this.matDialogRef.afterClosed().subscribe((res) => {
-      setTimeout(() => {window.location.reload();}, 4000)
-      this.form.reset();
+      
     });
   }
   
+
+  displayFn(option: any): string {
+    return option && option.nombre ? option.nombre : '';
+  }  
   
   
 
-   // Función para filtrar la lista de elementos basándose en la entrada del usuario
-   private _filter(value: string, items: any[]): any[] {
-    const filterValue = value.toLowerCase();       
-  
-    return  items.filter((item) => item.nombre && item.nombre.toLowerCase().includes(filterValue));;
+  private setupControlChanges(control: FormControl, options: any[]): Observable<any> {
+    return control.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value, options))
+    );
   }
+
+  private _filter(value: string | { id: number; nombre: string } | null, options: any[]): any[] {    
+    const filterValue = typeof value === 'string' ? value.toLowerCase() : '';
+
+    return options.filter(option => {
+      const optionName = option.nombre;
+      return optionName && typeof optionName === 'string' && optionName.toLowerCase().includes(filterValue);
+    });
+  }
+
+  isSelectionValid(): boolean {
+    const universityValue = this.myControlUniversity.value;
+    const facultyValue = this.myControlFaculty.value;
+    const programValue = this.myControlProgram.value;
+    const campusValue = this.myControlCampus.value;
+  
+    // Verifica que todos los valores sean diferentes de null y no sean strings
+    return this.isValidValue(universityValue) &&
+           this.isValidValue(facultyValue) &&
+           this.isValidValue(programValue) &&
+           this.isValidValue(campusValue);
+  }
+  
+  private isValidValue(value: any): boolean {
+    // Verifica que el valor no sea null ni string
+    return value !== null && typeof value !== 'string';
+  }
+
+  
 
   
   

@@ -44,7 +44,7 @@
         <mat-divider></mat-divider>
         <mat-list-item>Fecha de nacimiento: {{person.birthdate}}</mat-list-item>
        <mat-divider></mat-divider>
-        <mat-list-item>Genero: {{ traducirGenero(person.genero) }}</mat-list-item>
+        <mat-list-item>Genero: {{ person.genero | translateGen }}</mat-list-item>
         <mat-divider></mat-divider>
         
       </mat-list>
@@ -77,16 +77,14 @@
   </div>
   
   <form [formGroup]="form" (ngSubmit)="addEditPerson()" enctype="multipart/form-data">
-    <mat-dialog-content >  
+    <mat-dialog-content class="mx-auto" >  
         <!-- -------------Nombre-------------------------------- -->      
         
         <mat-form-field  appearance="outline" color="primary" class="mid-width">
             <mat-label>Nombre </mat-label>
             <input formControlName="nombre" matInput placeholder="Ingrese Nombre ">
             <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-            <mat-error *ngIf="form.get('nombre')?.touched && form.get('nombre')?.errors?.['required']">El campo Nombre es requerido</mat-error>
-            <mat-error *ngIf="form.get('nombre')?.touched && form.get('nombre')?.errors?.['minlength']">El campo Nombre debe tener  3 caracteres o mas </mat-error>
-            <mat-error *ngIf="form.get('nombre')?.touched && form.get('nombre')?.errors?.['maxlength']">El campo Nombre debe tener  75 caracteres o menos </mat-error>
+            <mat-error *ngIf="form.get('nombre')?.touched && form.get('nombre')?.errors?.['required']">El campo Nombre es requerido</mat-error>     
             
         </mat-form-field>
         <!-- -------------Apellido-------------------------------- -->
@@ -96,8 +94,6 @@
             <input formControlName="apellido" matInput placeholder="Ingrese Apellido">
             <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
             <mat-error *ngIf="form.get('apellido')?.touched && form.get('apellido')?.errors?.['required']">El campo Apellido es requerido</mat-error>
-            <mat-error *ngIf="form.get('apellido')?.touched && form.get('apellido')?.errors?.['minlength']">El campo Apellido debe tener  3 caracteres o mas </mat-error>
-            <mat-error *ngIf="form.get('apellido')?.touched && form.get('apellido')?.errors?.['maxlength']">El campo Apellido debe tener  75 caracteres o menos </mat-error>
             
         </mat-form-field>
 
@@ -105,23 +101,21 @@
 
          <mat-form-field appearance="outline" color="primary" class="mid-width">
           <mat-label>Numero de Documento</mat-label>
-          <input formControlName="Documento de Identidad" matInput placeholder="Ingresa tu DNI" (input)="validateInput($event)">
+          <input formControlName="documento" matInput placeholder="Ingresa tu DNI" (input)="validateInput($event)">
           <mat-icon matSuffix>person_outline</mat-icon>
           <mat-error *ngIf="form.get('documento')?.touched && form.get('documento')?.errors?.['required']">El campo DNI es requerido</mat-error>
           <mat-error *ngIf="form.get('documento')?.touched && form.get('documento')?.errors?.['pattern']">Ingrese solo números ej: 35685127 </mat-error>
-          <mat-error *ngIf="form.get('documento')?.touched && form.get('documento')?.errors?.['maxlength']">El DNI de no debe tener más de 11 digitos </mat-error>
-          <mat-error *ngIf="form.get('documento')?.touched && form.get('documento')?.errors?.['minlength']">El DNI de no debe tener menos de 11 digitos </mat-error>
+         
         </mat-form-field>
 
          <!-- -------------Genero-------------------------------- -->   
         <mat-form-field appearance="outline" color="primary" class="mid-width">
           <mat-label>Genero</mat-label>
           <input type="text" matInput [formControl]="myControlGenders" [matAutocomplete]="autoGenero" >
-          <mat-icon matSuffix>person_outline</mat-icon>
-           <mat-error *ngIf="myControlGenders.touched && myControlGenders.hasError('required')">El campo Gennero es requerido</mat-error>
-          <mat-autocomplete   #autoGenero="matAutocomplete" >
-            <mat-option *ngFor="let option of filteredGenders | async" [value]="option.nombre">
-              {{option.nombre}}
+          <mat-icon matSuffix>person_outline</mat-icon>           
+          <mat-autocomplete   #autoGenero="matAutocomplete" [displayWith]="displayFn" >
+            <mat-option *ngFor="let option of filteredGenders | async" [value]="option">
+              {{option.nombre |translateGen}}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
@@ -134,54 +128,79 @@
             <mat-icon  matSuffix> mail_outline</mat-icon>
             <mat-error *ngIf="form.get('correo')?.touched && form.get('correo')?.errors?.['required']">El campo Correo es requerido</mat-error>
             <mat-error *ngIf="form.get('correo')?.touched && form.get('correo')?.errors?.['email']">Correo invalido</mat-error>
-            <mat-error *ngIf="form.get('correo')?.touched && form.get('correo')?.errors?.['minlength']">El campo Nombre de la correo debe tener  3 caracteres o mas </mat-error>
-            <mat-error *ngIf="form.get('correo')?.touched && form.get('correo')?.errors?.['maxlength']">El campo Nombre de la correo debe tener  75 caracteres o menos </mat-error>
+       
         </mat-form-field>
 
          <!-- -------------Fecha de Nacimiento-------------------------------- -->
 
          <mat-form-field appearance="outline" color="primary" class="mid-width">
-          <mat-label>Angular forms (w/ deserialization)</mat-label>
+          <mat-label>Fecha</mat-label>
           <input matInput [matDatepicker]="picker2"
-                 [formControl]="serializedDate">
+          formControlName="birthdate">
           <mat-hint>MM/DD/YYYY</mat-hint>
           <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
           <mat-datepicker #picker2></mat-datepicker>
+          <mat-error *ngIf="form.get('birthdate')?.touched && form.get('birthdate')?.errors?.['required']">El campo Fecha es requerido</mat-error>
         </mat-form-field>
 
        
-        <!-- -------------Linkedin-------------------------------- -->
-        <mat-form-field  appearance="outline" color="primary" class="mid-width">
-            <mat-label>Url del Perfil de Linkedin</mat-label>
-            <input formControlName="linkedin" matInput placeholder="Ingrese Título, Carrera o Curso">
-            <mat-icon matSuffix>launch</mat-icon>
-            <mat-error *ngIf="form.get('linkedin')?.touched && form.get('linkedin')?.errors?.['required']">El campo Nombre es requerido</mat-error>
-            <mat-error *ngIf="form.get('linkedin')?.touched && form.get('linkedin')?.errors?.['minlength']">El campo Nombre debe tener  5 caracteres o mas </mat-error>
-            <mat-error *ngIf="form.get('linkedin')?.touched && form.get('linkedin')?.errors?.['maxlength']">El campo Nombre debe tener  200 caracteres o menos </mat-error>
-            
-            
+        <!-- -------------Pais-------------------------------- -->
+        <mat-form-field appearance="outline" color="primary" class="mid-width">
+          <mat-label>País</mat-label>
+          <input type="text" matInput [formControl]="myControlCountry" [matAutocomplete]="autoCountry" >
+          <mat-icon matSuffix>domain</mat-icon>          
+          <mat-autocomplete   #autoCountry="matAutocomplete" [displayWith]="displayFn" >
+            <mat-option *ngFor="let option of filteredCountry | async" [value]="option">
+              {{option.nombre}}
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
-       
         
-        
-        <!-- -------------Sobre Mi-------------------------------- -->
+        <!-- -------------Provincia-------------------------------- -->
 
-        <mat-form-field  appearance="outline" color="primary" class="mid-width">
-          <mat-label>Universidad</mat-label>
-          <input formControlName="universidad" matInput placeholder="Ingrese el nombre de la Universidad">
-          <mat-icon matSuffix>domain</mat-icon>
-          <mat-error *ngIf="form.get('universidad')?.touched && form.get('universidad')?.errors?.['required']">El campo Institución es requerido</mat-error>
-          <mat-error *ngIf="form.get('universidad')?.touched && form.get('universidad')?.errors?.['minlength']">El campo Institución debe tener  3 caracteres o mas </mat-error>
-          <mat-error *ngIf="form.get('universidad')?.touched && form.get('universidad')?.errors?.['maxlength']">El campo Institución debe tener  75 caracteres o menos </mat-error>
-          
-      </mat-form-field>
+        <mat-form-field appearance="outline" color="primary" class="mid-width">
+          <mat-label>Provincia</mat-label>
+          <input type="text" matInput [formControl]="myControlProvince"   [matAutocomplete]="autoProvince">
+          <mat-icon matSuffix>domain</mat-icon>          
+          <mat-autocomplete #autoProvince="matAutocomplete" [displayWith]="displayFn" >
+            <mat-option  *ngFor="let option of filteredProvince | async" [value]="option">
+              {{option.nombre}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>      
+
+       
+        <!-- -------------Ciudad-------------------------------- -->
+        <mat-form-field appearance="outline" color="primary" class="mid-width">
+          <mat-label>Ciudad</mat-label>
+          <input type="text" matInput [formControl]="myControlCity"   [matAutocomplete]="autoCity">
+          <mat-icon matSuffix>domain</mat-icon>         
+          <mat-autocomplete #autoCity="matAutocomplete" [displayWith]="displayFn" >
+            <mat-option *ngFor="let option of filteredCity | async" [value]="option">
+              {{option.nombre}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        
+        <!-- -------------Barrio-------------------------------- -->
+
+        <mat-form-field appearance="outline" color="primary" class="mid-width">
+          <mat-label>Barrio</mat-label>
+          <input type="text" matInput [formControl]="myControlNeighborhood"   [matAutocomplete]="autoNeighborhood">
+          <mat-icon matSuffix>domain</mat-icon>          
+          <mat-autocomplete #autoNeighborhood="matAutocomplete" [displayWith]="displayFn" >
+            <mat-option *ngFor="let option of filteredNeighborhood | async" [value]="option">
+              {{option.nombre}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
        
              
        
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-dialog-close  mat-stroked-button color="warn" >Cancelar</button>
-      <button [disabled]="form.invalid" type="submit" mat-stroked-button color="primary"  >Aceptar</button>
+      <button [disabled]="form.invalid || !isSelectionValid()  " type="submit" mat-stroked-button color="primary"  >Aceptar</button>
   </mat-dialog-actions>
   </form>
 	

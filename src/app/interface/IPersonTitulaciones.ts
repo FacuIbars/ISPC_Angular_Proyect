@@ -2,7 +2,7 @@ import { IPerson } from "./IPerson";
 
 export interface IPersonTitulaciones {
   id:number;
-  persona: number;
+  persona: IPerson;
   titulacion: number;
-  tipo: 'alumno' | 'profesor';
+  tipo: string;
 }

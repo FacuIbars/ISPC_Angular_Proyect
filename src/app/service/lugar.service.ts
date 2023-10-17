@@ -129,9 +129,9 @@ export class LugarService {
     return this.http.get<IPlace[]>(url);
   }
 
-  postPlace(newPlace: IPlace): Observable<IPlace[]> {
+  postPlace(newPlace: IPlace): Observable<IPlace> {
     const url = `${this.backendUrl}lugares/`;
-    return this.http.post<IPlace[]>(url, newPlace);
+    return this.http.post<IPlace>(url, newPlace);
   }
 
   getPlaceId(id: number): Observable<IPlace> {

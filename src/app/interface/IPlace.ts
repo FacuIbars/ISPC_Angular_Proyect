@@ -6,10 +6,10 @@ import { ICountry } from "./ICountry";
 export interface IPlace {
 
   id?: number;
-  pais: ICountry;
-  ciudad: ICity;
-  barrio: INeighborhood;
-  provincia: IProvince;
+  pais: string;
+  ciudad: string;
+  barrio: string;
+  provincia: string;
 }
 
 

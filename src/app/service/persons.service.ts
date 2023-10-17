@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { IPerson} from '../interface/IPerson';
-import { Observable } from 'rxjs';
+import { IPerson, IPersonAddEdit} from '../interface/IPerson';
+import { Observable, delay, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { IPersonTitulaciones } from '../interface/IPersonTitulaciones';
 
@@ -13,13 +13,12 @@ export class PersonsService {
   private backendUrl = 'http://127.0.0.1:8000/app/api/v1/'; 
   constructor(private http: HttpClient) { }
 
-
   getPersons(): Observable<IPerson[]>{
     const url = `${this.backendUrl}personas/`;
     return this.http.get<IPerson[]>(url);
   }
 
-  postPersons(newPerson: IPerson): Observable<IPerson[]> {
+  postPersons(newPerson: IPersonAddEdit): Observable<IPerson[]> {
     const url = `${this.backendUrl}personas/`;
     return this.http.post<IPerson[]>(url, newPerson);
   }
@@ -29,7 +28,7 @@ export class PersonsService {
     return this.http.get<IPerson>(url);
   }
   
-  updatePerson(id: number | undefined, updatedPerson: IPerson): Observable<IPerson> {
+  updatePerson(id: number | undefined, updatedPerson: IPersonAddEdit): Observable<IPerson> {
     const url = `${this.backendUrl}personas/${id}/`;
     return this.http.put<IPerson>(url, updatedPerson);
   }
