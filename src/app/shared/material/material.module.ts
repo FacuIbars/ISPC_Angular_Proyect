@@ -19,6 +19,8 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import {MatDatepickerModule} from '@angular/material/datepicker'; 
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatStepperModule } from '@angular/material/stepper'; 
+import { ReactiveFormsModule } from '@angular/forms';
 
 const components = [
   MatTableModule,
@@ -40,7 +42,9 @@ const components = [
   MatDividerModule,
   MatListModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatStepperModule,
+  ReactiveFormsModule
 ];
 @NgModule({
   declarations: [],

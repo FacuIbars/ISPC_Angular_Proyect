@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators,  } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -25,6 +25,11 @@ import { INeighborhood } from 'src/app/interface/INeighborhood';
 import { LugarService } from 'src/app/service/lugar.service';
 import { IPlace } from 'src/app/interface/IPlace';
 import { formatDate } from '@angular/common';
+import { ICampus } from 'src/app/interface/ICampus';
+import { IFaculty } from 'src/app/interface/IFaculty';
+import { IUniversity } from 'src/app/interface/IUniversity';
+import { IProgram } from 'src/app/interface/IProgram';
+import { StudiesService } from 'src/app/service/studies.service';
 @Component({
   selector: 'app-person-view',
   templateUrl: './person-view.component.html',
@@ -34,8 +39,9 @@ import { formatDate } from '@angular/common';
 export class PersonViewComponent implements OnInit {
  
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild('vistaInfo', {static: true}) vistaInfo!: TemplateRef<any>
-  @ViewChild('AddEditPersona', {static: true}) AddEditPersona!: TemplateRef<any>  
+  @ViewChild('vistaInfo', {static: true}) vistaInfo!: TemplateRef<any>;
+  @ViewChild('AddEditPersona', {static: true}) AddEditPersona!: TemplateRef<any>; 
+  @ViewChild('AddEditPersonaTitulaciones', {static: true}) AddEditPersonaTitulaciones!: TemplateRef<any>;
   dataSource: Array<IPerson> = [];
   dataSourceAlumnos: IPersonTitulaciones[] = [];
   dataSourceProfesores: IPersonTitulaciones[] = [];
@@ -73,11 +79,14 @@ export class PersonViewComponent implements OnInit {
   private matDialogRef!: MatDialogRef<ModalComponent>;
   person!: IPerson 
   form: FormGroup;
+  firstFormGroup!: FormGroup;
+  secondFormGroup!: FormGroup; 
   loading:boolean = false;
   loadingProgressBar:boolean = true;
   alumnos! : IPersonTitulaciones[];
   profesores! : IPersonTitulaciones[];
-  operation:string = '';
+  operation:string = ' Alumno';
+  tipoPersona:string = '';
   idPersona?:number ;
   idLugar?:number ;
   // ------- Select--------------------------
@@ -96,11 +105,24 @@ export class PersonViewComponent implements OnInit {
   listNeighborhood: INeighborhood[] = [];  
   myControlNeighborhood = new FormControl;
   filteredNeighborhood!: Observable<INeighborhood[]>; 
+  listCampus: ICampus[] = [];
+  listFaculty: IFaculty[] = [];
+  listUniversity: IUniversity[] = [];
+  listProgram: IProgram[] = [];
+  myControlUniversity = new FormControl;
+  myControlFaculty = new FormControl;
+  myControlProgram = new FormControl;
+  myControlCampus = new FormControl;
+  filteredUniversity!: Observable<IUniversity[]>;
+  filteredFaculty!: Observable<IFaculty[]>;
+  filteredProgram!: Observable<IProgram[]>;
+  filteredCampus!: Observable<ICampus[]>;
 
   date = new FormControl(new Date());
   serializedDate = new FormControl(new Date().toISOString());
 
     constructor(
+      private studiesService: StudiesService,
       private personsService: PersonsService,
       private modalService: ModalService,
       private genderService: GendersService,
@@ -113,6 +135,19 @@ export class PersonViewComponent implements OnInit {
           documento:['',[Validators.required]],
           birthdate:['', [Validators.required]]
         })
+        this.firstFormGroup = this.fb.group({
+          // Definir los controles del primer paso
+          nombre:['',[Validators.required,]],
+          apellido:['',[Validators.required,]],
+          correo:['',[Validators.required,Validators.email]],
+          documento:['',[Validators.required]],
+          birthdate:['', [Validators.required]]
+        });
+        this.secondFormGroup = this.fb.group({
+          // Definir los controles del segundo paso
+        });
+      
+        
         
         this.getGender();
         this.getCountry();
@@ -194,6 +229,46 @@ export class PersonViewComponent implements OnInit {
     
   }
 
+  getUniversity(){
+    this.studiesService.getUniversity().subscribe((university) => {      
+      this.listUniversity = university;
+      this.filteredUniversity = this.setupControlChanges(this.myControlUniversity, this.listUniversity);
+    },
+    (error) => {
+      console.error('Error al obtener universidades:', error);              
+    });
+  }
+
+  getFaculty(){
+    this.studiesService.getFaculty().subscribe((faculty) => {      
+      this.listFaculty = faculty;
+      this.filteredFaculty = this.setupControlChanges(this.myControlFaculty, this.listFaculty);
+    },
+    (error) => {
+      console.error('Error al obtener facultades:', error);        
+    });
+  }
+
+  getProgram(){
+    this.studiesService.getProgram().subscribe((program) => {      
+      this.listProgram = program;
+      this.filteredProgram = this.setupControlChanges(this.myControlProgram, this.listProgram);
+    },
+    (error) => {
+      console.error('Error al obtener programas:', error);          
+    });
+  }
+
+  getCampus(){
+    this.studiesService.getCampus().subscribe((campus) => {      
+      this.listCampus = campus;
+      this.filteredCampus = this.setupControlChanges(this.myControlCampus, this.listCampus);
+    },
+    (error) => {
+      console.error('Error al obtener campus:', error);         
+    });
+  }
+
   getPersonsTitulaciones() {
     this.personsService.getPersonTitulaciones().subscribe((persons: IPersonTitulaciones[]) => {
       console.log('personas titulaciones: ', persons);
@@ -224,6 +299,7 @@ export class PersonViewComponent implements OnInit {
       { label: 'Apellido', def: 'apellido', dataKey: 'persona.apellido', dataType:'object' },
       { label: 'Correo electronico', def: 'email', dataKey: 'persona.email', dataType:'object' },
       { label: 'DNI', def: 'personal_id', dataKey: 'persona.personal_id', dataType:'object' },
+      { label: 'Tipo', def: 'tipo', dataKey: 'tipo' }
       
     ];
 
@@ -233,12 +309,12 @@ export class PersonViewComponent implements OnInit {
       { label: 'Apellido', def: 'apellido', dataKey: 'persona.apellido', dataType:'object' },
       { label: 'Correo electronico', def: 'email', dataKey: 'persona.email', dataType:'object' },
       { label: 'DNI', def: 'personal_id', dataKey: 'persona.personal_id', dataType:'object' },
+      { label: 'Tipo', def: 'tipo', dataKey: 'tipo' }
       
     ];
   }
  
-  
- 
+  // Acciones en Botones de Persona 
  
   onTableAction(tableAction: TableAction) {
     switch (tableAction.action) {
@@ -262,7 +338,7 @@ export class PersonViewComponent implements OnInit {
       default:
         break;
     }
-  }
+  }  
 
   onSee(person: IPerson, template: TemplateRef<any>) {
     this.person = person;
@@ -343,10 +419,11 @@ export class PersonViewComponent implements OnInit {
   
     if (person.id == undefined && lugar.id == undefined) {
       // Agregar lugar
+      console.log('entro a agregar persona')
       this.lugarService.postPlace(lugar).pipe(
         switchMap((lugarnuevo) => {
           person.lugar = lugarnuevo.id;
-          console.log('dsp de crear lugar',person)
+          console.log('dsp de crear lugar',lugarnuevo)
           // Agregar Persona después de que el lugar se haya creado
           return this.personsService.postPersons(person);
           
@@ -355,9 +432,11 @@ export class PersonViewComponent implements OnInit {
         this.modalService.mensaje('Nueva Persona agregada con Exito !', 2);
         this.loading = false;
         this.matDialogRef.close(true); 
+        setTimeout(() => {window.location.reload();}, 4000)
       }, error => {
         // Manejar errores aquí
         console.error(error);
+        this.modalService.mensaje('No se puede crear persona revise consola para ver error.', 3);
         this.loading = false;
       });
     } else {
@@ -369,22 +448,109 @@ export class PersonViewComponent implements OnInit {
           person.lugar = lugareditado.id;
           
            console.log('dsp de editar lugar',lugar)
-          // Agregar Persona después de que el lugar se haya creado
+          // Editar Persona después de que el lugar se haya editar
           return this.personsService.updatePerson(this.idPersona, person);
           
         })
       ).subscribe(() => {        
         this.modalService.mensaje('Persona editada con éxito !', 2);
         this.loading = false;
-        this.matDialogRef.close(true); 
+        this.matDialogRef.close(true);
+        setTimeout(() => {window.location.reload();}, 4000) 
       }, error => {
         // Manejar errores aquí
         console.error(error);
+        this.modalService.mensaje('No se puede editar persona revise consola para ver error.', 3);
         this.loading = false;
       }); 
     }
-    setTimeout(() => {window.location.reload();}, 4000)
+    
   }
+
+  //-----------------------------------------------------------------------------
+
+   // Acciones en Botones de Persona Titulaciones
+
+  onTableActionTitulaciones(tableAction: TableAction) {
+    switch (tableAction.action) {
+
+      case TABLE_ACTION.SEE:
+        this.onSeePTitulaciones(tableAction.row, this.AddEditPersonaTitulaciones);
+        break;
+
+      case TABLE_ACTION.ADD:
+        this.onAddonSeePTitulaciones(this.AddEditPersonaTitulaciones);
+        break;
+
+      case TABLE_ACTION.EDIT:
+        this.onEditonSeePTitulaciones(tableAction.row, this.AddEditPersonaTitulaciones);
+        break;
+
+      case TABLE_ACTION.DELETE:
+        this.onDeleteonSeePTitulaciones(tableAction.row);
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  onSeePTitulaciones(person: IPerson, template: TemplateRef<any>) {
+    this.person = person;
+    this.openModalTemplate(template);
+    console.log('Ver ', person);
+  }
+
+  onAddonSeePTitulaciones(template: TemplateRef<any>){
+    this.operation = 'Agregar nueva '
+    this.myControlCity.reset();
+    this.myControlCountry.reset();
+    this.myControlProvince.reset();
+    this.myControlNeighborhood.reset();
+    this.myControlGenders.reset();
+    this.openModalTemplate(template);       
+    this.idPersona = undefined;
+    this.idLugar = undefined;
+      
+  } 
+
+  onEditonSeePTitulaciones(person: IPerson, template: TemplateRef<any>) {
+    console.log(person)
+    this.idPersona = person.id;
+    this.idLugar = person.lugar.id;  
+    this.operation = 'Editar ';     
+    this.myControlCity.setValue(this.listCity.find(item => item.nombre === person.lugar.ciudad));
+    this.myControlCountry.setValue(this.listCountry.find(item => item.nombre === person.lugar.pais));
+    this.myControlProvince.setValue(this.listProvince.find(item => item.nombre === person.lugar.provincia));
+    this.myControlNeighborhood.setValue(this.listNeighborhood.find(item => item.nombre === person.lugar.barrio));
+    this.myControlGenders.setValue(this.listGenders.find(item => item.nombre === person.genero)); 
+    this.form.patchValue({
+      id:person.id,        
+      nombre: person.nombre,
+      apellido: person.apellido,
+      correo: person.email,
+      birthdate: person.birthdate,
+      documento: person.personal_id
+    });
+    this.openModalTemplate(template);
+  }
+
+  onDeleteonSeePTitulaciones(person: IPerson) {
+    this.personsService.deletePerson(person.id)
+    .pipe(
+      catchError((error) => {  
+        this.modalService.mensaje('No se puede eliminar la persona debido a restricciones de clave foránea.', 3);
+        
+        return of();
+      })
+    )   
+    .subscribe(()=> {      
+      this.modalService.mensaje('Persona eliminada con Exito!', 2);
+      setTimeout(() => {window.location.reload();}, 4000)
+    });
+  }
+
+  //-----------------------------------------------------------------------------
 
   openModalTemplate(template: TemplateRef<any>) {
     this.matDialogRef = this.modalService.openModal({template, width:'900px'} );
