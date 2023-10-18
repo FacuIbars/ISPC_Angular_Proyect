@@ -87,9 +87,6 @@ export class CareersViewComponent {
     this.setTableColumns();
     this.getCareers();
     
-    
-    
-
   }
 
   getCareers(){
