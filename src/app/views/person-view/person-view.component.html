@@ -208,6 +208,40 @@
 
   <!-- Modal para Agregar/Editar Informacion Persona Titulacion-->
 
+  <ng-template #vistaInfoPT>
+    <div class="modal-content">
+      <div class="row">
+        <mat-list>
+          <!-- Primer grupo de elementos -->
+          <mat-list-item>Nombre: {{personaTitulacion.persona.nombre}}</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>Apellido: {{personaTitulacion.persona.apellido}}</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>DNI: {{personaTitulacion.persona.personal_id}}</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>Fecha de nacimiento: {{personaTitulacion.persona.birthdate}}</mat-list-item>
+         <mat-divider></mat-divider>
+          <mat-list-item>Genero: {{ personaTitulacion.persona.genero | translateGen }}</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>Correo electronico: {{personaTitulacion.persona.email}}</mat-list-item>
+          <mat-divider></mat-divider>
+        </mat-list>
+        
+      </div>
+      <div class="row">
+        <mat-list>
+          <!-- Segundo grupo de elementos -->
+          <mat-list-item>Tipo: {{personaTitulacion.tipo}}</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>Titulación: {{personaTitulacion?.titulacion || '"No tiene titulaciones"'}}</mat-list-item>
+          <mat-divider></mat-divider>
+        </mat-list>
+       
+      </div>
+    </div>
+    <button mat-button mat-dialog-close type="submit" mat-stroked-button color="primary">Salir</button>
+  </ng-template>
+
   <ng-template #AddEditPersonaTitulaciones>
   <div class="cabeceraform">
     <h2 mat-dialog-title>{{operation + tipoPersona}} </h2>

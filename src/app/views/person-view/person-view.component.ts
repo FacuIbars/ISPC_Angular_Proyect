@@ -40,6 +40,7 @@ export class PersonViewComponent implements OnInit {
  
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('vistaInfo', {static: true}) vistaInfo!: TemplateRef<any>;
+  @ViewChild('vistaInfoPT', {static: true}) vistaInfoPT!: TemplateRef<any>;
   @ViewChild('AddEditPersona', {static: true}) AddEditPersona!: TemplateRef<any>; 
   @ViewChild('AddEditPersonaTitulaciones', {static: true}) AddEditPersonaTitulaciones!: TemplateRef<any>;
 
@@ -78,7 +79,8 @@ export class PersonViewComponent implements OnInit {
     showDeleteButton: true,
   };
   private matDialogRef!: MatDialogRef<ModalComponent>;
-  person!: IPerson 
+  person!: IPerson
+  personaTitulacion!:IPersonTitulaciones 
   form: FormGroup;
   firstFormGroup!: FormGroup;
   secondFormGroup!: FormGroup; 
@@ -476,7 +478,7 @@ export class PersonViewComponent implements OnInit {
     switch (tableAction.action) {
 
       case TABLE_ACTION.SEE:
-        this.onSeePTitulaciones(tableAction.row, this.AddEditPersonaTitulaciones);
+        this.onSeePTitulaciones(tableAction.row, this.vistaInfoPT);
         break;
 
       case TABLE_ACTION.ADD:
@@ -496,10 +498,11 @@ export class PersonViewComponent implements OnInit {
     }
   }
 
-  onSeePTitulaciones(person: IPerson, template: TemplateRef<any>) {
-    this.person = person;
+  
+  onSeePTitulaciones(personaTitulacion: IPersonTitulaciones, template: TemplateRef<any>) {
+    this.personaTitulacion = personaTitulacion;
     this.openModalTemplate(template);
-    console.log('Ver ', person);
+    console.log('Ver ', personaTitulacion);
   }
 
   onAddonSeePTitulaciones(template: TemplateRef<any>){
