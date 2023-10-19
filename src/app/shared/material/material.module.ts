@@ -21,6 +21,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatStepperModule } from '@angular/material/stepper'; 
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
 
 const components = [
   MatTableModule,
@@ -44,7 +45,8 @@ const components = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatStepperModule,
-  ReactiveFormsModule
+  ReactiveFormsModule,
+  MatSelectModule
 ];
 @NgModule({
   declarations: [],

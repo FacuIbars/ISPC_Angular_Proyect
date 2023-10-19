@@ -77,7 +77,7 @@
     <mat-spinner class="m-2" *ngIf="loading"  color="primary" diameter="30"></mat-spinner>
   </div>
   
-  <form [formGroup]="form" (ngSubmit)="addEditPerson()" enctype="multipart/form-data" >
+  <form [formGroup]="form"  enctype="multipart/form-data" >
   <mat-dialog-content class="mat-dialog-content  " align="center"  >  
     <div class="mx-auto my-2">
       <!-- -------------Nombre-------------------------------- -->      
@@ -210,7 +210,7 @@
 
   <ng-template #AddEditPersonaTitulaciones>
   <div class="cabeceraform">
-    <h2 mat-dialog-title>{{operation + tipoPersona}} </h2>
+    <h2 mat-dialog-title>{{operation + nombreTipoPT}} </h2>
     <mat-spinner class="m-2" *ngIf="loading"  color="primary" diameter="30"></mat-spinner>
   </div>
   
@@ -226,7 +226,7 @@
             
             <mat-form-field  appearance="outline" color="primary" class="mid-width">
               <mat-label>Nombre </mat-label>
-              <input formControlName="nombre" matInput placeholder="Ingrese Nombre ">
+              <input formControlName="nombre" matInput placeholder="Ingrese Nombre " required>
               <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
               <mat-error *ngIf="form.get('nombre')?.touched && form.get('nombre')?.errors?.['required']">El campo Nombre es requerido</mat-error>     
               
@@ -235,7 +235,7 @@
 
             <mat-form-field  appearance="outline" color="primary" class="mid-width ms-1">
                 <mat-label>Apellido</mat-label>
-                <input formControlName="apellido" matInput placeholder="Ingrese Apellido">
+                <input formControlName="apellido" matInput placeholder="Ingrese Apellido" required>
                 <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
                 <mat-error *ngIf="firstFormGroup.get('apellido')?.touched && form.get('apellido')?.errors?.['required']">El campo Apellido es requerido</mat-error>
                 
@@ -245,7 +245,7 @@
 
             <mat-form-field appearance="outline" color="primary" class="mid-width">
               <mat-label>Numero de Documento</mat-label>
-              <input formControlName="documento" matInput placeholder="Ingresa tu DNI" (input)="validateInput($event)">
+              <input formControlName="documento" matInput placeholder="Ingresa tu DNI" (input)="validateInput($event)" required>
               <mat-icon matSuffix>person_outline</mat-icon>
               <mat-error *ngIf="firstFormGroup.get('documento')?.touched && form.get('documento')?.errors?.['required']">El campo DNI es requerido</mat-error>
               <mat-error *ngIf="firstFormGroup.get('documento')?.touched && form.get('documento')?.errors?.['pattern']">Ingrese solo números ej: 35685127 </mat-error>
@@ -255,7 +255,7 @@
           <!-- -------------Genero-------------------------------- -->   
             <mat-form-field appearance="outline" color="primary" class="mid-width">
               <mat-label>Genero</mat-label>
-              <input type="text" matInput [formControl]="myControlGenders" [matAutocomplete]="autoGenero" >
+              <input type="text" matInput [formControl]="myControlGendersPT" [matAutocomplete]="autoGenero" required >
               <mat-icon matSuffix>person_outline</mat-icon>           
               <mat-autocomplete   #autoGenero="matAutocomplete" [displayWith]="displayFn" >
                 <mat-option *ngFor="let option of filteredGenders | async" [value]="option">
@@ -291,7 +291,7 @@
           <!-- -------------Pais-------------------------------- -->
             <mat-form-field appearance="outline" color="primary" class="mid-width">
               <mat-label>País</mat-label>
-              <input type="text" matInput [formControl]="myControlCountry" [matAutocomplete]="autoCountry" >
+              <input type="text" matInput [formControl]="myControlCountryPT" [matAutocomplete]="autoCountry" >
               <mat-icon matSuffix>domain</mat-icon>          
               <mat-autocomplete   #autoCountry="matAutocomplete" [displayWith]="displayFn" >
                 <mat-option *ngFor="let option of filteredCountry | async" [value]="option">
@@ -304,7 +304,7 @@
 
             <mat-form-field appearance="outline" color="primary" class="mid-width">
               <mat-label>Provincia</mat-label>
-              <input type="text" matInput [formControl]="myControlProvince"   [matAutocomplete]="autoProvince">
+              <input type="text" matInput [formControl]="myControlProvincePT"   [matAutocomplete]="autoProvince">
               <mat-icon matSuffix>domain</mat-icon>          
               <mat-autocomplete #autoProvince="matAutocomplete" [displayWith]="displayFn" >
                 <mat-option  *ngFor="let option of filteredProvince | async" [value]="option">
@@ -317,7 +317,7 @@
           <!-- -------------Ciudad-------------------------------- -->
             <mat-form-field appearance="outline" color="primary" class="mid-width">
               <mat-label>Ciudad</mat-label>
-              <input type="text" matInput [formControl]="myControlCity"   [matAutocomplete]="autoCity" required>
+              <input type="text" matInput [formControl]="myControlCityPT"   [matAutocomplete]="autoCity" required>
               <mat-icon matSuffix>domain</mat-icon>         
               <mat-autocomplete #autoCity="matAutocomplete" [displayWith]="displayFn" >
                 <mat-option *ngFor="let option of filteredCity | async" [value]="option">
@@ -330,7 +330,7 @@
 
             <mat-form-field appearance="outline" color="primary" class="mid-width">
               <mat-label>Barrio</mat-label>
-              <input type="text" matInput [formControl]="myControlNeighborhood"   [matAutocomplete]="autoNeighborhood">
+              <input type="text" matInput [formControl]="myControlNeighborhoodPT"   [matAutocomplete]="autoNeighborhood">
               <mat-icon matSuffix>domain</mat-icon>          
               <mat-autocomplete #autoNeighborhood="matAutocomplete" [displayWith]="displayFn" >
                 <mat-option *ngFor="let option of filteredNeighborhood | async" [value]="option">
@@ -347,10 +347,19 @@
         <form [formGroup]="secondFormGroup">
           <ng-template matStepLabel>Información Academica</ng-template> 
           <div class="mt-4">
+            <!-- Select Tipo-->
+            <mat-form-field *ngIf="selectTipo"  appearance="outline" color="primary" class="row tipo-select mx-auto">
+              <mat-label>Rol</mat-label>
+              <mat-select  [formControl]="myControlTipo" required name="Rol">
+                <mat-option *ngFor="let tipo of tipoPersona" [value]="tipo.id">
+                  {{tipo.nombre}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
             <!-- Select Universidad-->   
             <mat-form-field appearance="outline" color="primary" class="mid-width">
               <mat-label>Universidad</mat-label>
-              <input type="text" matInput [formControl]="myControlUniversity" [matAutocomplete]="autoUniversity" >
+              <input type="text" matInput [formControl]="myControlUniversityPT" [matAutocomplete]="autoUniversity" >
               <mat-icon matSuffix>domain</mat-icon>          
               <mat-autocomplete   #autoUniversity="matAutocomplete" [displayWith]="displayFn" >
                 <mat-option  *ngFor="let option of filteredUniversity | async" [value]="option">
@@ -361,7 +370,7 @@
             <!-- Select Facultad-->   
             <mat-form-field appearance="outline" color="primary" class="mid-width">
               <mat-label>Facultad</mat-label>
-              <input type="text" matInput [formControl]="myControlFaculty"   [matAutocomplete]="autoFaculty">
+              <input type="text" matInput [formControl]="myControlFacultyPT"   [matAutocomplete]="autoFaculty">
               <mat-icon matSuffix>domain</mat-icon>          
               <mat-autocomplete #autoFaculty="matAutocomplete" [displayWith]="displayFn" >
                 <mat-option *ngFor="let option of filteredFaculty | async" [value]="option">
@@ -372,7 +381,7 @@
             <!-- Select Campus-->   
             <mat-form-field appearance="outline" color="primary" class="mid-width">
               <mat-label>Campus</mat-label>
-              <input type="text" matInput [formControl]="myControlCampus"  [matAutocomplete]="autoCampus">
+              <input type="text" matInput [formControl]="myControlCampusPT"  [matAutocomplete]="autoCampus">
               <mat-icon matSuffix>domain</mat-icon>         
               <mat-autocomplete #autoCampus="matAutocomplete" [displayWith]="displayFn" >
                 <mat-option *ngFor="let option of filteredCampus | async" [value]="option">
@@ -383,7 +392,7 @@
             <!-- Select Programa-->   
             <mat-form-field appearance="outline" color="primary" class="mid-width">
               <mat-label>Programa</mat-label>
-              <input type="text" matInput [formControl]="myControlProgram"  [matAutocomplete]="autoProgram">
+              <input type="text" matInput [formControl]="myControlProgramPT"  [matAutocomplete]="autoProgram">
               <mat-icon matSuffix>domain</mat-icon>          
               <mat-autocomplete #autoProgram="matAutocomplete" [displayWith]="displayFn" >
                 <mat-option *ngFor="let option of filteredProgram | async" [value]="option">
@@ -395,23 +404,17 @@
             
               
         </form>
-      </mat-step>
-      <mat-step>
-        <ng-template matStepLabel>Done</ng-template>
-        <p>You are now done.</p>
-        <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button (click)="stepper.reset()">Reset</button>
-        </div>
-      </mat-step>
+      </mat-step>      
     </mat-stepper>  
 
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-dialog-close  mat-stroked-button color="warn" >Cancelar</button>
-      <button [disabled]="form.invalid || !isSelectionValid()  " type="submit" mat-stroked-button color="primary"  >Aceptar</button>
+      <button [disabled]="firstFormGroup.invalid || !isSelectionValidTitulacion()  " (click)="addEditPersonTitulacion()" mat-stroked-button color="primary"  >Aceptar</button>
   </mat-dialog-actions>
   </ng-template>
+
+  
  
 	
 
