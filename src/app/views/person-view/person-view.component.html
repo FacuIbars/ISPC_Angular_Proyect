@@ -225,19 +225,20 @@
           <mat-divider></mat-divider>
           <mat-list-item>Correo electronico: {{personaTitulacion.persona.email}}</mat-list-item>
           <mat-divider></mat-divider>
+          <mat-list-item>Tipo: {{personaTitulacion.tipo}}</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>Campus: {{personaTitulacion.titulacion?.campus || 'Sin datos'}}</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>Facultad: {{personaTitulacion.titulacion?.facultad || 'Sin datos'}}</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>Universidad: {{personaTitulacion.titulacion?.universidad || 'Sin datos'}}</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>Porgrama: {{personaTitulacion.titulacion?.carrera || 'Sin datos'}}</mat-list-item>
+          <mat-divider></mat-divider>
         </mat-list>
         
       </div>
-      <div class="row">
-        <mat-list>
-          <!-- Segundo grupo de elementos -->
-          <mat-list-item>Tipo: {{personaTitulacion.tipo}}</mat-list-item>
-          <mat-divider></mat-divider>
-          <mat-list-item>Titulación: {{personaTitulacion?.titulacion || 'Sin datos'}}</mat-list-item>
-          <mat-divider></mat-divider>
-        </mat-list>
-       
-      </div>
+     
     </div>
     <button mat-button mat-dialog-close type="submit" mat-stroked-button color="primary">Salir</button>
   </ng-template>
