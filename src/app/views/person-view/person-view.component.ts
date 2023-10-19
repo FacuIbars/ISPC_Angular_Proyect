@@ -8,7 +8,7 @@ import { Observable, catchError, map, of, startWith, switchMap } from 'rxjs';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { TABLE_ACTION } from 'src/app/enums/table-action-enum';
 import { IPerson, IPersonAddEdit } from 'src/app/interface/IPerson';
-import { IPersonTitulaciones } from 'src/app/interface/IPersonTitulaciones';
+import { IPersonTitulaciones, IPersonTitulacionesAddEdit } from 'src/app/interface/IPersonTitulaciones';
 import { TableAction } from 'src/app/interface/ITable-action';
 import { TableColumn } from 'src/app/interface/ITable-colum';
 import { TableConfig } from 'src/app/interface/ITable-config';
@@ -30,6 +30,7 @@ import { IFaculty } from 'src/app/interface/IFaculty';
 import { IUniversity } from 'src/app/interface/IUniversity';
 import { IProgram } from 'src/app/interface/IProgram';
 import { StudiesService } from 'src/app/service/studies.service';
+import { IOption } from 'src/app/interface/IOptions';
 @Component({
   selector: 'app-person-view',
   templateUrl: './person-view.component.html',
@@ -85,34 +86,56 @@ export class PersonViewComponent implements OnInit {
   loadingProgressBar:boolean = true;
   alumnos! : IPersonTitulaciones[];
   profesores! : IPersonTitulaciones[];
-  operation:string = ' Alumno';
-  tipoPersona:string = '';
+  operation:string = ' Alumno';  
   idPersona?:number ;
   idLugar?:number ;
+  idTitulacion?:number;
+  idPersonaTitulacion?:number;
+  tipoPT?:number;
+  selectTipo:boolean = true;
+  nombreTipoPT: string = ''
+
+
   // ------- Select--------------------------
+  tipoPersona: IOption[] = [
+    {id: 2, nombre: 'Alumno'},
+    {id: 1, nombre: 'Profesor'},    
+  ];
+
   listGenders: IGenders[] = [];
-  myControlGenders = new FormControl;
+  myControlGenders = new FormControl;  
+  myControlGendersPT = new FormControl;
+  myControlTipo = new FormControl;
   filteredGenders!: Observable<IGenders[]>;
+  filteredGendersPT!: Observable<IGenders[]>;
   listCountry: ICountry[] = [];
   myControlCountry = new FormControl;
+  myControlCountryPT = new FormControl;
   filteredCountry!: Observable<ICountry[]>
+  filteredCountryPT!: Observable<ICountry[]>
   listProvince: IProvince[] = [];
   myControlProvince = new FormControl;
+  myControlProvincePT = new FormControl;
   filteredProvince!: Observable<IProvince[]>;
+  filteredProvincePT!: Observable<IProvince[]>;
   listCity: ICity[] = [];
   myControlCity = new FormControl;
+  myControlCityPT = new FormControl;
   filteredCity!: Observable<ICity[]>;
+  filteredCityPT!: Observable<ICity[]>;
   listNeighborhood: INeighborhood[] = [];  
   myControlNeighborhood = new FormControl;
+  myControlNeighborhoodPT = new FormControl;
   filteredNeighborhood!: Observable<INeighborhood[]>; 
+  filteredNeighborhoodPT!: Observable<INeighborhood[]>; 
   listCampus: ICampus[] = [];
   listFaculty: IFaculty[] = [];
   listUniversity: IUniversity[] = [];
   listProgram: IProgram[] = [];
-  myControlUniversity = new FormControl;
-  myControlFaculty = new FormControl;
-  myControlProgram = new FormControl;
-  myControlCampus = new FormControl;
+  myControlUniversityPT = new FormControl;
+  myControlFacultyPT = new FormControl;
+  myControlProgramPT = new FormControl;
+  myControlCampusPT = new FormControl;
   filteredUniversity!: Observable<IUniversity[]>;
   filteredFaculty!: Observable<IFaculty[]>;
   filteredProgram!: Observable<IProgram[]>;
@@ -145,8 +168,7 @@ export class PersonViewComponent implements OnInit {
         });
         this.secondFormGroup = this.fb.group({
           // Definir los controles del segundo paso
-        });
-      
+        });     
         
         
         this.getGender();
@@ -154,6 +176,10 @@ export class PersonViewComponent implements OnInit {
         this.getProvince();
         this.getCity();
         this.getNeighborhood();
+        this.getUniversity();
+        this.getFaculty();
+        this.getProgram();
+        this.getCampus();
 
        
       }     
@@ -165,6 +191,18 @@ export class PersonViewComponent implements OnInit {
     
    
     
+  }
+
+  IsAlumno (tipo: string): number {
+    if (tipo === 'alumno'){
+      this.tipoPT = 2;
+      this.nombreTipoPT = 'Alumno';
+    }else {
+      this.tipoPT = 1;
+      this.nombreTipoPT = 'Profesor';
+    }
+    return this.tipoPT;
+
   }
   
   getPersons(){
@@ -179,6 +217,7 @@ export class PersonViewComponent implements OnInit {
     this.lugarService.getCountry().subscribe((country) => {      
       this.listCountry = country;   
       this.filteredCountry =  this.setupControlChanges(this.myControlCountry, this.listCountry); 
+      this.filteredCountryPT =  this.setupControlChanges(this.myControlCountryPT, this.listCountry); 
     },
     (error) => {
       console.error('Error al obtener Pais:', error);              
@@ -189,6 +228,7 @@ export class PersonViewComponent implements OnInit {
     this.lugarService.getProvince().subscribe((province) => {      
       this.listProvince = province;
       this.filteredProvince = this.setupControlChanges(this.myControlProvince, this.listProvince);
+      this.filteredProvincePT = this.setupControlChanges(this.myControlProvincePT, this.listProvince);
     },
     (error) => {
       console.error('Error al obtener provincias:', error);              
@@ -200,6 +240,7 @@ export class PersonViewComponent implements OnInit {
     this.lugarService.getCity().subscribe((city) => {      
       this.listCity = city; 
       this.filteredCity = this.setupControlChanges(this.myControlCity, this.listCity);
+      this.filteredCityPT = this.setupControlChanges(this.myControlCityPT, this.listCity);
     },
     (error) => {
       console.error('Error al obtener ciudades:', error);              
@@ -210,6 +251,7 @@ export class PersonViewComponent implements OnInit {
     this.lugarService.getNeighborhoody().subscribe((neighborhood) => {      
       this.listNeighborhood = neighborhood; 
       this.filteredNeighborhood = this.setupControlChanges(this.myControlNeighborhood, this.listNeighborhood);
+      this.filteredNeighborhoodPT = this.setupControlChanges(this.myControlNeighborhoodPT, this.listNeighborhood);
     },
     (error) => {
       console.error('Error al obtener barrios:', error);              
@@ -222,6 +264,7 @@ export class PersonViewComponent implements OnInit {
       console.log(gender)    
       this.listGenders = gender;
       this.filteredGenders = this.setupControlChanges(this.myControlGenders, this.listGenders);
+      this.filteredGendersPT = this.setupControlChanges(this.myControlGendersPT, this.listGenders);
     },
     (error) => {
       console.error('Error al obtener Generos:', error);              
@@ -232,7 +275,7 @@ export class PersonViewComponent implements OnInit {
   getUniversity(){
     this.studiesService.getUniversity().subscribe((university) => {      
       this.listUniversity = university;
-      this.filteredUniversity = this.setupControlChanges(this.myControlUniversity, this.listUniversity);
+      this.filteredUniversity = this.setupControlChanges(this.myControlUniversityPT, this.listUniversity);
     },
     (error) => {
       console.error('Error al obtener universidades:', error);              
@@ -242,7 +285,7 @@ export class PersonViewComponent implements OnInit {
   getFaculty(){
     this.studiesService.getFaculty().subscribe((faculty) => {      
       this.listFaculty = faculty;
-      this.filteredFaculty = this.setupControlChanges(this.myControlFaculty, this.listFaculty);
+      this.filteredFaculty = this.setupControlChanges(this.myControlFacultyPT, this.listFaculty);
     },
     (error) => {
       console.error('Error al obtener facultades:', error);        
@@ -252,7 +295,7 @@ export class PersonViewComponent implements OnInit {
   getProgram(){
     this.studiesService.getProgram().subscribe((program) => {      
       this.listProgram = program;
-      this.filteredProgram = this.setupControlChanges(this.myControlProgram, this.listProgram);
+      this.filteredProgram = this.setupControlChanges(this.myControlProgramPT, this.listProgram);
     },
     (error) => {
       console.error('Error al obtener programas:', error);          
@@ -262,7 +305,7 @@ export class PersonViewComponent implements OnInit {
   getCampus(){
     this.studiesService.getCampus().subscribe((campus) => {      
       this.listCampus = campus;
-      this.filteredCampus = this.setupControlChanges(this.myControlCampus, this.listCampus);
+      this.filteredCampus = this.setupControlChanges(this.myControlCampusPT, this.listCampus);
     },
     (error) => {
       console.error('Error al obtener campus:', error);         
@@ -479,15 +522,15 @@ export class PersonViewComponent implements OnInit {
         break;
 
       case TABLE_ACTION.ADD:
-        this.onAddonSeePTitulaciones(this.AddEditPersonaTitulaciones);
+        this.onAddPTitulaciones(this.AddEditPersonaTitulaciones);
         break;
 
       case TABLE_ACTION.EDIT:
-        this.onEditonSeePTitulaciones(tableAction.row, this.AddEditPersonaTitulaciones);
+        this.onEditPTitulaciones(tableAction.row, this.AddEditPersonaTitulaciones);
         break;
 
       case TABLE_ACTION.DELETE:
-        this.onDeleteonSeePTitulaciones(tableAction.row);
+        this.onDeletePTitulaciones(tableAction.row);
         break;
 
       default:
@@ -495,48 +538,69 @@ export class PersonViewComponent implements OnInit {
     }
   }
 
+  
+
   onSeePTitulaciones(person: IPerson, template: TemplateRef<any>) {
     this.person = person;
     this.openModalTemplate(template);
     console.log('Ver ', person);
   }
 
-  onAddonSeePTitulaciones(template: TemplateRef<any>){
-    this.operation = 'Agregar nueva '
-    this.myControlCity.reset();
-    this.myControlCountry.reset();
-    this.myControlProvince.reset();
-    this.myControlNeighborhood.reset();
-    this.myControlGenders.reset();
+  onAddPTitulaciones(template: TemplateRef<any>){
+    
+    this.operation = 'Agregar '
+    this.myControlCityPT.reset();
+    this.myControlCountryPT.reset();
+    this.myControlProvincePT.reset();
+    this.myControlNeighborhoodPT.reset();
+    this.myControlGendersPT.reset();
+    this.myControlUniversityPT.reset();
+    this.myControlFacultyPT.reset();
+    this.myControlCampusPT.reset();
+    this.myControlProgramPT.reset();
     this.openModalTemplate(template);       
     this.idPersona = undefined;
     this.idLugar = undefined;
+    this.idTitulacion = undefined;
+    this.idPersonaTitulacion = undefined;
       
   } 
 
-  onEditonSeePTitulaciones(person: IPerson, template: TemplateRef<any>) {
-    console.log(person)
-    this.idPersona = person.id;
-    this.idLugar = person.lugar.id;  
+  onEditPTitulaciones(personT: IPersonTitulaciones, template: TemplateRef<any>) {
+    
+    this.IsAlumno(personT.tipo);
+    this.idPersona = personT.persona.id;
+    this.idLugar = personT.persona.lugar.id;
+    if (personT.titulacion) {
+      this.idTitulacion = personT.titulacion.id;
+      this.myControlUniversityPT.setValue(this.listUniversity.find(item => item.nombre === personT.titulacion.universidad));
+      this.myControlCampusPT.setValue(this.listCampus.find(item => item.nombre === personT.titulacion.campus));
+      this.myControlFacultyPT.setValue(this.listFaculty.find(item => item.nombre === personT.titulacion.facultad));
+      this.myControlProgramPT.setValue(this.listProgram.find(item => item.nombre === personT.titulacion.carrera)); 
+    } else {
+      this.idTitulacion = undefined;
+    }    
+    this.idPersonaTitulacion = personT.id;  
     this.operation = 'Editar ';     
-    this.myControlCity.setValue(this.listCity.find(item => item.nombre === person.lugar.ciudad));
-    this.myControlCountry.setValue(this.listCountry.find(item => item.nombre === person.lugar.pais));
-    this.myControlProvince.setValue(this.listProvince.find(item => item.nombre === person.lugar.provincia));
-    this.myControlNeighborhood.setValue(this.listNeighborhood.find(item => item.nombre === person.lugar.barrio));
-    this.myControlGenders.setValue(this.listGenders.find(item => item.nombre === person.genero)); 
-    this.form.patchValue({
-      id:person.id,        
-      nombre: person.nombre,
-      apellido: person.apellido,
-      correo: person.email,
-      birthdate: person.birthdate,
-      documento: person.personal_id
+    this.myControlCityPT.setValue(this.listCity.find(item => item.nombre === personT.persona.lugar.ciudad));
+    this.myControlCountryPT.setValue(this.listCountry.find(item => item.nombre === personT.persona.lugar.pais));
+    this.myControlProvincePT.setValue(this.listProvince.find(item => item.nombre === personT.persona.lugar.provincia));
+    this.myControlNeighborhoodPT.setValue(this.listNeighborhood.find(item => item.nombre === personT.persona.lugar.barrio));
+    this.myControlGendersPT.setValue(this.listGenders.find(item => item.nombre === personT.persona.genero)); 
+
+    this.firstFormGroup.patchValue({
+      id:personT.persona.id,        
+      nombre: personT.persona.nombre,
+      apellido: personT.persona.apellido,
+      correo: personT.persona.email,
+      birthdate: personT.persona.birthdate,
+      documento: personT.persona.personal_id
     });
     this.openModalTemplate(template);
   }
 
-  onDeleteonSeePTitulaciones(person: IPerson) {
-    this.personsService.deletePerson(person.id)
+  onDeletePTitulaciones(personaTitulacion: IPersonTitulaciones) {
+    this.personsService.deletePersonTitulaciones(personaTitulacion.id)
     .pipe(
       catchError((error) => {  
         this.modalService.mensaje('No se puede eliminar la persona debido a restricciones de clave foránea.', 3);
@@ -548,6 +612,121 @@ export class PersonViewComponent implements OnInit {
       this.modalService.mensaje('Persona eliminada con Exito!', 2);
       setTimeout(() => {window.location.reload();}, 4000)
     });
+  }
+
+  addEditPersonTitulacion() {    
+    const lugar: IPlace = {  
+      id: this.idLugar,    
+      pais: this.myControlCountryPT.value.id,
+      ciudad: this.myControlCityPT.value.id,
+      barrio: this.myControlNeighborhoodPT.value.id,
+      provincia: this.myControlProvincePT.value.id
+    }; 
+    
+    const carrera: any  = {
+      id: this.idTitulacion,
+      carrera: this.myControlProgramPT.value.id, 
+      facultad: this.myControlFacultyPT.value.id,
+      universidad: this.myControlUniversityPT.value.id,
+      campus: this.myControlCampusPT.value.id       
+    };    
+  
+    const person: IPersonAddEdit  = {
+      id: this.idPersona,      
+      genero: this.myControlGendersPT.value.id,
+      lugar: this.idLugar,
+      nombre: this.firstFormGroup.get('nombre')?.value,
+      apellido: this.firstFormGroup.get('apellido')?.value,
+      email: this.firstFormGroup.get('correo')?.value,
+      birthdate: formatDate(this.firstFormGroup.get('birthdate')?.value, 'yyyy-MM-dd', 'en-US'),
+      personal_id: this.firstFormGroup.get('documento')?.value,      
+    };  
+    
+    
+    const personaTitulacion: any  = {
+      id: this.idPersonaTitulacion,
+      persona: person.id, 
+      titulacion: carrera.id,
+      tipo: this.tipoPT,
+            
+    };
+      
+    this.loading = true;
+  
+    if (personaTitulacion.id == undefined && person.id == undefined) {
+      // Agregar lugar
+    this.lugarService.postPlace(lugar).pipe(
+      switchMap((lugarnuevo) => {
+        person.lugar = lugarnuevo.id;
+        // Agregar Persona después de que el lugar se haya creado
+        return this.personsService.postPersons(person);
+      }),
+      switchMap((personNueva) => {
+        // Agregar Carrera después de que la persona se haya creado
+        console.log('persona nueva: ', personNueva)
+        return this.studiesService.postCareers(carrera).pipe(
+          switchMap((carreraNueva) => {
+            personaTitulacion.persona = personNueva.id;
+            personaTitulacion.titulacion = carreraNueva.id;
+            // Agregar Titulación después de que la carrera se haya creado
+            return this.personsService.postPersonTitulaciones(personaTitulacion);
+          })
+        );
+      })
+    ).subscribe(() => {        
+      this.modalService.mensaje('Nueva Persona, Carrera y Titulación agregadas con Éxito!', 2);
+      this.loading = false;
+      this.matDialogRef.close(true); 
+      setTimeout(() => {window.location.reload();}, 4000);
+    }, error => {
+      // Manejar errores aquí
+      console.error(error);
+      this.modalService.mensaje('No se puede crear persona, carrera o titulación, revise consola para ver error.', 3);
+      this.loading = false;
+    });
+    } else {
+      // editar lugar
+      this.lugarService.updatePlaceId(this.idLugar, lugar).pipe(
+        switchMap((lugareditado) => {
+          person.lugar = lugareditado.id;
+          // Editar persona después de que el lugar se haya editado
+          return this.personsService.updatePerson(this.idPersona, person);
+        }),
+        switchMap((personeditada) => {
+          if (carrera.id === null || carrera.id === undefined) {
+            // El ID de carrera es nulo o indefinido, crea la carrera
+            return this.studiesService.postCareers(carrera).pipe(
+              switchMap((carreraNueva) => {
+                personaTitulacion.titulacion = carreraNueva.id;
+                // Edita persona titulación después de crear la carrera
+                return this.personsService.updatePersonTitulaciones(this.idPersonaTitulacion, personaTitulacion);
+              })
+            );
+          } else {
+            // Edita carrera y persona titulación si la carrera existe
+            return this.studiesService.updateCareer(this.idTitulacion, carrera).pipe(
+              switchMap((carreraEditada) => {
+                personaTitulacion.titulacion = carreraEditada.id;
+                // Edita persona titulación después de editar la carrera
+                return this.personsService.updatePersonTitulaciones(this.idPersonaTitulacion, personaTitulacion);
+              })
+            );
+          }
+        })
+      ).subscribe(() => {
+        this.modalService.mensaje('Persona, Carrera y Titulación editadas con Éxito!', 2);
+        this.loading = false;
+        this.matDialogRef.close(true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 4000);
+      }, error => {
+        console.error(error);
+        this.modalService.mensaje('No se puede editar persona, carrera o titulación, revise la consola para ver el error.', 3);
+        this.loading = false;
+      });
+    }  
+    
   }
 
   //-----------------------------------------------------------------------------
@@ -603,6 +782,29 @@ export class PersonViewComponent implements OnInit {
            this.isValidValue(gendersValue) &&
            this.isValidValue(neighborhoodValue) &&
            this.isValidValue(provinceValue);
+  }
+
+  isSelectionValidTitulacion(): boolean {
+    const cityValue = this.myControlCityPT.value;
+    const countryValue = this.myControlCountryPT.value;
+    const gendersValue = this.myControlGendersPT.value;
+    const neighborhoodValue = this.myControlNeighborhoodPT.value;
+    const provinceValue = this.myControlProvincePT.value;
+    const universityValue = this.myControlUniversityPT.value;
+    const facultyValue = this.myControlFacultyPT.value;
+    const programValue = this.myControlProgramPT.value;
+    const campusValue = this.myControlCampusPT.value;
+  
+    // Verifica que todos los valores sean diferentes de null y no sean strings
+    return this.isValidValue(cityValue) &&
+           this.isValidValue(countryValue) &&
+           this.isValidValue(gendersValue) &&
+           this.isValidValue(neighborhoodValue) &&
+           this.isValidValue(provinceValue) &&
+           this.isValidValue(universityValue) &&
+           this.isValidValue(facultyValue) &&
+           this.isValidValue(programValue) &&
+           this.isValidValue(campusValue);
   }
   
   private isValidValue(value: any): boolean {

@@ -18,9 +18,9 @@ export class PersonsService {
     return this.http.get<IPerson[]>(url);
   }
 
-  postPersons(newPerson: IPersonAddEdit): Observable<IPerson[]> {
+  postPersons(newPerson: IPersonAddEdit): Observable<IPerson> {
     const url = `${this.backendUrl}personas/`;
-    return this.http.post<IPerson[]>(url, newPerson);
+    return this.http.post<IPerson>(url, newPerson);
   }
 
   getPersonById(id: number | undefined): Observable<IPerson> {
@@ -45,9 +45,9 @@ getPersonTitulaciones(): Observable<IPersonTitulaciones[]>{
   return this.http.get<IPersonTitulaciones[]>(url);
 }
 
-postPersonTitulaciones(newPerson: IPersonTitulaciones): Observable<IPersonTitulaciones[]> {
+postPersonTitulaciones(newPerson: IPersonTitulaciones): Observable<IPersonTitulaciones> {
   const url = `${this.backendUrl}personasTitulaciones/`;
-  return this.http.post<IPersonTitulaciones[]>(url, newPerson);
+  return this.http.post<IPersonTitulaciones>(url, newPerson);
 }
 
 getPersonTitulacionesById(id: number | undefined): Observable<IPersonTitulaciones> {

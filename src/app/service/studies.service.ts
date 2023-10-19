@@ -75,9 +75,9 @@ getProgram(): Observable<IProgram[]>{
   return this.http.get<IProgram[]>(url);
 }
 
-postProgram(newProgram: IProgram): Observable<IProgram[]> {
+postProgram(newProgram: IProgram): Observable<IProgram> {
   const url = `${this.backendUrl}carreras/`;
-  return this.http.post<IProgram[]>(url, newProgram);
+  return this.http.post<IProgram>(url, newProgram);
 }
 
 getProgramById(id: number | undefined): Observable<IProgram> {
@@ -129,9 +129,9 @@ getCareers(): Observable<ICareers[]>{
   return this.http.get<ICareers[]>(url);
 }
 
-postCareers(newCareer: ICareers): Observable<ICareers[]> {
+postCareers(newCareer: ICareers): Observable<ICareers> {
   const url = `${this.backendUrl}titulaciones/`;
-  return this.http.post<ICareers[]>(url, newCareer);
+  return this.http.post<ICareers>(url, newCareer);
 }
 
 getCareerById(id: number): Observable<ICareers> {
