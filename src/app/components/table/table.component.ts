@@ -15,12 +15,20 @@ import { IPerson } from 'src/app/interface/IPerson';
 })
 export class TableComponent implements AfterViewInit, OnChanges {  
   dataSource: MatTableDataSource<Array<any>> = new MatTableDataSource();
+
+  dataSourceAlumnos: MatTableDataSource<Array<any>> = new MatTableDataSource();
+  dataSourceProfesores: MatTableDataSource<Array<any>> = new MatTableDataSource();
+
   tableConfig: TableConfig | undefined;
   tableDisplayColumns: string[] = [];
   tableColumns: any[] = [];
   personsService: any;  
   @Input() set data(data: Array<any>) {
     this.dataSource = new MatTableDataSource(data);
+
+    this.dataSourceAlumnos = new MatTableDataSource(data);
+    this.dataSourceProfesores = new MatTableDataSource(data);
+
     this.dataSource.paginator = this.paginator;
   }   
   @Input() set columns(columns: TableColumn[]) {
@@ -56,10 +64,35 @@ export class TableComponent implements AfterViewInit, OnChanges {
   }
 
 
-  applyFilter(event: Event) {
+  /*applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    this.dataSourceAlumnos.filter = filterValue.trim().toLowerCase();
+    this.dataSourceProfesores.filter = filterValue.trim().toLowerCase();
+   
+  }*/
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+  
+    // Filtrar la tabla principal
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  
+    // Filtrar la tabla de alumnos
+    this.dataSourceAlumnos.data = this.dataSourceAlumnos.data.filter(item =>
+      ('item.persona' && 'item.persona.nombre' && 'item.persona.nombre'.toLowerCase().includes(filterValue)) ||
+      ('item.persona' && 'item.persona.email' && 'item.persona.email'.toLowerCase().includes(filterValue))
+    );
+  
+    // Filtrar la tabla de profesores
+    this.dataSourceProfesores.data = this.dataSourceProfesores.data.filter(item =>
+      ('item.persona' && 'item.persona.nombre' && 'item.persona.nombre'.toLowerCase().includes(filterValue)) ||
+      ('item.persona' && 'item.persona.email'&& 'item.persona.email'.toLowerCase().includes(filterValue))
+    );
   }
+  
+
   addItem() {   
     this.action.emit({ action: TABLE_ACTION.ADD, row: null });
   }

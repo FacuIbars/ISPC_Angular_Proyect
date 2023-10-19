@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angul
 import { FormBuilder, FormControl, FormGroup, Validators,  } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import {MatTabsModule} from '@angular/material/tabs';
 import { Observable, catchError, map, of, startWith, switchMap } from 'rxjs';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
@@ -42,9 +42,10 @@ export class PersonViewComponent implements OnInit {
   @ViewChild('vistaInfo', {static: true}) vistaInfo!: TemplateRef<any>;
   @ViewChild('AddEditPersona', {static: true}) AddEditPersona!: TemplateRef<any>; 
   @ViewChild('AddEditPersonaTitulaciones', {static: true}) AddEditPersonaTitulaciones!: TemplateRef<any>;
+
   dataSource: Array<IPerson> = [];
-  dataSourceAlumnos: IPersonTitulaciones[] = [];
-  dataSourceProfesores: IPersonTitulaciones[] = [];
+  dataSourceAlumnos: Array<IPersonTitulaciones> = [];
+  dataSourceProfesores: Array<IPersonTitulaciones> = [];
   
   tableColumns: TableColumn[] = [];
   tableColumnsAlumnos: TableColumn[] = [];
@@ -612,5 +613,6 @@ export class PersonViewComponent implements OnInit {
 
   
 
+ 
 }
 
