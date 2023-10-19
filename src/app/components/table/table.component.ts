@@ -15,12 +15,20 @@ import { IPerson } from 'src/app/interface/IPerson';
 })
 export class TableComponent implements AfterViewInit, OnChanges {  
   dataSource: MatTableDataSource<Array<any>> = new MatTableDataSource();
+
+  dataSourceAlumnos: MatTableDataSource<Array<any>> = new MatTableDataSource();
+  dataSourceProfesores: MatTableDataSource<Array<any>> = new MatTableDataSource();
+
   tableConfig: TableConfig | undefined;
   tableDisplayColumns: string[] = [];
   tableColumns: any[] = [];
   personsService: any;  
   @Input() set data(data: Array<any>) {
     this.dataSource = new MatTableDataSource(data);
+
+    this.dataSourceAlumnos = new MatTableDataSource(data);
+    this.dataSourceProfesores = new MatTableDataSource(data);
+
     this.dataSource.paginator = this.paginator;
   }   
   @Input() set columns(columns: TableColumn[]) {
@@ -55,11 +63,15 @@ export class TableComponent implements AfterViewInit, OnChanges {
     }
   }
 
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    this.dataSourceAlumnos.filter = filterValue.trim().toLowerCase();
+    this.dataSourceProfesores.filter = filterValue.trim().toLowerCase();
+   
   }
+  
   addItem() {   
     this.action.emit({ action: TABLE_ACTION.ADD, row: null });
   }

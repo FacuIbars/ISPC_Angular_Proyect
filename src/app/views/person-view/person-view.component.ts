@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angul
 import { FormBuilder, FormControl, FormGroup, Validators,  } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import {MatTabsModule} from '@angular/material/tabs';
 import { Observable, catchError, map, of, startWith, switchMap } from 'rxjs';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
@@ -41,11 +41,13 @@ export class PersonViewComponent implements OnInit {
  
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('vistaInfo', {static: true}) vistaInfo!: TemplateRef<any>;
+  @ViewChild('vistaInfoPT', {static: true}) vistaInfoPT!: TemplateRef<any>;
   @ViewChild('AddEditPersona', {static: true}) AddEditPersona!: TemplateRef<any>; 
   @ViewChild('AddEditPersonaTitulaciones', {static: true}) AddEditPersonaTitulaciones!: TemplateRef<any>;
+
   dataSource: Array<IPerson> = [];
-  dataSourceAlumnos: IPersonTitulaciones[] = [];
-  dataSourceProfesores: IPersonTitulaciones[] = [];
+  dataSourceAlumnos: Array<IPersonTitulaciones> = [];
+  dataSourceProfesores: Array<IPersonTitulaciones> = [];
   
   tableColumns: TableColumn[] = [];
   tableColumnsAlumnos: TableColumn[] = [];
@@ -78,7 +80,8 @@ export class PersonViewComponent implements OnInit {
     showDeleteButton: true,
   };
   private matDialogRef!: MatDialogRef<ModalComponent>;
-  person!: IPerson 
+  person!: IPerson
+  personaTitulacion!:IPersonTitulaciones 
   form: FormGroup;
   firstFormGroup!: FormGroup;
   secondFormGroup!: FormGroup; 
@@ -518,7 +521,7 @@ export class PersonViewComponent implements OnInit {
     switch (tableAction.action) {
 
       case TABLE_ACTION.SEE:
-        this.onSeePTitulaciones(tableAction.row, this.AddEditPersonaTitulaciones);
+        this.onSeePTitulaciones(tableAction.row, this.vistaInfoPT);
         break;
 
       case TABLE_ACTION.ADD:
@@ -539,11 +542,10 @@ export class PersonViewComponent implements OnInit {
   }
 
   
-
-  onSeePTitulaciones(person: IPerson, template: TemplateRef<any>) {
-    this.person = person;
+  onSeePTitulaciones(personaTitulacion: IPersonTitulaciones, template: TemplateRef<any>) {
+    this.personaTitulacion = personaTitulacion;
     this.openModalTemplate(template);
-    console.log('Ver ', person);
+    console.log('Ver ', personaTitulacion);
   }
 
   onAddPTitulaciones(template: TemplateRef<any>){
@@ -814,5 +816,6 @@ export class PersonViewComponent implements OnInit {
 
   
 
+ 
 }
 
