@@ -1,27 +1,34 @@
-# ISPCPythonProyect
+Proyecto ISPCPython
+Este proyecto fue generado con Angular CLI versión 16.0.5. Para poder trabajar con este proyecto, necesitas asegurarte de tener npm (Node Package Manager) instalado en tu sistema.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.5.
+Instalación de npm
+Si no tienes npm instalado en tu sistema, puedes hacerlo siguiendo estos pasos:
 
-## Development server
+1-Descargar Node.js: npm se instala junto con Node.js, por lo que primero debes descargar e instalar Node.js. Puedes descargar Node.js desde el sitio oficial.(https://nodejs.org/es)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+2-Verificar la instalación: Una vez que hayas instalado Node.js, puedes verificar que npm se haya instalado correctamente ejecutando los siguientes comandos en tu terminal:
 
-## Code scaffolding
+node -v
+npm -v
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Estos comandos mostrarán las versiones de Node.js y npm instaladas en tu sistema.
 
-## Build
+Con npm instalado y funcionando en tu sistema, estarás listo para trabajar en este proyecto.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Servidor de desarrollo
+Para ejecutar un servidor de desarrollo, utiliza el comando ng serve. Luego, accede a http://localhost:4200/ en tu navegador. La aplicación se recargará automáticamente si modificas algún archivo fuente.
 
-## Running unit tests
+Generación de código
+Puedes utilizar el comando ng generate component nombre-del-componente para generar un nuevo componente. También puedes usar ng generate directive|pipe|service|class|guard|interface|enum|module.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Compilación
+Ejecuta ng build para compilar el proyecto. Los archivos generados en la compilación se almacenarán en el directorio dist/.
 
-## Running end-to-end tests
+Ejecución de pruebas unitarias
+Utiliza ng test para ejecutar pruebas unitarias a través de Karma.(https://karma-runner.github.io/latest/index.html)
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Ejecución de pruebas de extremo a extremo
+Puedes ejecutar pruebas de extremo a extremo con el comando ng e2e utilizando una plataforma de tu elección. Sin embargo, para utilizar este comando, primero debes agregar un paquete que implemente capacidades de pruebas de extremo a extremo.
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Obtener más ayuda
+Si necesitas más ayuda con Angular CLI, utiliza el comando ng help o consulta la página de Descripción general y referencia de comandos de Angular CLI.(https://angular.io/cli)
